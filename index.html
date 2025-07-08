@@ -23,6 +23,12 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+
+<!-- swiper -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
 </head>
 
 <body>
@@ -653,13 +659,8 @@ Designed and led the development of three educational real-time strategy games�
               </p>
 
             </li>
-
-
-
           </ol>
-
         </section>
-
         <section class="skill">
 
 
@@ -796,7 +797,7 @@ Designed and led the development of three educational real-time strategy games�
             </li>
 
             <li class="filter-item">
-              <button data-filter-btn>Applications</button>
+              <button data-filter-btn>Independent Applications</button>
             </li>
 
           </ul>
@@ -828,7 +829,7 @@ Designed and led the development of three educational real-time strategy games�
               </li>
 
               <li class="select-item">
-                <button data-select-item>Applications</button>
+                <button data-select-item>Independent Applications</button>
               </li>
 
             </ul>
@@ -837,168 +838,428 @@ Designed and led the development of three educational real-time strategy games�
 
           <ul class="project-list">
 
-            <li class="project-item  active" data-filter-item data-category="web development">
-              <a href="#">
 
-                <figure class="project-img">
-                  <div class="project-item-icon-box">
-                    <ion-icon name="eye-outline"></ion-icon>
-                  </div>
 
-                  <img src="./assets/images/project-1.jpg" alt="finance" loading="lazy">
-                </figure>
+<!-- 2025 ─────────────────────────────────────────────────────────── -->
+<li class="project-item active"
+    data-filter-item data-category="studio work"
+    data-year="2025"   
+    data-title="VR Singing Club"
+    data-text="
+<b>Social karaoke experience for Quest with live pitch analysis and avatar lip-sync.</b>
+<ul class='proj-bullets'>
+  <li>Designer-friendly node-based action &amp; dialogue graph that plugs straight into Eleven-Labs TTS + Unity Animator.</li>
+  <li>Mobile-budget real-time lip-sync: viseme blend-shapes, procedural eye-contact and additive gestures that make Quest-class NPCs feel alive.</li>
+  <li>Photon PUN 2 multiplayer scaffold with lobby, relay and auto-reconnect.</li>
+</ul>"
+    data-gallery='["./assets/images/projects/projectthumb-sing.png", "./assets/images/projects/project-sing1.png","./assets/images/projects/project-sing2.png", "./assets/images/projects/project-sing.mp4"]'
+    data-link="https://www.meta.com/en-gb/experiences/vr-singing-club/7705466689539922/?srsltid=AfmBOopKoPMGzZIhdkl2jSUaggpXn0cxWnSdfvCnsefw523jO8ram41P">
+  <a href="#">
+    <figure class="project-img">
+      <div class="project-item-icon-box"><ion-icon name="eye-outline"></ion-icon></div>
+      <img src="./assets/images/projects/projectthumb-sing.png" alt="VR Sing Together thumbnail" loading="lazy">
+    </figure>
+    <h3 class="project-title">VR Singing Club</h3>
+    <p  class="project-category">Studio Work</p>
+  </a>
+</li>
 
-                <h3 class="project-title">Finance</h3>
+<li class="project-item active"
+    data-filter-item data-category="studio work"
+    data-year="2024"
+    data-title="Crossy Road Castle"
+    data-text="
+<b>Arcade tower-climber spin-off to the 250 M-download Crossy Road franchise – featured on Apple Arcade.</b>
+<ul class='proj-bullets'>
+  <li>Multi-platform launch (iOS, Android) with seamless 4-player couch / online co-op.</li>
+  <li>Helped with programming tower based events and design around reward cadence and special challenges.</li>
+</ul>"
+    data-gallery='["./assets/images/projects/project-crossy1.jpeg",
+                   "./assets/images/projects/project-crossy2.png", "./assets/images/projects/project-crossy.mp4"]'
+    data-link="https://www.crossyroadcastle.com/">
 
-                <p class="project-category">Web development</p>
+  <a href="#">
+    <figure class="project-img">
+      <div class="project-item-icon-box">
+        <ion-icon name="eye-outline"></ion-icon>
+      </div>
+      <img src="./assets/images/projects/projectthumb-crossy.jpg"
+           alt="Crossy Road Castle thumbnail"
+           loading="lazy">
+    </figure>
 
-              </a>
-            </li>
+    <h3 class="project-title">Crossy Road Castle</h3>
+    <p class="project-category">Studio Work</p>
+  </a>
+</li>
 
-            <li class="project-item  active" data-filter-item data-category="web development">
-              <a href="#">
 
-                <figure class="project-img">
-                  <div class="project-item-icon-box">
-                    <ion-icon name="eye-outline"></ion-icon>
-                  </div>
+<!-- 2022 ─────────────────────────────────────────────────────────── -->
+<li class="project-item active"
+    data-filter-item data-category="Independent Applications"
+    data-title="Comsim"
+    data-year="2023"
+    data-text=
+    "<b>Cross-platform desktop &amp; mobile app that reduces paperwork & speeds up workflows for electrical engineers.</b>
+<ul class='proj-bullets'>
+  <li>Offline-first datastore (MongoDB + Realm) with seamless cloud sync – data is never out of reach.</li>
+  <li>One-screen capture for notes, photos and calibration metrics; designed for gloved hands in the field.</li>
+  <li>Brother B-PAC integration: print QR codes on-site and scan them later for instant asset lookup.</li>
+  <li>Iterated side-by-side with stakeholders with real-world workflows.</li>
+</ul>"
 
-                  <img src="./assets/images/project-2.png" alt="orizon" loading="lazy">
-                </figure>
+        data-gallery='["./assets/images/projects/project-comsim.png", "./assets/images/projects/project-comsim2.png", "./assets/images/projects/project-comsim3.png"]'
+    data-link="www.comsim.co.nz">
+  <a href="#">
+    <figure class="project-img">
+      <div class="project-item-icon-box"><ion-icon name="eye-outline"></ion-icon></div>
+      <img src="./assets/images/projects/projectthumb-comsimPoster.png" alt="Comsim thumbnail" loading="lazy">
+    </figure>
+    <h3 class="project-title">Comsim</h3>
+    <p  class="project-category">Independent Applications</p>
+  </a>
+</li>
 
-                <h3 class="project-title">Orizon</h3>
+<li class="project-item active"
+    data-filter-item data-category="independent games"
+    data-title="Dungems"
+    data-year="2022"
+    data-hero="./assets/images/projects/projectthumb-dungem.png"
+    data-text= "<b>Reverse-dungeon roguelike: lay traps, carve tunnels, train monsters, then watch AI-driven heroes try to beat your design.</b>
+<ul class='proj-bullets'>
+  <li><strong>GOAP-powered adventurers </strong>—each hero plans on the fly, swapping tactics when ambushed or low on health.</li>
+  <li><strong>Gem-cutting economy </strong>—mine shards from the walls you destroy, then socket them into traps for elemental effects.</li>
+  <li><strong>Blueprint trap editor </strong>—drag-and-drop traps and enemies that will chain react & bring your foes down.</li>
+  <li><strong>Six upgradable towers</strong> — each with its own branching tech tree: poison, freeze, volley and more.</li>
+  <li><strong>Deck-building progression</strong> — earn bones & gold to draft new mob and trap card synergies.</li>
+</ul>"
 
-                <p class="project-category">Web development</p>
+        data-gallery='["./assets/images/projects/project-dungems.mp4", "./assets/images/projects/project-dungems2.gif", "./assets/images/projects/project-dungemstitle.gif"]'
+    data-link="https://foldthirteen.itch.io/dungems">
+  <a href="#">
+    <figure class="project-img">
+      <div class="project-item-icon-box"><ion-icon name="eye-outline"></ion-icon></div>
+        <img src="./assets/images/projects/projectthumb-dungem.png" alt="Dungems thumbnail" loading="lazy">
+    </figure>
+    <h3 class="project-title">Dungems</h3>
+    <p  class="project-category">Independent Games</p>
+  </a>
+</li>
 
-              </a>
-            </li>
 
-            <li class="project-item  active" data-filter-item data-category="web design">
-              <a href="#">
 
-                <figure class="project-img">
-                  <div class="project-item-icon-box">
-                    <ion-icon name="eye-outline"></ion-icon>
-                  </div>
+<li class="project-item active"
+    data-filter-item data-category="independent games"
+    data-title="Clutterking"
+    data-year="2021"
+    data-text="<b>Casual click-to-crumble puzzler: topple teetering towers of junk before the time runs out.</b>
+<ul class='proj-bullets'>
+  <li>2D casual puzzler designed for mobile and desktop.</li>
+  <li>Tap-to-match combos trigger chain-reaction physics for monster scores.</li>
+  <li>Procedurally-generated campaigns based on scriptable objects  - every mountain of mess is unique.</li>
+</ul>"
+    data-gallery='["./assets/images/projects/project-clutterking.mp4", "./assets/images/projects/project-clutterking1.png","./assets/images/projects/project-clutterking2.png","./assets/images/projects/project-clutterking3.png"]'
+    data-link="https://bootless.itch.io/clutter-king">
+  <a href="#">
+    <figure class="project-img">
+      <div class="project-item-icon-box"><ion-icon name="eye-outline"></ion-icon></div>
+      <img src="./assets/images/projects/projectthumb-clutterking.png" alt="Clutterking thumbnail" loading="lazy">
+    </figure>
+    <h3 class="project-title">Clutterking</h3>
+    <p class="project-category">Independent Games</p>
+  </a>
+</li>
 
-                  <img src="./assets/images/project-3.jpg" alt="fundo" loading="lazy">
-                </figure>
+<!--<li class="project-item active"
+    data-filter-item data-category="independent games"
+    data-title="High Noon"
 
-                <h3 class="project-title">Fundo</h3>
+    data-text="One-minute showdowns, twitch-quick draws & bullet-time ricochets — arcade western built in 72 h."
+    data-gallery='["./assets/images/highnoon-1.png","./assets/images/highnoon-2.png"]'
+    data-link="https://example.com/highnoon">
+  <a href="#">
+    <figure class="project-img">
+      <div class="project-item-icon-box"><ion-icon name="eye-outline"></ion-icon></div>
+      <img src="./assets/images/thumb-highnoon.jpg" alt="High Noon thumbnail" loading="lazy">
+    </figure>
+    <h3 class="project-title">High Noon</h3>
+    <p  class="project-category">Independent Games</p>
+  </a>
+</li> -->
 
-                <p class="project-category">Web design</p>
+<li class="project-item active"
+    data-filter-item data-category="studio work"
+    data-title="Working at Heights (VR)"
+    data-year="2021"
+    data-text="<b>Immersive safety training for harness work, ladders&nbsp;&amp;&nbsp;scaffolding. Learn how to manage and understand the risks and requirements of working at height.</b>
+<ul class='proj-bullets'>
+  <li>Designed to teach and test users understanding of working at heights in an engaging non-repeative manner.</li>
+  <li>Competency testing and mapping, project being measure for NZQA 23229 & 15757.</li>
+  <li>Built with OpenXR targeting the Meta Quest & Pico with a desktop companion for supervisor learning support.</li>
+</ul>"
+    data-gallery='["./assets/images/projects/project-heights1.png", "./assets/images/projects/project-heights3.png","./assets/images/projects/project-heights2.png", "./assets/images/projects/project-heights3.png", "./assets/images/projects/project-heightsvideo.mp4"]'
+    data-link="https://skillsvr.com/modules/working-at-heights">
+  <a href="#">
+    <figure class="project-img">
+      <div class="project-item-icon-box"><ion-icon name="eye-outline"></ion-icon></div>
+      <img src="./assets/images/projects/projectthumb-heights.png" alt="Working at Heights VR thumbnail" loading="lazy">
+    </figure>
+    <h3 class="project-title">Working at Heights</h3>
+    <p class="project-category">Studio Work</p>
+  </a>
+</li>
 
-              </a>
-            </li>
 
-            <li class="project-item  active" data-filter-item data-category="applications">
-              <a href="#">
+<li class="project-item active"
+    data-filter-item data-category="studio work"
+    data-title="Kiwifruit Pruning (VR)"
+    data-year="2021"
+    data-text="<b>OpenXR built orchard sim with realistic pruning within a malleable envrionment.  Learn winter cane selection &amp; summer tip pruning.</b>
+<ul class='proj-bullets'>
+  <li>Worked with team to rapidly prototype several different approaches to the pruning process, iterated and passed concrete working example to development team to continue with. </li>
+  <li>Framerate friendly snip gestures with haptic feedback and leaf-shedding particle FX.</li>
+  <li>Provided technical and artistic support to help keep project on time and within framerate.</li>
+</ul>"
+    data-gallery='["./assets/images/projects/projects-kiwi1.png","./assets/images/projects/projects-kiwi2.png"]'
+    data-link="https://skillsvr.com/modules/kiwifruit-pruning">
+  <a href="#">
+    <figure class="project-img">
+      <div class="project-item-icon-box"><ion-icon name="eye-outline"></ion-icon></div>
+      <img src="./assets/images/projects/thumb-kiwifruit.jpg" alt="Kiwifruit Pruning VR thumbnail" loading="lazy">
+    </figure>
+    <h3 class="project-title">Kiwifruit Pruning</h3>
+    <p class="project-category">Studio Work</p>
+  </a>
+</li>
 
-                <figure class="project-img">
-                  <div class="project-item-icon-box">
-                    <ion-icon name="eye-outline"></ion-icon>
-                  </div>
+<li class="project-item active"
+    data-filter-item data-category="studio work"
+    data-title="Hazard Management (VR)"
+    data-year="2021"
+    data-text="<b>Branching scenario where trainees identify, isolate &amp; mitigate work-site hazards.</b>
+<ul class='proj-bullets'>
+  <li>Randomised hazard set each run—no rote learning.</li>
+  <li>'Stop–Isolate–Mitigate' board drives drag-and-drop control plans.</li>
+  <li>Heat-map export highlights blind-spot categories across cohorts.</li>
+</ul>"
+    data-gallery='["./assets/images/projects/hazards-1.png","./assets/images/projects/hazards-2.png"]'
+    data-link="https://skillsvr.com/modules/hazard-management">
+  <a href="#">
+    <figure class="project-img">
+      <div class="project-item-icon-box"><ion-icon name="eye-outline"></ion-icon></div>
+      <img src="./assets/images/thumb-hazards.jpg" alt="Hazard Management VR thumbnail" loading="lazy">
+    </figure>
+    <h3 class="project-title">Hazard Management</h3>
+    <p class="project-category">Studio Work</p>
+  </a>
+</li>
 
-                  <img src="./assets/images/project-4.png" alt="brawlhalla" loading="lazy">
-                </figure>
+<li class="project-item active"
+    data-filter-item data-category="studio work"
+    data-title="Confined Spaces (VR)"
+    data-year="2021"
+    data-text="<b>Atmospheric monitoring &amp; permit workflow inside a virtual tank farm.</b>
+<ul class='proj-bullets'>
+  <li>Gas detector HUD, rescue tripod &amp; entrant/observer multiplayer roles.</li>
+  <li>Timed permits, bump-test failures &amp; purge fans force on-the-spot decisions.</li>
+  <li>Session logbook auto-emails to facilitators for audit trail.</li>
+</ul>"
+    data-gallery='["./assets/images/projects/confined-1.png","./assets/images/projects/confined-2.png"]'
+    data-link="https://skillsvr.com/modules/confined-spaces">
+  <a href="#">
+    <figure class="project-img">
+      <div class="project-item-icon-box"><ion-icon name="eye-outline"></ion-icon></div>
+      <img src="./assets/images/thumb-confined.jpg" alt="Confined Spaces VR thumbnail" loading="lazy">
+    </figure>
+    <h3 class="project-title">Confined Spaces</h3>
+    <p class="project-category">Studio Work</p>
+  </a>
+</li>
 
-                <h3 class="project-title">Brawlhalla</h3>
+<!-- 2019 ─────────────────────────────────────────────────────────── -->
+<li class="project-item active"
+    data-filter-item data-category="studio work"
+    data-title="Construction Tycoon"
+    data-year="2019"
+    data-text="<b>City-scale RTS that teaches budgeting, staffing &amp; cash-flow in civil construction.</b>
+<ul class='proj-bullets'>
+  <li>Lay roads, batch concrete &amp; juggle contracts while weather delays chew margin.</li>
+  <li>Excel-style cost-sheet export aligns gameplay with classroom accounting.</li>
+  <li>Built in Unity + DOTS; scales to 1 000+ AI workers on mid-range laptops.</li>
+</ul>"
+    data-gallery='["./assets/images/projects/const-1.png","./assets/images/projects/const-2.png"]'
+    data-link="https://appadvice.com/app/construction-tycoon/1458448825">
+  <a href="#">
+    <figure class="project-img">
+      <div class="project-item-icon-box"><ion-icon name="eye-outline"></ion-icon></div>
+      <img src="./assets/images/thumb-constructiontycoon.jpg" alt="Construction Tycoon thumbnail" loading="lazy">
+    </figure>
+    <h3 class="project-title">Construction Tycoon</h3>
+    <p class="project-category">Studio Work</p>
+  </a>
+</li>
 
-                <p class="project-category">Applications</p>
+<!-- 2018 ─────────────────────────────────────────────────────────── -->
+<li class="project-item active"
+    data-filter-item data-category="studio work"
+    data-title="Tech Tycoon"
+    data-year="2018"
+    data-text="<b>STEM factory-builder: automate solder lines, manage R&amp;D, ship gadgets.</b>
+<ul class='proj-bullets'>
+  <li>PCB conveyor logic &amp; SMT placement mini-games track real DPMO metrics.</li>
+  <li>Idle-production layer with crisis events—component shortages, QC failures.</li>
+  <li>Lesson-plan PDF bundles map game loops to supply-chain maths topics.</li>
+</ul>"
+    data-gallery='["./assets/images/projects/tech-1.png","./assets/images/projects/tech-2.png"]'
+    data-link="https://apkpure.net/jba-tech-tycoon/com.jba.tt">
+  <a href="#">
+    <figure class="project-img">
+      <div class="project-item-icon-box"><ion-icon name="eye-outline"></ion-icon></div>
+      <img src="./assets/images/thumb-techtycoon.jpg" alt="Tech Tycoon thumbnail" loading="lazy">
+    </figure>
+    <h3 class="project-title">Tech Tycoon</h3>
+    <p class="project-category">Studio Work</p>
+  </a>
+</li>
 
-              </a>
-            </li>
+<li class="project-item active"
+    data-filter-item data-category="independent games"
+    data-title="Huia"
+    data-year="2018"
+    data-text="<b>Explorative narrative about the last song of Aotearoa’s extinct huia.</b>
+<ul class='proj-bullets'>
+  <li>Hand-painted ngahere; track spectral echoes to rebuild the bird’s call.</li>
+  <li>Branching journal pages intertwine Māori folklore&nbsp;&amp;&nbsp;modern ecology.</li>
+  <li>FMOD spectral-morphing blends location audio with recovered whistle notes.</li>
+</ul>"
+    data-gallery='["./assets/images/projects/huia-1.png","./assets/images/projects/huia-2.png"]'
+    data-link="https://coronalabs.com/blog/2016/09/08/featured-app-12-huia-birds-bringing-extinct-birds-back-to-life-through-interactive-storytelling/">
+  <a href="#">
+    <figure class="project-img">
+      <div class="project-item-icon-box"><ion-icon name="eye-outline"></ion-icon></div>
+      <img src="./assets/images/thumb-huia.jpg" alt="Huia thumbnail" loading="lazy">
+    </figure>
+    <h3 class="project-title">Huia</h3>
+    <p class="project-category">Independent Games</p>
+  </a>
+</li>
 
-            <li class="project-item  active" data-filter-item data-category="web design">
-              <a href="#">
+<!-- 2017 ─────────────────────────────────────────────────────────── -->
+<li class="project-item active"
+    data-filter-item data-category="studio work"
+    data-title="Restaurant Tycoon"
+    data-year="2017"
+    data-text="<b>Fast-casual empire sim: engineer menus, juggle staffing &amp; stave off burnout.</b>
+<ul class='proj-bullets'>
+  <li>Ingredient sourcing &amp; wastage modelling keeps margins razor-thin.</li>
+  <li>AI staff personalities—rosters affect fatigue spikes &amp; turnover risk.</li>
+  <li>Split-screen kitchen view turns management into a couch-coop party.</li>
+</ul>"
+    data-gallery='["./assets/images/projects/rest-1.png","./assets/images/projects/rest-2.png"]'
+    data-link="https://appadvice.com/game/app/restaurant-tycoon/1436672122">
+  <a href="#">
+    <figure class="project-img">
+      <div class="project-item-icon-box"><ion-icon name="eye-outline"></ion-icon></div>
+      <img src="./assets/images/thumb-restauranttycoon.jpg" alt="Restaurant Tycoon thumbnail" loading="lazy">
+    </figure>
+    <h3 class="project-title">Restaurant Tycoon</h3>
+    <p class="project-category">Studio Work</p>
+  </a>
+</li>
 
-                <figure class="project-img">
-                  <div class="project-item-icon-box">
-                    <ion-icon name="eye-outline"></ion-icon>
-                  </div>
+<li class="project-item active"
+    data-filter-item data-category="independent games"
+    data-title="Pipeworld"
+    data-year="2017"
+    data-text="<b>Logic-pipe puzzler: route colour-coded fluids through AND/OR gates.</b>
+<ul class='proj-bullets'>
+  <li>Drag-and-drop node editor with live flow simulation &amp; leak tests.</li>
+  <li>Sandbox share-links let the community publish brain-twisters.</li>
+  <li>Step-through debugger overlays Boolean state for teaching circuitry.</li>
+</ul>"
+    data-gallery='["./assets/images/projects/pipe-1.png","./assets/images/projects/pipe-2.png"]'
+    data-link="https://corovcam.itch.io/pipe-world">
+  <a href="#">
+    <figure class="project-img">
+      <div class="project-item-icon-box"><ion-icon name="eye-outline"></ion-icon></div>
+      <img src="./assets/images/thumb-pipeworld.jpg" alt="Pipeworld thumbnail" loading="lazy">
+    </figure>
+    <h3 class="project-title">Pipeworld</h3>
+    <p class="project-category">Independent Games</p>
+  </a>
+</li>
 
-                  <img src="./assets/images/project-5.png" alt="dsm." loading="lazy">
-                </figure>
+<!-- 2016 ─────────────────────────────────────────────────────────── -->
+<li class="project-item active"
+    data-filter-item data-category="studio work"
+    data-title="The Aetherlight &amp; Companion Apps"
+    data-year="2016"
+    data-text="<b>Cross-platform MMORPG plus mobile companions; authored turn-based combat &amp; CDN-fed asset pipeline.</b>
+<ul class='proj-bullets'>
+  <li>Steampunk allegory of biblical narrative with team-combo combat system.</li>
+  <li>Hot-swap sprites &amp; dialogue via CDN—zero-patch live ops.</li>
+  <li>iOS/Android companion app pushes quests &amp; loot drops with Firebase.</li>
+</ul>"
+    data-gallery='["./assets/images/projects/aether-1.png","./assets/images/projects/aether-2.png"]'
+    data-link="https://the-aetherlight.webflow.io/">
+  <a href="#">
+    <figure class="project-img">
+      <div class="project-item-icon-box"><ion-icon name="eye-outline"></ion-icon></div>
+      <img src="./assets/images/thumb-aetherlight.jpg" alt="Aetherlight thumbnail" loading="lazy">
+    </figure>
+    <h3 class="project-title">The Aetherlight</h3>
+    <p class="project-category">Studio Work</p>
+  </a>
+</li>
 
-                <h3 class="project-title">DSM.</h3>
+<li class="project-item active"
+    data-filter-item data-category="independent games"
+    data-title="Tumbly Beasts"
+    data-year="2016"
+    data-text="<b>Party brawler with intentionally wobbly physics &amp; one-button chaos.</b>
+<ul class='proj-bullets'>
+  <li>Ragdoll beasts flail via single-stick&nbsp;+&nbsp;action-button controls.</li>
+  <li>Eight couch-coop arenas packed with swing hammers, lava floors &amp; fans.</li>
+  <li>Unity Jobs &amp; Burst keep 60 FPS even on Switch-class hardware.</li>
+</ul>"
+    data-gallery='["./assets/images/projects/tumbly-1.png","./assets/images/projects/tumbly-2.png"]'
+    data-link="https://apps.apple.com/us/app/tumbly-beasts/id1067782839">
+  <a href="#">
+    <figure class="project-img">
+      <div class="project-item-icon-box"><ion-icon name="eye-outline"></ion-icon></div>
+      <img src="./assets/images/thumb-tumblybeasts.jpg" alt="Tumbly Beasts thumbnail" loading="lazy">
+    </figure>
+    <h3 class="project-title">Tumbly Beasts</h3>
+    <p class="project-category">Independent Games</p>
+  </a>
+</li>
 
-                <p class="project-category">Web design</p>
+<!-- 2015 ─────────────────────────────────────────────────────────── -->
+<li class="project-item active"
+    data-filter-item data-category="independent games"
+    data-title="Math Castle"
+    data-year="2015"
+    data-text="<b>Tower-defence meets arithmetic drills; adaptive difficulty keeps learners in the flow zone.</b>
+<ul class='proj-bullets'>
+  <li>Answer math facts to charge elemental towers—fire, ice, lightning.</li>
+  <li>Dynamic pacing model aims for 15–20 s time-to-kill across skill levels.</li>
+  <li>SCORM analytics export so teachers can track mastery curves.</li>
+</ul>"
+    data-gallery='["./assets/images/projects/math-1.png","./assets/images/projects/math-2.png"]'
+    data-link="https://store.steampowered.com/app/1556350/Math_Castle/">
+  <a href="#">
+    <figure class="project-img">
+      <div class="project-item-icon-box"><ion-icon name="eye-outline"></ion-icon></div>
+      <img src="./assets/images/thumb-mathcastle.jpg" alt="Math Castle thumbnail" loading="lazy">
+    </figure>
+    <h3 class="project-title">Math Castle</h3>
+    <p class="project-category">Independent Games</p>
+  </a>
+</li>
 
-              </a>
-            </li>
 
-            <li class="project-item  active" data-filter-item data-category="web design">
-              <a href="#">
 
-                <figure class="project-img">
-                  <div class="project-item-icon-box">
-                    <ion-icon name="eye-outline"></ion-icon>
-                  </div>
-
-                  <img src="./assets/images/project-6.png" alt="metaspark" loading="lazy">
-                </figure>
-
-                <h3 class="project-title">MetaSpark</h3>
-
-                <p class="project-category">Web design</p>
-
-              </a>
-            </li>
-
-            <li class="project-item  active" data-filter-item data-category="web development">
-              <a href="#">
-
-                <figure class="project-img">
-                  <div class="project-item-icon-box">
-                    <ion-icon name="eye-outline"></ion-icon>
-                  </div>
-
-                  <img src="./assets/images/project-7.png" alt="summary" loading="lazy">
-                </figure>
-
-                <h3 class="project-title">Summary</h3>
-
-                <p class="project-category">Web development</p>
-
-              </a>
-            </li>
-
-            <li class="project-item  active" data-filter-item data-category="applications">
-              <a href="#">
-
-                <figure class="project-img">
-                  <div class="project-item-icon-box">
-                    <ion-icon name="eye-outline"></ion-icon>
-                  </div>
-
-                  <img src="./assets/images/project-8.jpg" alt="task manager" loading="lazy">
-                </figure>
-
-                <h3 class="project-title">Task Manager</h3>
-
-                <p class="project-category">Applications</p>
-
-              </a>
-            </li>
-
-            <li class="project-item  active" data-filter-item data-category="web development">
-              <a href="#">
-
-                <figure class="project-img">
-                  <div class="project-item-icon-box">
-                    <ion-icon name="eye-outline"></ion-icon>
-                  </div>
-
-                  <img src="./assets/images/project-9.png" alt="arrival" loading="lazy">
-                </figure>
-
-                <h3 class="project-title">Arrival</h3>
-
-                <p class="project-category">Web development</p>
-
-              </a>
-            </li>
-
+         
           </ul>
 
         </section>
@@ -1214,7 +1475,7 @@ Designed and led the development of three educational real-time strategy games�
         <section class="mapbox" data-mapbox>
           <figure>
             <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d199666.5651251294!2d-121.58334177520186!3d38.56165006739519!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x809ac672b28397f9%3A0x921f6aaa74197fdb!2sSacramento%2C%20CA%2C%20USA!5e0!3m2!1sen!2sbd!4v1647608789441!5m2!1sen!2sbd"
+                 src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d255444.20638271957!2d174.7542782!3d-36.913751!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2snz!4v1720406000000!5m2!1sen!2snz" 
               width="400" height="300" loading="lazy"></iframe>
           </figure>
         </section>
@@ -1261,13 +1522,20 @@ Designed and led the development of three educational real-time strategy games�
 
     <!-- dynamic bits will be injected here -->
     <div class="proj-scroll">
-      <img id="projHero" class="proj-hero" alt="">
+
+    <!-- ✨ NEW Swiper hero carousel -->
+      <div class="swiper" id="heroSwiper">
+      <div class="swiper-wrapper"><!-- slides injected by JS --></div>
+
+      <!-- controls (optional but nice) -->
+      <div class="swiper-button-prev"></div>
+      <div class="swiper-button-next"></div>
+      <div class="swiper-pagination"></div>
+    </div>
+
       <h4 class="h3 modal-title" id="projTitle"></h4>
-
       <p id="projText" class="modal-blurb"></p>
-
       <div id="projGallery" class="proj-gallery"></div>
-
       <a id="projLink" class="proj-link" target="_blank" rel="noopener">Play / View&nbsp;↗</a>
     </div>
   </section>

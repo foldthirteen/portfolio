@@ -154,6 +154,7 @@ input, textarea {
 :focus { outline-color: var(--orange-yellow-crayola); }
 
 html { font-family: var(--ff-poppins); }
+html { scrollbar-gutter: stable; } 
 
 body { background: var(--smoky-black); }
 
@@ -254,6 +255,8 @@ article.active {
   background: var(--text-gradient-yellow);
   border-radius: 3px;
 }
+
+
 
 .has-scrollbar::-webkit-scrollbar {
   width: 5px; /* for vertical scrollbar */
@@ -676,8 +679,8 @@ main {
 
 .modal-close-btn {
   position: absolute;
-  top: 15px;
-  right: 15px;
+  top: 3px;
+  right: 3px;
   background: var(--onyx);
   border-radius: 8px;
   width: 32px;
@@ -688,6 +691,10 @@ main {
   color: var(--white-2);
   font-size: 18px;
   opacity: 0.7;
+}
+
+.modal-blurb{
+  white-space: pre-line;   /* turn \n into real breaks */
 }
 
 .modal-close-btn:hover,
@@ -705,8 +712,16 @@ main {
 
 .modal-img-wrapper > img { display: none; }
 
-.modal-title { margin-bottom: 4px; }
+.modal-title{
+  display:flex;
+  align-items:center;
+  gap:.65rem;          /* optional – remove if you don’t want spacing */
+}
 
+/* 2 — tell the badge to hug the far edge */
+.badge-year{           /* you already have the colour/size rules */
+  margin-left:auto;    /* pushes it to the right */
+}
 .modal-content time {
   font-size: var(--fs-6);
   color: var(--light-gray-70);
@@ -1035,6 +1050,188 @@ main {
 
 .select-item button:hover { --eerie-black-2: hsl(240, 2%, 20%); }
 
+
+/* ---------- modal layout ---------- */
+.project-modal{
+
+
+  position: relative;          /* create a stacking context */
+  z-index: 2;                  /* higher than the overlay’s 1 */
+
+  border: 1px solid var(--jet);
+  background: var(--eerie-black-2);
+  --gap: 2rem;
+  max-width: 920px;
+  width: calc(100% - 2*var(--gap));
+  padding: 2rem;
+
+  display:flex;                 /* new – lay children vertically   */
+  flex-direction:column;
+  max-height:90vh;              /* never exceed 90 % of viewport    */
+  overflow:hidden;              /* hide anything that slips past   */
+
+}
+
+.proj-head{
+  display:flex;
+  flex-direction:column;
+  gap:1.25rem;
+}
+
+.proj-meta{
+  display:flex;
+  flex-direction:column;
+  gap:.75rem;
+}
+
+/* meta row */
+.proj-info{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:.75rem 1rem;
+}
+
+/* Year badge */
+.badge-year{
+  background:var(--bg-gradient-yellow-1);
+  color:var(--smoky-black);
+  font-size:var(--fs-8);
+  font-weight:700;
+  padding:.25em .6em;
+  border-radius:8px;
+}
+
+.project-modal,
+.project-modal :is(h1,h2,h3,h4,h5,p,span,li,a){
+  color: var(--white-2);   /* same token you use site-wide */
+}
+
+.project-modal{
+  /* existing rules … */
+
+}
+
+.proj-scroll{
+  flex:1 1 auto;                /* fill the remaining height        */
+  overflow-y:auto;              /* vertical scrollbar if needed     */
+  padding-right:2rem;          /* keeps text off the scroll-bar    */
+  overscroll-behavior:contain;  /* stops wheel-scroll from bubbling */
+}
+
+
+
+/* 2.  Then override the few things that should stay dark on light */
+.btn-primary{  /* yellow button */
+  color: var(--smoky-black);
+}
+
+.plat-list li ion-icon{      /* platform icons */
+  color: var(--light-gray-70);
+}
+
+/* Platforms */
+.plat-list{
+  display:flex;
+  gap:.5rem;
+}
+.plat-list li ion-icon{
+  font-size:22px;
+  color:var(--light-gray-70);
+}
+.plat-list li:hover ion-icon{ color:var(--orange-yellow-crayola); }
+
+/* CTA */
+.btn-primary{
+  margin-left:auto;
+  background:var(--orange-yellow-crayola);
+  color:var(--smoky-black);
+  padding:.45em 1em;
+  border-radius:8px;
+  font-size:var(--fs-7);
+  font-weight:600;
+  transition:opacity .2s ease;
+}
+.btn-primary:hover{ opacity:.8; }
+
+/* hero swiper inside the modal */
+#heroSwiper           { width: 100%; height: auto; margin-bottom: 1.25rem; }
+#heroSwiper .swiper-slide img { 
+  width: 100%; height: auto; border-radius: 12px; object-fit: cover;
+}
+
+#heroSwiper video{
+  max-width:100%;
+  max-height:60vh;              /* never spill out of the modal */
+  border-radius:12px;
+}
+
+
+#heroSwiper{
+  /* one-stop variable that Swiper uses for arrows *and* bullets */
+  --swiper-theme-color: var(--white-2);   /* bright white */
+
+  /* optional: make the arrows chunkier */
+  --swiper-navigation-size: 34px;
+}
+
+/* give the arrows a subtle glow so they stand out on imagery */
+#heroSwiper .swiper-button-next,
+#heroSwiper .swiper-button-prev{
+  color: var(--white-2);                   /* fallback for older Swipers */
+  text-shadow: 0 0 8px rgba(0,0,0,.35);
+}
+
+/* pagination bullets */
+#heroSwiper .swiper-pagination-bullet{
+  background: var(--white-2);
+  opacity: .35;
+}
+#heroSwiper .swiper-pagination-bullet-active{
+  opacity: 1;
+}
+
+/* (nice-to-have) little accent when hovering on desktop */
+@media (hover:hover){
+  #heroSwiper .swiper-button-next:hover,
+  #heroSwiper .swiper-button-prev:hover{
+    color: var(--orange-yellow-crayola);
+  }
+}
+
+///* arrow & bullet colours */
+//.swiper-button-prev,
+//.swiper-button-next   { color: var(--white-2); }
+//.swiper-pagination-bullet-active {
+//  background: var(--orange-yellow-crayola);
+//}
+//
+/* gallery */
+.proj-gallery{
+  margin-top:1.75rem;
+  display:grid;
+  gap:1rem;
+  grid-template-columns:repeat(auto-fill,minmax(160px,1fr));
+}
+.proj-gallery img{
+  width:100%;
+  border-radius:10px;
+  object-fit:cover;
+  aspect-ratio:4/3;
+  transition:transform .2s ease;
+}
+.proj-gallery img:hover{ transform:scale(1.04); }
+
+/* ---------- responsive tweaks ---------- */
+@media (min-width:700px){
+  .proj-head{ flex-direction:row; }
+  .proj-hero{ width:55%; }
+  .proj-meta{ flex:1; }
+  .proj-blurb{ max-width:32ch; }          /* keep lines short */
+}
+
+
+
 .project-list {
   display: grid;
   grid-template-columns: 1fr;
@@ -1048,6 +1245,69 @@ main {
   display: block;
   animation: scaleUp 0.25s ease forwards;
 }
+
+.proj-link{
+  display:inline-flex;
+  align-items:center;
+  gap:.45rem;
+  
+  /* pill look */
+  padding:.5em 1.25em;
+  border:1px solid var(--orange-yellow-crayola);
+  border-radius:9999px;
+
+  /* colours */
+  color:var(--orange-yellow-crayola);
+  background:transparent;
+
+  /* text */
+  font-size:var(--fs-7);
+  font-weight:600;
+
+  /* motion */
+  transition:background .3s ease, color .3s ease, transform .25s ease;
+}
+
+.proj-link .arrow{
+  transform:translate(0,0);          /* starting point  */
+  transition:transform .25s ease;    /* glides on hover */
+}
+
+/* hover / focus feedback */
+.proj-link:hover,
+.proj-link:focus{
+  background:var(--orange-yellow-crayola);
+  color:var(--smoky-black);
+  transform:translateY(-2px);        /* subtle pop-up   */
+}
+
+.proj-link:hover .arrow,
+.proj-link:focus .arrow{
+  transform:translate(3px,-3px);     /* arrow lifts off */
+}
+
+.proj-bullets{
+  margin: 0.2rem 0 0;
+  padding-left: 1.4rem;
+  font-size: var(--fs-6);
+  color: var(--light-gray);
+  line-height: 1.55;
+}
+.proj-bullets li{
+  margin-bottom: .55rem;
+  position: relative;
+}
+.proj-bullets li::before{
+  content:'';
+  position:absolute;
+  left:-1.1rem;
+  top:.55em;
+  width:.4rem;
+  height:.4rem;
+  border-radius:50%;
+  background:var(--orange-yellow-crayola);
+}
+
 
 @keyframes scaleUp {
   0% { transform: scale(0.5); }

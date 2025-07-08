@@ -33,6 +33,42 @@ const testimonialsModalFunc = function () {
   overlay.classList.toggle("active");
 }
 
+
+let heroSwiper = null;                   // keeps reference between opens
+
+function buildHeroSwiper(slideSrcArray){
+  const wrapper = document.querySelector('#heroSwiper .swiper-wrapper');
+  wrapper.innerHTML = '';                // clear previous slides
+
+  slideSrcArray.forEach(src => {
+    const slide  = document.createElement('div');
+    slide.className = 'swiper-slide';
+
+    const isVideo = /\.(mp4|webm|ogg)$/i.test(src);
+    const media   = isVideo
+      ? Object.assign(document.createElement('video'), {
+          src, controls:true, playsInline:true })
+      : Object.assign(new Image(), {
+          src, alt:'project asset', loading:'lazy' });
+
+    slide.appendChild(media);
+    wrapper.appendChild(slide);
+  });
+
+  // re-initialise (destroys old instance to avoid duplicates)
+  if (heroSwiper) heroSwiper.destroy(true, true);
+
+  heroSwiper = new Swiper('#heroSwiper', {
+    loop:        true,
+    speed:       600,
+    grabCursor:  true,
+    keyboard:    { enabled:true },
+    navigation:  { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' },
+    pagination:  { el: '.swiper-pagination', clickable:true }
+  });
+}
+
+
 // add click event to all modal items
 for (let i = 0; i < testimonialsItem.length; i++) {
 
@@ -157,3 +193,87 @@ for (let i = 0; i < navigationLinks.length; i++) {
 
   });
 }
+
+
+const projModal   = document.getElementById('projectModal');
+const projOverlay = document.getElementById('projectOverlay');
+const projClose   = document.getElementById('projClose');
+
+// cache modal fields
+const mHero   = document.getElementById('projHero');
+const mTitle  = document.getElementById('projTitle');
+const mText   = document.getElementById('projText');
+const mGall   = document.getElementById('projGallery');
+const mLink   = document.getElementById('projLink');
+
+let scrollY = 0;
+
+document.querySelectorAll('.project-item').forEach(item => {
+  item.addEventListener('click', e => {
+    e.preventDefault();
+
+document.documentElement.style.overflow = 'hidden';  // stop scrolling
+document.body.style.overflowY = 'scroll';   
+ const y = window.scrollY;
+
+
+    // 2. Populate modal
+   //mHero.src      = item.dataset.hero;
+   //mHero.alt      = item.dataset.title + ' hero';
+    mTitle.textContent = item.dataset.title;
+
+    mTitle.innerHTML = `
+      <span>${item.dataset.title}</span>
+      ${ item.dataset.year
+            ? `<span class="badge-year">${item.dataset.year}</span>`
+            : '' }
+    `;
+
+    const raw = item.dataset.text || '';
+    mText.innerHTML = raw.replace(/\\n/g,'<br>');
+
+
+    
+    // ── Build / refresh hero carousel  ────────────────────
+    const galleryArr = JSON.parse(item.dataset.gallery || '[]');
+    buildHeroSwiper(galleryArr);             // 🌟 NEW LINE
+    
+// (mHero and mGall DOM manipulation is no longer needed, delete it)
+
+    //   CTAs
+    if (item.dataset.link){
+  mLink.href        = item.dataset.link;
+  mLink.textContent = 'Visit ↗';           // ▲ NEW label
+  mLink.style.display = 'inline-block';
+}else{
+  mLink.style.display = 'none';
+}
+
+    // 3. Show modal
+    projModal.classList.add('active');3
+    projOverlay.classList.add('active');
+    projModal.setAttribute('aria-hidden','false');
+  });
+});
+
+// universal close handler
+function closeProjModal(){
+
+  document.querySelectorAll('#heroSwiper video').forEach(v => {
+    v.pause();
+    v.currentTime = 0;
+    v.removeAttribute('src');   // releases memory
+    v.load();
+  });
+  
+  projModal.classList.remove('active');
+  projOverlay.classList.remove('active');
+  projModal.setAttribute('aria-hidden','true');
+
+document.documentElement.style.overflow = '';
+document.body.style.overflowY = '';
+}
+
+projClose.addEventListener('click', closeProjModal);
+projOverlay.addEventListener('click', closeProjModal);
+window.addEventListener('keyup', e => { if (e.key === 'Escape') closeProjModal(); });
