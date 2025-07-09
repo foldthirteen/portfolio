@@ -194,6 +194,28 @@ for (let i = 0; i < navigationLinks.length; i++) {
   });
 }
 
+const portfolioBtn = [...document.querySelectorAll('[data-nav-link]')]
+                     .find(b => b.textContent.trim().toLowerCase() === 'portfolio');
+
+document.querySelectorAll('.clients-item a').forEach(link => {
+  link.addEventListener('click', e => {
+    e.preventDefault();
+
+    const targetId = link.dataset.scroll;      // e.g. "dungems"
+    if (!targetId) return;
+
+    portfolioBtn?.click();                     // trigger your existing nav logic
+
+    /* Wait one frame so the .portfolio page is visible,
+       then scroll the chosen card into view                      */
+    requestAnimationFrame(() => {
+      document.getElementById(targetId)
+              ?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+});
+
+
 
 const projModal   = document.getElementById('projectModal');
 const projOverlay = document.getElementById('projectOverlay');
@@ -277,3 +299,41 @@ document.body.style.overflowY = '';
 projClose.addEventListener('click', closeProjModal);
 projOverlay.addEventListener('click', closeProjModal);
 window.addEventListener('keyup', e => { if (e.key === 'Escape') closeProjModal(); });
+
+
+
+const grid       = document.querySelector('.project-list');
+const allItems   = () => grid.querySelectorAll('.project-item.active');  // convenience
+
+function resizeMasonryItem(item){
+  const rowGap    = 30;   // keep in sync with CSS gap
+  const rowHeight = 12;   // keep in sync with grid-auto-rows
+  const height    = item.getBoundingClientRect().height;
+  const rowSpan   = Math.ceil((height + rowGap) / (rowHeight + rowGap));
+  item.style.gridRowEnd = `span ${rowSpan}`;
+}
+
+function resizeAllMasonryItems(){ allItems().forEach(resizeMasonryItem); }
+
+/* ─ run when the page finishes, whenever you resize, and whenever an
+     image *inside* a card finishes loading ─────────────────────────── */
+
+window.addEventListener('load',   resizeAllMasonryItems);
+window.addEventListener('resize', resizeAllMasonryItems);
+
+allItems().forEach(item=>{
+  item.querySelectorAll('img').forEach(img=>{
+    if (img.complete){
+      resizeMasonryItem(item);
+    }else{
+      img.addEventListener('load', ()=>resizeMasonryItem(item));
+    }
+  });
+});
+
+/* ─ run again every time you change the filter (after your filterFunc) ─ */
+const originalFilterFunc = filterFunc;
+filterFunc = function(selected){
+  originalFilterFunc(selected);      // keep the old behaviour
+  requestAnimationFrame(resizeAllMasonryItems);  // then repack
+};

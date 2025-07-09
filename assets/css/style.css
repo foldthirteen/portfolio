@@ -1120,6 +1120,23 @@ main {
 }
 
 
+.proj-scroll::-webkit-scrollbar{
+  width: 8px;                                         /* same width you use elsewhere */
+}
+
+.proj-scroll::-webkit-scrollbar-track{
+  background: var(--onyx);                            /* matches panel edge */
+  border-radius: 8px;
+}
+
+.proj-scroll::-webkit-scrollbar-thumb{
+  background: var(--orange-yellow-crayola);           /* brand accent */
+  border-radius: 8px;
+}
+
+.proj-scroll::-webkit-scrollbar-thumb:hover{
+  background: var(--vegas-gold);                      /* subtle hover feedback */
+}
 
 /* 2.  Then override the few things that should stay dark on light */
 .btn-primary{  /* yellow button */
@@ -1157,7 +1174,7 @@ main {
 /* hero swiper inside the modal */
 #heroSwiper           { width: 100%; height: auto; margin-bottom: 1.25rem; }
 #heroSwiper .swiper-slide img { 
-  width: 100%; height: auto; border-radius: 12px; object-fit: cover;
+  width: 100%; height: auto; border-radius: 12px; object-fit: contain;
 }
 
 #heroSwiper video{
@@ -1165,6 +1182,13 @@ main {
   max-height:60vh;              /* never spill out of the modal */
   border-radius:12px;
 }
+
+#heroSwiper .swiper-slide{
+  max-height:60vh;              /* or any value that suits */
+  display:flex;                 /* keeps image/video centred */
+  align-items:center;           /* vertically centre content */
+}
+
 
 
 #heroSwiper{
