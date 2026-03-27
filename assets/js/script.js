@@ -185,6 +185,16 @@ for (let i = 0; i < navigationLinks.length; i++) {
         pages[i].classList.add("active");
         navigationLinks[i].classList.add("active");
         window.scrollTo(0, 0);
+
+        const title = pages[i].querySelector('.article-title');
+        if (title) {
+          title.classList.remove('glint');
+          void title.offsetWidth;
+          title.classList.add('glint');
+          title.addEventListener('animationend', () => {
+            title.classList.remove('glint');
+          }, { once: true });
+        }
       } else {
         pages[i].classList.remove("active");
         navigationLinks[i].classList.remove("active");

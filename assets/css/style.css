@@ -111,6 +111,12 @@
 
 }
 
+@keyframes article-glint {
+  0%   { background-position: 250% center; }
+  50%  { background-position: -150% center; }
+  100% { background-position: 250% center; }
+}
+
 
 
 
@@ -243,6 +249,23 @@ article.active {
 .article-title {
   position: relative;
   padding-bottom: 7px;
+  color: var(--white-1);
+}
+
+.article-title.glint {
+  background: linear-gradient(
+    90deg,
+    var(--white-1) 0%,
+    var(--white-1) 30%,
+    var(--orange-yellow-crayola) 50%,
+    var(--white-1) 70%,
+    var(--white-1) 100%
+  );
+  background-size: 300% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: article-glint 2.4s ease-in-out 0.2s both;
 }
 
 .article-title::after {
