@@ -75,6 +75,7 @@
 
   /* font-family */
   --ff-poppins: 'Poppins', sans-serif;
+  --ff-display: 'Space Grotesk', 'Poppins', sans-serif;
 
   /* font-size */
   --fs-1: 24px;
@@ -242,6 +243,8 @@ article.active {
 .h5 {
   color: var(--white-2);
   text-transform: capitalize;
+  font-family: var(--ff-display);
+  letter-spacing: -0.02em;
 }
 
 .h2 { font-size: var(--fs-1); }
@@ -258,6 +261,9 @@ article.active {
 .article-title {
   position: relative;
   padding-bottom: 7px;
+  font-family: var(--ff-display);
+  font-weight: 700;
+  letter-spacing: -0.03em;
   background: linear-gradient(
     90deg,
     var(--vegas-gold) 0%,
@@ -380,8 +386,9 @@ main {
 .info-content .name {
   color: var(--white-2);
   font-size: var(--fs-3);
-  font-weight: var(--fw-500);
-  letter-spacing: -0.25px;
+  font-family: var(--ff-display);
+  font-weight: 700;
+  letter-spacing: -0.03em;
   margin-bottom: 10px;
 }
 
@@ -519,6 +526,9 @@ main {
 .navbar-link {
   color: var(--light-gray);
   font-size: var(--fs-8);
+  font-family: var(--ff-display);
+  font-weight: 500;
+  letter-spacing: 0.4px;
   padding: 20px 7px;
   transition: color var(--transition-1);
 }
@@ -733,6 +743,7 @@ main {
 
 .modal-blurb{
   white-space: pre-line;   /* turn \n into real breaks */
+  margin-top: 0;
 }
 
 .modal-close-btn:hover,
@@ -750,16 +761,109 @@ main {
 
 .modal-img-wrapper > img { display: none; }
 
-.modal-title{
-  display:flex;
-  align-items:center;
-  gap:.65rem;          /* optional – remove if you don’t want spacing */
+/* ── Modal header: title left, meta-panel right, same row ───────────────── */
+.modal-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 14px;
 }
 
-/* 2 — tell the badge to hug the far edge */
-.badge-year{           /* you already have the colour/size rules */
-  margin-left:auto;    /* pushes it to the right */
+.modal-header-main {
+  flex: 1;
+  min-width: 0;
 }
+
+.modal-title {
+  margin-bottom: 3px;
+  line-height: 1.2;
+}
+
+.modal-subtitle {
+  font-family: var(--ff-display);
+  font-size: 12px;
+  font-weight: 500;
+  color: hsl(220, 14%, 48%);
+  letter-spacing: 0.2px;
+  margin: 0;
+}
+
+/* ── Meta panel — horizontal pill, right of title ───────────────────────── */
+.meta-panel {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: row;      /* cells sit side-by-side */
+  background: hsl(235, 18%, 8%);
+  border: 1px solid hsla(45, 85%, 45%, 0.24);
+  border-radius: 9px;
+  overflow: hidden;
+  box-shadow: 0 0 18px hsla(45, 100%, 55%, 0.08),
+              inset 0 1px 0 hsla(255, 100%, 100%, 0.03);
+}
+
+/* each cell: label above value, vertical dividers between */
+.mp-row {
+  padding: 8px 14px;
+  border-right: 1px solid hsla(45, 85%, 45%, 0.12);
+  border-bottom: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 3px;
+  min-width: 0;
+}
+
+.mp-row:last-child { border-right: none; }
+
+.mp-label {
+  font-family: var(--ff-display);
+  font-size: 7.5px;
+  font-weight: 700;
+  letter-spacing: 1.8px;
+  text-transform: uppercase;
+  color: hsl(220, 14%, 36%);
+  white-space: nowrap;
+}
+
+.mp-value {
+  font-family: var(--ff-display);
+  font-size: 11px;
+  font-weight: 600;
+  color: hsl(220, 18%, 80%);
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+/* Year — amber monospace glow */
+.mp-year {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  color: hsl(45, 100%, 68%);
+  text-shadow: 0 0 10px hsla(45, 100%, 70%, 0.65);
+}
+
+/* Platform pills inside meta-panel */
+.meta-panel .plat-icons,
+.plat-icons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  align-items: center;
+}
+@media (max-width: 680px) {
+  .modal-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .modal-header-main {
+    width: 100%;
+  }
+}
+
 .modal-content time {
   font-size: var(--fs-6);
   color: var(--light-gray-70);
@@ -1130,44 +1234,119 @@ main {
   gap:.75rem 1rem;
 }
 
-/* Year badge — retro display chip */
-.badge-year{
-  display:inline-flex;
-  align-items:center;
-  gap:5px;
-  background: hsl(235, 18%, 9%);
-  color: hsl(45, 100%, 68%);
-  font-size: 10px;
-  font-weight: 700;
-  font-family: 'Courier New', Courier, monospace;
-  letter-spacing: 2.5px;
-  padding: 5px 11px 5px 9px;
-  border-radius: 5px;
-  border: 1px solid hsla(45, 85%, 45%, 0.55);
-  box-shadow:
-    0 0 14px hsla(45, 100%, 55%, 0.18),
-    inset 0 1px 0 hsla(255, 100%, 100%, 0.04),
-    inset 0 -1px 0 hsla(0, 0%, 0%, 0.3);
-  text-shadow: 0 0 10px hsla(45, 100%, 70%, 0.75);
+/* .badge-year retired — year is now .mc-year inside .meta-cluster card */
+
+/* ─── Platform pills ─────────────────────────────────────── */
+.platforms-row { display: none; } /* layout now handled by .meta-cluster / .plat-icons */
+
+.platform-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  border: 1px solid transparent;
+  font-size: 13px;
+  flex-shrink: 0;
   position: relative;
-  overflow: hidden;
+  cursor: default;
 }
 
-.badge-year::before{
-  content: '◈';
-  font-size: 7px;
-  color: hsl(45, 100%, 58%);
-  opacity: 0.85;
-  line-height: 1;
+/* Tooltip — slides down and fades in on hover */
+.platform-pill::before {
+  content: attr(data-label);
+  position: absolute;
+  top: calc(100% + 7px);
+  left: 50%;
+  transform: translateX(-50%) translateY(-4px);
+  background: hsl(240, 3%, 13%);
+  color: hsl(0, 0%, 86%);
+  font-size: 9px;
+  font-family: var(--ff-display);
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  padding: 4px 8px;
+  border-radius: 4px;
+  white-space: nowrap;
+  border: 1px solid hsla(0, 0%, 28%, 0.65);
+  box-shadow: 0 4px 14px hsla(0, 0%, 0%, 0.45);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.18s ease, transform 0.18s ease;
+  z-index: 20;
+}
+
+.platform-pill:hover::before {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+
+.platform-pill ion-icon {
+  display: block;
+  width: 13px;
+  height: 13px;
+  pointer-events: none;
+}
+
+/* Inline SVG icon (used for Meta/Quest goggles) */
+.pill-svg {
+  display: block;
+  width: 15px;
+  height: 10px;
+  pointer-events: none;
   flex-shrink: 0;
 }
 
-.badge-year::after{
-  content: '';
-  position: absolute;
-  inset: 0 0 50% 0;
-  background: linear-gradient(to bottom, hsla(255, 100%, 100%, 0.04), transparent);
-  pointer-events: none;
+/* VR / Quest — violet */
+.pill-vr {
+  background: hsla(265, 55%, 60%, 0.13);
+  color: hsl(265, 65%, 75%);
+  border-color: hsla(265, 55%, 60%, 0.38);
+}
+
+/* iOS — electric blue */
+.pill-ios {
+  background: hsla(211, 90%, 58%, 0.12);
+  color: hsl(211, 90%, 72%);
+  border-color: hsla(211, 90%, 58%, 0.38);
+}
+
+/* Android — mint green */
+.pill-android {
+  background: hsla(142, 45%, 50%, 0.12);
+  color: hsl(142, 52%, 66%);
+  border-color: hsla(142, 45%, 50%, 0.38);
+}
+
+/* PC / Desktop — neutral */
+.pill-pc {
+  background: hsla(0, 0%, 58%, 0.09);
+  color: hsl(0, 0%, 70%);
+  border-color: hsla(0, 0%, 58%, 0.32);
+}
+
+/* macOS — warm silver */
+.pill-mac {
+  background: hsla(220, 15%, 55%, 0.12);
+  color: hsl(220, 20%, 72%);
+  border-color: hsla(220, 15%, 55%, 0.36);
+}
+
+/* Console (Switch/PlayStation/Xbox) — warm amber */
+.pill-console {
+  background: hsla(30, 80%, 52%, 0.12);
+  color: hsl(30, 90%, 68%);
+  border-color: hsla(30, 80%, 52%, 0.36);
+}
+
+/* Fallback */
+.pill-other {
+  background: hsla(0, 0%, 58%, 0.09);
+  color: hsl(0, 0%, 70%);
+  border-color: hsla(0, 0%, 58%, 0.32);
 }
 
 .project-modal,
@@ -1185,6 +1364,22 @@ main {
   overflow-y:auto;              /* vertical scrollbar if needed     */
   padding-right:2rem;          /* keeps text off the scroll-bar    */
   overscroll-behavior:contain;  /* stops wheel-scroll from bubbling */
+  scrollbar-width: thin;
+  scrollbar-color: hsla(45, 100%, 72%, 0.25) transparent;
+}
+
+/* ── Modal content scrollbar ──────────────────────────────────────── */
+.proj-scroll::-webkit-scrollbar { width: 4px; }
+
+.proj-scroll::-webkit-scrollbar-track { background: transparent; }
+
+.proj-scroll::-webkit-scrollbar-thumb {
+  background: hsla(45, 100%, 72%, 0.25);
+  border-radius: 4px;
+}
+
+.proj-scroll::-webkit-scrollbar-thumb:hover {
+  background: hsla(45, 100%, 72%, 0.45);
 }
 
 
@@ -1222,66 +1417,74 @@ main {
 }
 .btn-primary:hover{ opacity:.8; }
 
-/* hero swiper inside the modal */
-#heroSwiper           { width: 100%; height: auto; margin-bottom: 1.25rem; }
-#heroSwiper .swiper-slide img { 
+/* ── Hero carousel wrap — arrows flank the swiper, never overlap content ── */
+.hero-carousel-wrap {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 0.65rem;
+}
+
+.hero-carousel-wrap #heroSwiper {
+  flex: 1;
+  min-width: 0;
+  margin-bottom: 0;
+}
+
+/* Pull arrows out of the flow-layout; Swiper's own absolute positioning is
+   overridden — here they're static flex children so they sit on the sides */
+#heroSwiper-prev,
+#heroSwiper-next {
+  position: static !important;
+  margin-top: 0 !important;
+  top: auto !important;
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--white-2);
+  opacity: 0.7;
+  transition: opacity 0.2s ease, color 0.2s ease;
+  cursor: pointer;
+  --swiper-navigation-size: 28px;
+}
+
+#heroSwiper-prev:hover,
+#heroSwiper-next:hover { opacity: 1; color: var(--orange-yellow-crayola); }
+
+/* hero swiper */
+#heroSwiper {
+  width: 100%;
+  height: auto;
+  --swiper-theme-color: var(--white-2);
+  --swiper-navigation-size: 28px;
+  padding-bottom: 22px !important; /* tight gap to pagination dots */
+}
+
+#heroSwiper .swiper-slide {
+  max-height: 58vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#heroSwiper .swiper-slide img {
   width: 100%; height: auto; border-radius: 12px; object-fit: contain;
 }
 
-#heroSwiper video{
-  max-width:100%;
-  max-height:60vh;              /* never spill out of the modal */
-  border-radius:12px;
+#heroSwiper video {
+  width: 100%;
+  max-height: 58vh;
+  border-radius: 12px;
 }
 
-#heroSwiper .swiper-slide{
-  max-height:60vh;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-}
+/* pagination bullets tight under slides */
+#heroSwiper .swiper-pagination { bottom: 4px; }
+#heroSwiper .swiper-pagination-bullet { background: var(--white-2); opacity: .35; }
+#heroSwiper .swiper-pagination-bullet-active { opacity: 1; }
 
-
-
-#heroSwiper{
-  /* one-stop variable that Swiper uses for arrows *and* bullets */
-  --swiper-theme-color: var(--white-2);   /* bright white */
-
-  /* optional: make the arrows chunkier */
-  --swiper-navigation-size: 34px;
-}
-
-/* give the arrows a subtle glow so they stand out on imagery */
-#heroSwiper .swiper-button-next,
-#heroSwiper .swiper-button-prev{
-  color: var(--white-2);                   /* fallback for older Swipers */
-  text-shadow: 0 0 8px rgba(0,0,0,.35);
-}
-
-/* pagination bullets */
-#heroSwiper .swiper-pagination-bullet{
-  background: var(--white-2);
-  opacity: .35;
-}
-#heroSwiper .swiper-pagination-bullet-active{
-  opacity: 1;
-}
-
-/* (nice-to-have) little accent when hovering on desktop */
-@media (hover:hover){
-  #heroSwiper .swiper-button-next:hover,
-  #heroSwiper .swiper-button-prev:hover{
-    color: var(--orange-yellow-crayola);
-  }
-}
-
-///* arrow & bullet colours */
-//.swiper-button-prev,
-//.swiper-button-next   { color: var(--white-2); }
-//.swiper-pagination-bullet-active {
-//  background: var(--orange-yellow-crayola);
-//}
-//
 /* gallery */
 .proj-gallery{
   margin-top:1.75rem;
@@ -1323,44 +1526,60 @@ main {
   animation: scaleUp 0.25s ease forwards;
 }
 
-.proj-link{
-  display:inline-flex;
-  align-items:center;
-  gap:.45rem;
-  
-  /* pill look */
-  padding:.5em 1.25em;
-  border:1px solid var(--orange-yellow-crayola);
-  border-radius:9999px;
+.proj-link {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
 
-  /* colours */
-  color:var(--orange-yellow-crayola);
-  background:transparent;
+  /* chip shape */
+  padding: .45em 1.1em .45em .95em;
+  border-radius: 8px;
+  border: 1px solid hsla(45, 85%, 45%, 0.6);
 
-  /* text */
-  font-size:var(--fs-7);
-  font-weight:600;
+  /* dark chip fill */
+  background: hsl(235, 18%, 9%);
+  color: hsl(45, 100%, 68%);
+
+  /* type */
+  font-family: var(--ff-display);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.8px;
+  text-transform: uppercase;
+
+  /* glow */
+  box-shadow: 0 0 14px hsla(45, 100%, 55%, 0.14),
+              inset 0 1px 0 hsla(255, 100%, 100%, 0.04);
+  text-shadow: 0 0 10px hsla(45, 100%, 70%, 0.6);
 
   /* motion */
-  transition:background .3s ease, color .3s ease, transform .25s ease;
+  transition: background .25s ease, color .2s ease,
+              box-shadow .25s ease, transform .22s cubic-bezier(0.33,1,0.68,1);
 }
 
-.proj-link .arrow{
-  transform:translate(0,0);          /* starting point  */
-  transition:transform .25s ease;    /* glides on hover */
+.proj-link .arrow {
+  font-style: normal;
+  display: inline-block;
+  transform: translate(0, 0);
+  transition: transform .22s cubic-bezier(0.33,1,0.68,1);
+  font-size: 13px;
+  line-height: 1;
 }
 
 /* hover / focus feedback */
 .proj-link:hover,
-.proj-link:focus{
-  background:var(--orange-yellow-crayola);
-  color:var(--smoky-black);
-  transform:translateY(-2px);        /* subtle pop-up   */
+.proj-link:focus {
+  background: hsl(45, 100%, 64%);
+  color: hsl(235, 18%, 9%);
+  text-shadow: none;
+  box-shadow: 0 0 22px hsla(45, 100%, 60%, 0.35),
+              0 4px 12px hsla(45, 100%, 40%, 0.25);
+  transform: translateY(-2px);
 }
 
 .proj-link:hover .arrow,
-.proj-link:focus .arrow{
-  transform:translate(3px,-3px);     /* arrow lifts off */
+.proj-link:focus .arrow {
+  transform: translate(3px, -3px);
 }
 
 .proj-bullets{
@@ -1400,21 +1619,78 @@ main {
   border-radius: 16px;
   overflow: hidden;
   margin-bottom: 15px;
+  background: var(--eerie-black-1);
 }
 
+/* Blurred backdrop — same image, blurred+darkened, fills the frame.
+   Transitions slower than the image → parallax depth separation. */
 .project-img::before {
   content: "";
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: transparent;
-  z-index: 1;
-  transition: var(--transition-1);
+  inset: -8px; /* overshoot edges to hide blur fringing */
+  background: var(--thumb, transparent) center / cover no-repeat;
+  filter: blur(14px) brightness(0.28) saturate(1.3);
+  z-index: 0;
+  transition: transform 0.65s cubic-bezier(0.33, 1, 0.68, 1),
+              filter   0.65s cubic-bezier(0.33, 1, 0.68, 1);
 }
 
-.project-item > a:hover .project-img::before { background: hsla(0, 0%, 0%, 0.5); }
+/* Holographic foil overlay — driven by JS --mx/--my/--ha/--cm/--c1 vars */
+.project-img::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 2;
+  transition: opacity 0.3s ease;
+  background:
+    radial-gradient(
+      ellipse at calc(var(--mx, 0.5) * 100%) calc(var(--my, 0.5) * 100%),
+      rgba(var(--cm, 200,200,200), 0.6)  0%,
+      rgba(var(--c1, 180,180,220), 0.28) 40%,
+      transparent 70%
+    ),
+    linear-gradient(
+      calc(var(--ha, 0) * 1deg),
+      rgba(255,  0,128, 0.28),
+      rgba(255,200,  0, 0.28),
+      rgba(  0,255,128, 0.28),
+      rgba(  0,128,255, 0.28),
+      rgba(200,  0,255, 0.28)
+    );
+  mix-blend-mode: overlay;
+}
+
+.project-img.is-hovered::after {
+  opacity: 1;
+}
+
+.project-item > a:hover .project-img::before {
+  transform: scale(1.12);
+  filter: blur(14px) brightness(0.42) saturate(1.5); /* warms up on hover */
+}
+
+/* Smooth 3-D tilt snap-back */
+.project-item > a {
+  display: block;
+  transition: transform 0.25s ease;
+}
+
+/* Gold glitter / dust particles spawned by initCardShine() */
+.card-sparkle {
+  position: fixed;
+  pointer-events: none;
+  z-index: 9999;
+  animation: sparkle-out var(--sd, 0.8s) ease-out forwards;
+}
+
+@keyframes sparkle-out {
+  0%   { transform: translate(0, 0)                                            scale(0)   rotate(0deg);                    opacity: 0; }
+  20%  { transform: translate(calc(var(--dx) * 0.2), calc(var(--dy) * 0.2))   scale(1)   rotate(calc(var(--dr) * 0.2));   opacity: 0.7; }
+  100% { transform: translate(var(--dx), var(--dy))                            scale(0)   rotate(var(--dr));               opacity: 0; }
+}
 
 .project-item-icon-box {
   --scale: 0.8;
@@ -1429,8 +1705,10 @@ main {
   padding: 18px;
   border-radius: 12px;
   opacity: 0;
-  z-index: 1;
-  transition: var(--transition-1);
+  z-index: 3;
+  /* spring easing on scale so the icon pops in with life */
+  transition: opacity 0.28s cubic-bezier(0.33, 1, 0.68, 1),
+              transform 0.38s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .project-item > a:hover .project-item-icon-box {
@@ -1440,14 +1718,22 @@ main {
 
 .project-item-icon-box ion-icon { --ionicon-stroke-width: 50px; }
 
+/* Image: contained so no cropping, sits above backdrop.
+   Slightly shorter than backdrop → image leads, backdrop follows = depth. */
 .project-img img {
+  position: relative;
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  transition: var(--transition-1);
+  object-fit: contain;
+  z-index: 1;
+  transition: transform 0.5s cubic-bezier(0.33, 1, 0.68, 1),
+              filter   0.5s cubic-bezier(0.33, 1, 0.68, 1);
 }
 
-.project-item > a:hover img { transform: scale(1.1); }
+.project-item > a:hover img {
+  transform: scale(1.07);
+  filter: brightness(1.06); /* subtle lighting-up */
+}
 
 .project-title,
 .project-category { margin-left: 10px; }
@@ -1455,7 +1741,9 @@ main {
 .project-title {
   color: var(--white-2);
   font-size: var(--fs-5);
-  font-weight: var(--fw-400);
+  font-family: var(--ff-display);
+  font-weight: 600;
+  letter-spacing: -0.02em;
   text-transform: capitalize;
   line-height: 1.3;
 }
