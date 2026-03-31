@@ -40,9 +40,16 @@ function buildHeroSwiper(slideSrcArray){
   const wrapper = document.querySelector('#heroSwiper .swiper-wrapper');
   wrapper.innerHTML = '';                // clear previous slides
 
-  slideSrcArray.forEach(src => {
+  slideSrcArray.forEach(entry => {
+    // Entry can be a plain string or { src, fit }
+    // fit: "full"  → constrain to container in both axes (no cropping)
+    // fit: "cover" → (default) fill width, height auto
+    const src = typeof entry === 'string' ? entry : entry.src;
+    const fit = typeof entry === 'object' && entry.fit ? entry.fit : 'cover';
+
     const slide  = document.createElement('div');
     slide.className = 'swiper-slide';
+    if (fit === 'full') slide.classList.add('slide-fit-full');
 
     const isVideo = /\.(mp4|webm|ogg)$/i.test(src);
     const media   = isVideo
@@ -157,6 +164,8 @@ const formInputs = document.querySelectorAll("[data-form-input]");
 const formBtn = document.querySelector("[data-form-btn]");
 
 // add event to all form input field
+let messagesSent = 0;
+
 for (let i = 0; i < formInputs.length; i++) {
   formInputs[i].addEventListener("input", function () {
 
@@ -167,9 +176,270 @@ for (let i = 0; i < formInputs.length; i++) {
       formBtn.setAttribute("disabled", "");
     }
 
+    // joke label kicks in as soon as they start a second message
+    formBtn.querySelector("span").textContent = messagesSent > 0
+      ? "Two messages? I'm flattered."
+      : "Send Message";
+
   });
 }
 
+form.addEventListener("submit", async function (e) {
+  e.preventDefault();
+  formBtn.setAttribute("disabled", "");
+  formBtn.querySelector("span").textContent = "Sending…";
+
+  try {
+    const res = await fetch(form.action, {
+      method: "POST",
+      body: new FormData(form),
+      headers: { Accept: "application/json" }
+    });
+
+    if (res.ok) {
+      messagesSent++;
+      formBtn.querySelector("span").textContent = "Sent!";
+      form.reset();
+    } else {
+      formBtn.querySelector("span").textContent = "Error — try again";
+      formBtn.removeAttribute("disabled");
+    }
+  } catch {
+    formBtn.querySelector("span").textContent = "Error — try again";
+    formBtn.removeAttribute("disabled");
+  }
+});
+
+
+// ── Social link "shot" easter egg ────────────────────────────────────────────
+// Four distinct bullet hole designs — tight dark circles, asymmetric cracks
+const _holeVariants = [
+  // 1 — clean punch-through: small circle, 4 tight cracks
+  `<circle cx="12" cy="12" r="2" fill="#050302"/>
+   <circle cx="12" cy="12" r="2.7" fill="none" stroke="rgba(255,200,120,0.18)" stroke-width="1.1"/>
+   <line x1="13.8" y1="10.2" x2="21"  y2="3"   stroke="rgba(255,255,255,0.68)" stroke-width="1.4" stroke-linecap="round"/>
+   <line x1="10.2" y1="10.2" x2="3.5" y2="4"   stroke="rgba(255,255,255,0.6)"  stroke-width="1.3" stroke-linecap="round"/>
+   <line x1="11.5" y1="14"   x2="10"  y2="22.5" stroke="rgba(255,255,255,0.55)" stroke-width="1.2" stroke-linecap="round"/>
+   <line x1="14.2" y1="12.8" x2="22.5" y2="14.5" stroke="rgba(255,255,255,0.42)" stroke-width="1"  stroke-linecap="round"/>`,
+
+  // 2 — ricochet: tiny circle, 3 long wild cracks
+  `<circle cx="11.5" cy="12.5" r="1.6" fill="#040301"/>
+   <circle cx="11.5" cy="12.5" r="2.2" fill="none" stroke="rgba(255,180,80,0.15)" stroke-width="1"/>
+   <line x1="13.2" y1="11"   x2="23"  y2="1.5" stroke="rgba(255,255,255,0.72)" stroke-width="1.5" stroke-linecap="round"/>
+   <line x1="17.5" y1="5.5"  x2="23"  y2="9"   stroke="rgba(255,255,255,0.35)" stroke-width="0.8" stroke-linecap="round"/>
+   <line x1="10.5" y1="14.2" x2="6"   y2="23"  stroke="rgba(255,255,255,0.6)"  stroke-width="1.3" stroke-linecap="round"/>
+   <line x1="10"   y1="11"   x2="2"   y2="6"   stroke="rgba(255,255,255,0.5)"  stroke-width="1.1" stroke-linecap="round"/>`,
+
+  // 3 — heavy round: larger hole, spiderweb of shorter cracks
+  `<circle cx="12" cy="12" r="2.6" fill="#060403"/>
+   <circle cx="12" cy="12" r="3.3" fill="none" stroke="rgba(255,210,140,0.2)" stroke-width="1.4"/>
+   <line x1="14"   y1="9.5"  x2="19.5" y2="4.5" stroke="rgba(255,255,255,0.65)" stroke-width="1.3" stroke-linecap="round"/>
+   <line x1="10"   y1="9.5"  x2="5"    y2="5"   stroke="rgba(255,255,255,0.6)"  stroke-width="1.2" stroke-linecap="round"/>
+   <line x1="14.5" y1="13"   x2="21"   y2="15"  stroke="rgba(255,255,255,0.5)"  stroke-width="1.1" stroke-linecap="round"/>
+   <line x1="11"   y1="14.5" x2="9"    y2="21"  stroke="rgba(255,255,255,0.55)" stroke-width="1.2" stroke-linecap="round"/>
+   <line x1="9.5"  y1="13"   x2="3"    y2="18"  stroke="rgba(255,255,255,0.45)" stroke-width="1"  stroke-linecap="round"/>`,
+
+  // 4 — graze: off-centre tiny hole, two long parallel cracks
+  `<circle cx="13" cy="11.5" r="1.7" fill="#050302"/>
+   <circle cx="13" cy="11.5" r="2.3" fill="none" stroke="rgba(255,190,100,0.16)" stroke-width="1"/>
+   <line x1="14.5" y1="9.8"  x2="23"  y2="2"   stroke="rgba(255,255,255,0.7)"  stroke-width="1.5" stroke-linecap="round"/>
+   <line x1="19"   y1="5.5"  x2="23"  y2="10"  stroke="rgba(255,255,255,0.38)" stroke-width="0.9" stroke-linecap="round"/>
+   <line x1="11"   y1="9.5"  x2="3"   y2="3.5" stroke="rgba(255,255,255,0.62)" stroke-width="1.3" stroke-linecap="round"/>
+   <line x1="12"   y1="13.5" x2="8.5" y2="22"  stroke="rgba(255,255,255,0.52)" stroke-width="1.1" stroke-linecap="round"/>
+   <line x1="14.5" y1="13.5" x2="21"  y2="19"  stroke="rgba(255,255,255,0.4)"  stroke-width="0.9" stroke-linecap="round"/>`,
+];
+
+// Track holes so we can reposition them on resize
+const _shotHoles = [];
+let _shotCount = 0;
+window.addEventListener('resize', () => {
+  const sr = document.querySelector('[data-sidebar]').getBoundingClientRect();
+  _shotHoles.forEach(h => {
+    h.el.style.left = (sr.left + h.ox) + 'px';
+    h.el.style.top  = (sr.top  + h.oy) + 'px';
+  });
+});
+
+document.querySelectorAll('.social-link').forEach(link => {
+  link.addEventListener('click', function (e) {
+    e.preventDefault();
+    if (this.classList.contains('is-shot')) return;
+    this.classList.add('is-shot');
+
+    const ns  = 'http://www.w3.org/2000/svg';
+    const cx  = e.clientX;
+    const cy  = e.clientY;
+
+    // Icon centre in viewport space
+    const iconR = this.getBoundingClientRect();
+    const icX   = iconR.left + iconR.width  / 2;
+    const icY   = iconR.top  + iconR.height / 2;
+
+    // Fly vector: click → icon centre, horizontal distance carries the impact direction
+    // gravity handles the rest of the Y travel so we keep dy moderate
+    let dx = icX - cx, dy = icY - cy;
+    const mag = Math.sqrt(dx*dx + dy*dy) || 1;
+    dx = (dx / mag) * 300;
+    dy = (dy / mag) * 180; // gravity will dominate vertical
+
+    const angD = Math.atan2(dy, dx) * 180 / Math.PI;
+    const spin = dx >= 0 ? 720 : -720; // two full tumbles — feels heavy
+    const G    = 210; // px of downward pull over the full animation
+
+    // Gravity curve: position at time t
+    const gx = t => dx * t;
+    const gy = t => dy * t + G * t * t;
+
+    // ① Impact burst — speed lines at exact cursor
+    const burst = document.createElementNS(ns, 'svg');
+    burst.style.cssText = `position:fixed;left:${cx}px;top:${cy}px;width:80px;height:80px;`
+                        + `transform:translate(-50%,-50%);pointer-events:none;z-index:9999;overflow:visible;`;
+    for (let a = 0; a < 8; a++) {
+      const rad = (a / 8) * Math.PI * 2;
+      const r1  = 7  + (a % 2) * 4;
+      const r2  = 25 + (a % 3) * 10;
+      const ln  = document.createElementNS(ns, 'line');
+      ln.setAttribute('x1', String(40 + Math.cos(rad) * r1));
+      ln.setAttribute('y1', String(40 + Math.sin(rad) * r1));
+      ln.setAttribute('x2', String(40 + Math.cos(rad) * r2));
+      ln.setAttribute('y2', String(40 + Math.sin(rad) * r2));
+      ln.setAttribute('stroke',       a % 2 === 0 ? 'rgba(255,210,30,0.95)' : 'rgba(255,255,255,0.65)');
+      ln.setAttribute('stroke-width', a % 2 === 0 ? '2.5' : '1.5');
+      ln.setAttribute('stroke-linecap', 'round');
+      burst.appendChild(ln);
+    }
+    document.body.appendChild(burst);
+    burst.animate(
+      [{ opacity:1, transform:'translate(-50%,-50%) scale(0.1)' },
+       { opacity:0, transform:'translate(-50%,-50%) scale(1.6)' }],
+      { duration:250, easing:'ease-out', fill:'forwards' }
+    ).onfinish = () => burst.remove();
+
+    // ② Icon — steel duck physics
+    //    Impact squash (compressed in fly direction) → stretch (anticipation) →
+    //    weighted parabolic fall with heavy tumble spin
+    //
+    //    Squash/stretch are direction-aligned:
+    //      rotate(angD) puts X along fly direction
+    //      scale(sx,sy) then operates in that frame
+    //      rotate(-angD) rotates back
+    //    SQUASH: thin along fly (sx=0.3), wide perpendicular (sy=1.7)
+    //    STRETCH: long along fly (sx=1.7), thin perpendicular (sy=0.3)
+    this.animate([
+      { offset: 0,    opacity: 1,
+        transform: `translate(0px,0px) rotate(0deg) scale(1,1)` },
+
+      // brief recoil — push back from impact
+      { offset: 0.05, opacity: 1,
+        transform: `translate(${-dx*0.04}px,${-dy*0.04}px) rotate(0deg) scale(1.08,0.94)` },
+
+      // squash: impact compression, aligned to fly direction
+      { offset: 0.12, opacity: 1,
+        transform: `translate(${dx*0.02}px,${dy*0.02}px)`
+                 + ` rotate(${angD}deg) scale(0.3,1.7) rotate(${-angD}deg)` },
+
+      // stretch: launch elongation along fly direction
+      { offset: 0.22, opacity: 1,
+        transform: `translate(${dx*0.01}px,${dy*0.01}px)`
+                 + ` rotate(${angD}deg) scale(1.7,0.3) rotate(${-angD}deg)` },
+
+      // in flight — gravity now owns the Y axis, tumbling with weight
+      { offset: 0.36, opacity: 1,
+        transform: `translate(${gx(0.36)}px,${gy(0.36)}px) rotate(${spin*0.36}deg) scale(1,1)` },
+
+      { offset: 0.54, opacity: 0.95,
+        transform: `translate(${gx(0.54)}px,${gy(0.54)}px) rotate(${spin*0.54}deg) scale(0.88,0.88)` },
+
+      { offset: 0.70, opacity: 0.75,
+        transform: `translate(${gx(0.70)}px,${gy(0.70)}px) rotate(${spin*0.70}deg) scale(0.62,0.62)` },
+
+      { offset: 0.85, opacity: 0.35,
+        transform: `translate(${gx(0.85)}px,${gy(0.85)}px) rotate(${spin*0.85}deg) scale(0.32,0.32)` },
+
+      { offset: 1,    opacity: 0,
+        transform: `translate(${gx(1)}px,${gy(1)}px) rotate(${spin}deg) scale(0,0)` },
+    ], { duration: 850, easing: 'linear', fill: 'forwards' });
+
+    // ③ Bullet hole — random variant, tight circle, fades after a beat
+    const sidebar = document.querySelector('[data-sidebar]');
+    const sr      = sidebar.getBoundingClientRect();
+    const ox      = cx - sr.left;
+    const oy      = cy - sr.top;
+
+    const hole = document.createElementNS(ns, 'svg');
+    hole.setAttribute('viewBox', '0 0 24 24');
+    hole.style.cssText = `position:fixed;left:${cx}px;top:${cy}px;width:18px;height:18px;`
+                       + `transform:translate(-50%,-50%) scale(0);pointer-events:none;z-index:9998;`;
+    hole.innerHTML = _holeVariants[Math.floor(Math.random() * _holeVariants.length)];
+    document.body.appendChild(hole);
+    const holeRef = { el: hole, ox, oy };
+    _shotHoles.push(holeRef);
+
+    // Punch in with overshoot, then fade out after 2.5 s
+    hole.animate(
+      [{ transform:'translate(-50%,-50%) scale(0)' },
+       { transform:'translate(-50%,-50%) scale(1.5)', offset:0.55 },
+       { transform:'translate(-50%,-50%) scale(1)' }],
+      { duration:210, delay:110, easing:'ease-out', fill:'forwards' }
+    );
+    setTimeout(() => {
+      hole.animate(
+        [{ opacity:1 }, { opacity:0 }],
+        { duration:600, easing:'ease-in', fill:'forwards' }
+      ).onfinish = () => {
+        hole.remove();
+        const i = _shotHoles.indexOf(holeRef);
+        if (i !== -1) _shotHoles.splice(i, 1);
+      };
+    }, 2500);
+
+    // All three shot — swap the avatar
+    _shotCount++;
+    if (_shotCount >= 3) {
+      const avatarImg = document.querySelector('.avatar-box img');
+      if (avatarImg && !avatarImg.dataset.shot) {
+        avatarImg.dataset.shot = '1';
+        setTimeout(() => {
+          // Shake the avatar box
+          const box = avatarImg.closest('.avatar-box');
+          box.animate([
+            { transform: 'translate(0,0) rotate(0deg)' },
+            { transform: 'translate(-4px,-2px) rotate(-3deg)' },
+            { transform: 'translate(4px, 2px) rotate( 3deg)' },
+            { transform: 'translate(-3px, 3px) rotate(-2deg)' },
+            { transform: 'translate(3px,-3px) rotate( 2deg)' },
+            { transform: 'translate(-2px, 1px) rotate(-1deg)' },
+            { transform: 'translate(0,0) rotate(0deg)' },
+          ], { duration: 380, easing: 'ease-out' });
+
+          // Flash white then reveal the new face
+          setTimeout(() => {
+            avatarImg.animate(
+              [{ filter:'brightness(1)' }, { filter:'brightness(8)' }, { filter:'brightness(1)' }],
+              { duration: 200, easing: 'ease-out', fill: 'forwards' }
+            ).onfinish = () => {
+              avatarImg.src = './assets/images/avatar_ben_shot.png';
+              avatarImg.style.filter = '';
+            };
+          }, 300);
+        }, 600); // slight delay after last shot lands
+      }
+    }
+
+    // ④ Smoke from cursor, self-cleaning
+    [-11, 6, 1, 12, -4].forEach((driftX, i) => {
+      const puff = document.createElement('div');
+      puff.classList.add('smoke-puff');
+      puff.style.cssText = `position:fixed;`
+                         + `left:${cx + (Math.random()-0.5)*8}px;`
+                         + `top:${cy  + (Math.random()-0.5)*8}px;`;
+      puff.style.setProperty('--dx', driftX + 'px');
+      puff.style.animationDelay = (i * 0.065) + 's';
+      document.body.appendChild(puff);
+      setTimeout(() => puff.remove(), 1500);
+    });
+  });
+});
 
 
 // page navigation variables
@@ -218,9 +488,58 @@ document.querySelectorAll('.clients-item a').forEach(link => {
 
 
 
-const projModal   = document.getElementById('projectModal');
-const projOverlay = document.getElementById('projectOverlay');
-const projClose   = document.getElementById('projClose');
+const projModal    = document.getElementById('projectModal');
+const projOverlay  = document.getElementById('projectOverlay');
+const projClose    = document.getElementById('projClose');
+const projModalBox = projModal.querySelector('.project-modal');
+
+let lastOpenedItem = null;
+
+/* ── FLIP container morph: card thumbnail → modal ────────────────────
+   The modal starts at the card's exact screen rect and expands to its
+   natural centred position. Card thumbnail hides so there's no duplicate. */
+function morphOpenModal(item) {
+  const thumb     = item.querySelector('.project-img img');
+  const thumbRect = (thumb || item.querySelector('.project-img')).getBoundingClientRect();
+  lastOpenedItem  = item;
+
+  // Hide original thumbnail — it visually "becomes" the modal
+  if (thumb) thumb.style.opacity = '0';
+
+  // Make container visible but modal box invisible first
+  projModalBox.style.transition = 'none';
+  projModalBox.style.opacity    = '0';
+  projModal.classList.add('active');
+  projOverlay.classList.add('active');
+  projModal.setAttribute('aria-hidden', 'false');
+
+  // Measure modal at its natural centred position
+  const mr = projModalBox.getBoundingClientRect();
+  const dx = (thumbRect.left + thumbRect.width  / 2) - (mr.left + mr.width  / 2);
+  const dy = (thumbRect.top  + thumbRect.height / 2) - (mr.top  + mr.height / 2);
+  const sx = thumbRect.width  / mr.width;
+  const sy = thumbRect.height / mr.height;
+
+  // Set starting state: modal visually sits on top of the card thumbnail
+  projModalBox.style.transform    = `translate(${dx}px,${dy}px) scale(${sx},${sy})`;
+  projModalBox.style.borderRadius = '16px';
+
+  // Force reflow — locks in the above before we start the transition
+  void projModalBox.getBoundingClientRect();
+
+  // Spring ease: fast expansion, gentle settle at the end
+  projModalBox.style.transition   = 'transform 260ms cubic-bezier(0.2,0,0,1), opacity 180ms ease, border-radius 260ms ease';
+  projModalBox.style.transform    = '';
+  projModalBox.style.opacity      = '';
+  projModalBox.style.borderRadius = '';
+
+  const onOpenEnd = e => {
+    if (e.propertyName !== 'transform') return;
+    projModalBox.removeEventListener('transitionend', onOpenEnd);
+    projModalBox.style.transition = '';
+  };
+  projModalBox.addEventListener('transitionend', onOpenEnd);
+}
 
 // cache modal fields
 const mHero      = document.getElementById('projHero');
@@ -247,6 +566,7 @@ const PLATFORM_META = {
   desktop: { html: `<ion-icon name="desktop-outline"></ion-icon>`,         cls: 'pill-pc',      label: 'Desktop'    },
   mac:     { html: `<ion-icon name="laptop-outline"></ion-icon>`,          cls: 'pill-mac',     label: 'macOS'      },
   console: { html: `<ion-icon name="game-controller-outline"></ion-icon>`, cls: 'pill-console', label: 'Console'    },
+  pico:    { html: `<ion-icon name="glasses-outline"></ion-icon>`,          cls: 'pill-vr',      label: 'Pico'       },
 };
 
 let scrollY = 0;
@@ -307,29 +627,86 @@ document.body.style.overflowY = 'scroll';
   mLink.style.display = 'none';
 }
 
-    // 3. Show modal
-    projModal.classList.add('active');3
-    projOverlay.classList.add('active');
-    projModal.setAttribute('aria-hidden','false');
+    // 3. FLIP morph: card → modal
+    morphOpenModal(item);
   });
 });
 
-// universal close handler
-function closeProjModal(){
+// universal close handler — reverse FLIP morph back to card
+let _isClosing = false;
+function closeProjModal() {
+  if (_isClosing) return;   // already mid-close, ignore repeat triggers
+  _isClosing = true;
 
+  if (!lastOpenedItem) { _doClose(); return; }
+
+  const thumb     = lastOpenedItem.querySelector('.project-img img');
+  const thumbRect = thumb ? thumb.getBoundingClientRect() : null;
+
+  // If card scrolled off-screen, fade-shrink out
+  const inView = thumbRect
+    && thumbRect.bottom > 0 && thumbRect.top  < window.innerHeight
+    && thumbRect.right  > 0 && thumbRect.left < window.innerWidth;
+
+  if (!inView) {
+    projModalBox.style.transition = 'transform 180ms cubic-bezier(0.4,0,1,1), opacity 160ms ease';
+    projModalBox.style.transform  = 'scale(0.94)';
+    projModalBox.style.opacity    = '0';
+    const onFadeEnd = e => {
+      if (e.propertyName !== 'opacity') return;
+      projModalBox.removeEventListener('transitionend', onFadeEnd);
+      projModalBox.style.transition = '';
+      projModalBox.style.transform  = '';
+      projModalBox.style.opacity    = '';
+      _doClose();
+    };
+    projModalBox.addEventListener('transitionend', onFadeEnd);
+    return;
+  }
+
+  // Reverse FLIP: shrink modal back to the card's screen position
+  const mr = projModalBox.getBoundingClientRect();
+  const dx = (thumbRect.left + thumbRect.width  / 2) - (mr.left + mr.width  / 2);
+  const dy = (thumbRect.top  + thumbRect.height / 2) - (mr.top  + mr.height / 2);
+  const sx = thumbRect.width  / mr.width;
+  const sy = thumbRect.height / mr.height;
+
+  projModalBox.style.transition   = 'transform 200ms cubic-bezier(0.4,0,1,1), opacity 160ms ease, border-radius 200ms ease';
+  projModalBox.style.transform    = `translate(${dx}px,${dy}px) scale(${sx},${sy})`;
+  projModalBox.style.opacity      = '0';
+  projModalBox.style.borderRadius = '16px';
+
+  const onFlipEnd = e => {
+    if (e.propertyName !== 'transform') return;
+    projModalBox.removeEventListener('transitionend', onFlipEnd);
+    projModalBox.style.transition   = '';
+    projModalBox.style.transform    = '';
+    projModalBox.style.opacity      = '';
+    projModalBox.style.borderRadius = '';
+    _doClose();
+  };
+  projModalBox.addEventListener('transitionend', onFlipEnd);
+}
+
+function _doClose() {
+  _isClosing = false;
+  // Always restore thumbnail visibility (safety net)
+  if (lastOpenedItem) {
+    const t = lastOpenedItem.querySelector('.project-img img');
+    if (t) t.style.opacity = '';
+    lastOpenedItem = null;
+  }
   document.querySelectorAll('#heroSwiper video').forEach(v => {
     v.pause();
     v.currentTime = 0;
-    v.removeAttribute('src');   // releases memory
+    v.removeAttribute('src');
     v.load();
   });
-  
   projModal.classList.remove('active');
   projOverlay.classList.remove('active');
-  projModal.setAttribute('aria-hidden','true');
-
-document.documentElement.style.overflow = '';
-document.body.style.overflowY = '';
+  projModal.setAttribute('aria-hidden', 'true');
+  document.documentElement.style.overflow = '';
+  document.body.style.overflowY = '';
 }
 
 projClose.addEventListener('click', closeProjModal);
