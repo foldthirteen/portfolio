@@ -468,22 +468,38 @@ for (let i = 0; i < navigationLinks.length; i++) {
 const portfolioBtn = [...document.querySelectorAll('[data-nav-link]')]
                      .find(b => b.textContent.trim().toLowerCase() === 'portfolio');
 
-document.querySelectorAll('.clients-item a').forEach(link => {
-  link.addEventListener('click', e => {
-    e.preventDefault();
+// Event delegation covers both original and cloned project items
+document.addEventListener('click', e => {
+  const link = e.target.closest('.clients-item a[data-scroll]');
+  if (!link) return;
+  e.preventDefault();
 
-    const targetId = link.dataset.scroll;      // e.g. "dungems"
-    if (!targetId) return;
+  const targetId = link.dataset.scroll;
+  if (!targetId) return;
 
-    portfolioBtn?.click();                     // trigger your existing nav logic
+  portfolioBtn?.click();
 
-    /* Wait one frame so the .portfolio page is visible,
-       then scroll the chosen card into view                      */
-    requestAnimationFrame(() => {
-      document.getElementById(targetId)
-              ?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    });
+  requestAnimationFrame(() => {
+    document.getElementById(targetId)
+            ?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   });
+});
+
+// ── Infinite ticker ───────────────────────────────────────────────────────
+document.querySelectorAll('.ticker-track').forEach(track => {
+  // Duplicate all items for seamless loop (-50% animation works on 2× content)
+  Array.from(track.children).forEach(item => {
+    track.appendChild(item.cloneNode(true));
+  });
+
+  // Touch: pause while finger is down, resume on lift
+  const wrap = track.closest('.ticker-wrap');
+  wrap.addEventListener('touchstart', () => {
+    track.style.animationPlayState = 'paused';
+  }, { passive: true });
+  wrap.addEventListener('touchend', () => {
+    track.style.animationPlayState = '';
+  }, { passive: true });
 });
 
 

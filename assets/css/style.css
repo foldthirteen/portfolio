@@ -495,7 +495,18 @@ main {
 .social-item .social-link {
   color: var(--light-gray-70);
   font-size: 18px;
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  overflow: visible;
+}
+
+.social-item .social-link ion-icon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
 }
 
 .social-item .social-link:hover { color: var(--light-gray); }
@@ -505,6 +516,8 @@ main {
   pointer-events: none;
   position: relative;
   z-index: 9999;
+  width: 20px;
+  height: 20px;
 }
 
 .smoke-puff {
@@ -908,7 +921,7 @@ main {
 
 
 /**
- * #clients 
+ * #clients
  */
 
 .clients { margin-bottom: 15px; }
@@ -931,8 +944,8 @@ main {
 .clients-item {
   min-width: 50%;
   scroll-snap-align: start;
-  justify-content: center;       /* horizontal centring */
-  align-items: center;           /* vertical centring   */
+  justify-content: center;
+  align-items: center;
 }
 
 .clients-item img {
@@ -942,6 +955,78 @@ main {
 }
 
 .clients-item img:hover { filter: grayscale(0); }
+
+/* ── Infinite ticker ── */
+.ticker-wrap {
+  overflow: hidden;
+}
+
+.ticker-track {
+  display: flex;
+  width: max-content;
+  align-items: center;
+  gap: 30px;
+  padding: 20px 0;
+  margin: 0;
+  /* override clients-list scroll behaviour */
+  overflow: visible;
+  scroll-snap-type: none;
+  animation: ticker-fwd 32s linear infinite;
+}
+
+.ticker-track.ticker-reverse {
+  animation: ticker-rev 55s linear infinite;
+}
+
+.ticker-wrap:hover .ticker-track,
+.ticker-wrap:focus-within .ticker-track { animation-play-state: paused; }
+
+@keyframes ticker-fwd {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+@keyframes ticker-rev {
+  from { transform: translateX(-50%); }
+  to   { transform: translateX(0); }
+}
+
+/* Natural-width items inside ticker — override all responsive min-width rules */
+.ticker-track .clients-item,
+.ticker-track li { min-width: auto; flex-shrink: 0; scroll-snap-align: none; }
+
+/* Keep project logo images at a consistent small height in the ticker */
+.ticker-track .clients-item img {
+  height: 160px;
+  width: auto;
+  filter: grayscale(1);
+  transition: filter var(--transition-1);
+}
+
+.ticker-track .clients-item img:hover {
+  filter: sepia(1) saturate(2.4) hue-rotate(5deg) brightness(1.1);
+}
+
+/* Org name pill */
+.org-pill { list-style: none; }
+
+.org-pill span {
+  display: block;
+  padding: 7px 18px;
+  border: 1px solid var(--jet);
+  border-radius: 6px;
+  font-size: var(--fs-7);
+  font-weight: var(--fw-500);
+  color: var(--light-gray);
+  white-space: nowrap;
+  letter-spacing: 0.04em;
+  transition: border-color var(--transition-1), color var(--transition-1);
+}
+
+.org-pill:hover span {
+  border-color: var(--orange-yellow-crayola);
+  color: var(--orange-yellow-crayola);
+}
 
 
 
@@ -1742,31 +1827,7 @@ main {
   100% { transform: translate(var(--dx), var(--dy))                            scale(0)   rotate(var(--dr));               opacity: 0; }
 }
 
-.project-item-icon-box {
-  --scale: 0.8;
 
-  background: var(--jet);
-  color: var(--orange-yellow-crayola);
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%) scale(var(--scale));
-  font-size: 20px;
-  padding: 18px;
-  border-radius: 12px;
-  opacity: 0;
-  z-index: 3;
-  /* spring easing on scale so the icon pops in with life */
-  transition: opacity 0.28s cubic-bezier(0.33, 1, 0.68, 1),
-              transform 0.38s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
-.project-item > a:hover .project-item-icon-box {
-  --scale: 1;
-  opacity: 1;
-}
-
-.project-item-icon-box ion-icon { --ionicon-stroke-width: 50px; }
 
 /* Image: contained so no cropping, sits above backdrop.
    Slightly shorter than backdrop → image leads, backdrop follows = depth. */
@@ -2018,6 +2079,7 @@ textarea.form-input::-webkit-resizer { display: none; }
    */
 
   .clients-item { min-width: calc(33.33% - 10px); }
+  .ticker-track .clients-item { min-width: auto; }
 
 
 
@@ -2027,6 +2089,9 @@ textarea.form-input::-webkit-resizer { display: none; }
 
   .project-img,
   .blog-banner-box { height: auto; }
+
+  /* icon-box follows figure natural height */
+  .project-item-icon-box { height: auto; bottom: 0; }
 
 }
 
@@ -2265,6 +2330,7 @@ strong {
   }
 
   .clients-item { min-width: calc(33.33% - 35px); }
+  .ticker-track .clients-item { min-width: auto; }
 
 
 
@@ -2522,6 +2588,7 @@ strong {
   /* clients */
 
   .clients-item { min-width: calc(25% - 38px); }
+  .ticker-track .clients-item { min-width: auto; }
 
 
 

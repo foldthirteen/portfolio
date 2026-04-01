@@ -448,48 +448,95 @@
 
           <h3 class="h3 clients-title">Projects</h3>
 
-          <ul class="clients-list has-scrollbar">
+          <div class="ticker-wrap">
+            <ul class="clients-list ticker-track">
 
-            <li class="clients-item">
-              <a href="#" data-scroll="crossy">
-                <img src="./assets/images/view-crossy.png" alt="project logo">
-              </a>
-            </li>
+              <li class="clients-item">
+                <a href="#" data-scroll="crossy">
+                  <img src="./assets/images/view-crossy.png" alt="project logo">
+                </a>
+              </li>
 
-            <li class="clients-item">
-              <a href="#" data-scroll="comsim">
-                <img src="./assets/images/view-comsim.png" alt="project logo">
-              </a>
-            </li>
+              <li class="clients-item">
+                <a href="#" data-scroll="comsim">
+                  <img src="./assets/images/view-comsim.png" alt="project logo">
+                </a>
+              </li>
 
+              <li class="clients-item">
+                <a href="#" data-scroll="vr-singing-club">
+                  <img src="./assets/images/view-sing.png" alt="project logo">
+                </a>
+              </li>
 
-            <li class="clients-item">
-              <a href="#" data-scroll="vr-singing-club">
-                <img src="./assets/images/view-sing.png" alt="project logo">
-              </a>
-            </li>
+              <li class="clients-item">
+                <a href="#" data-scroll="tumbly">
+                  <img src="./assets/images/view-tum.png" alt="project logo">
+                </a>
+              </li>
 
+              <li class="clients-item">
+                <a href="#" data-scroll="heights">
+                  <img src="./assets/images/view-heights.png" alt="project logo">
+                </a>
+              </li>
 
-            <li class="clients-item">
-              <a href="#" data-scroll="tumbly">
-                <img src="./assets/images/view-tum.png" alt="project logo">
-              </a>
-            </li>
+              <li class="clients-item">
+                <a href="#" data-scroll="dungems">
+                  <img src="./assets/images/view-dungems.png" alt="project logo">
+                </a>
+              </li>
 
-            <li class="clients-item">
-              <a href="#" data-scroll="heights">
-                <img src="./assets/images/view-heights.png" alt="project logo">
-              </a>
-            </li>
+              <li class="clients-item">
+                <a href="#" data-scroll="aetherlight">
+                  <img src="./assets/images/view-aether.png" alt="project logo">
+                </a>
+              </li>
 
-            <li class="clients-item">
-              <a href="#" data-scroll="dungems">
-                <img src="./assets/images/view-dungems.png" alt="project logo">
-              </a>
-            </li>
+              <li class="clients-item">
+                <a href="#" data-scroll="huia">
+                  <img src="./assets/images/view-huia.png" alt="project logo">
+                </a>
+              </li>
 
+              <li class="clients-item">
+                <a href="#" data-scroll="warehousing-passport">
+                  <img src="./assets/images/view-warehousing.png" alt="project logo">
+                </a>
+              </li>
 
-          </ul>
+            </ul>
+          </div>
+
+        </section>
+
+        <section class="clients">
+
+          <h3 class="h3 clients-title">Worked With</h3>
+
+          <div class="ticker-wrap">
+            <ul class="ticker-track ticker-reverse">
+
+              <li class="org-pill"><span>SkillsVR</span></li>
+              <li class="org-pill"><span>Mighty Kingdom</span></li>
+              <li class="org-pill"><span>Hipster Whale</span></li>
+              <li class="org-pill"><span>Microsoft</span></li>
+              <li class="org-pill"><span>Xero</span></li>
+              <li class="org-pill"><span>VRTogether</span></li>
+              <li class="org-pill"><span>JBA Digital</span></li>
+              <li class="org-pill"><span>Fletcher Building</span></li>
+              <li class="org-pill"><span>BNZ</span></li>
+              <li class="org-pill"><span>Scripture Union</span></li>
+              <li class="org-pill"><span>Ministry of Social Development</span></li>
+              <li class="org-pill"><span>University of Kentucky</span></li>
+              <li class="org-pill"><span>Site Safe NZ</span></li>
+              <li class="org-pill"><span>BCITO</span></li>
+              <li class="org-pill"><span>Bunnings</span></li>
+              <li class="org-pill"><span>EY</span></li>
+              <li class="org-pill"><span>BDO</span></li>
+
+            </ul>
+          </div>
 
         </section>
 
@@ -870,9 +917,6 @@ Designed and led the development of three educational real-time strategy games�
 
   <a href="#">
     <figure class="project-img">
-      <div class="project-item-icon-box">
-        <ion-icon name="scan-outline"></ion-icon>
-      </div>
       <img src="./assets/images/projects/projectthumb-crossy-hires.jpg"
            alt="Crossy Road Castle thumbnail"
            loading="lazy">
@@ -905,8 +949,7 @@ Designed and led the development of three educational real-time strategy games�
     data-link="https://www.meta.com/experiences/vr-singing-club/7705466689539922/">
   <a href="#">
     <figure class="project-img">
-      <div class="project-item-icon-box"><ion-icon name="scan-outline"></ion-icon></div>
-      <img src="./assets/images/projects/projectthumb-sing.png" alt="VR Sing Together thumbnail" loading="lazy">
+<img src="./assets/images/projects/projectthumb-sing.png" alt="VR Sing Together thumbnail" loading="lazy">
     </figure>
     <h3 class="project-title">VR Singing Club</h3>
     <p  class="project-category">VR / XR</p>
@@ -914,6 +957,7 @@ Designed and led the development of three educational real-time strategy games�
 </li>
 
 <li class="project-item active"
+    id="aetherlight"
     data-filter-item data-category="games"
     data-title="The Aetherlight &amp; Companion Apps"
     data-subtitle="Cross-platform MMORPG with companions"
@@ -927,15 +971,42 @@ Designed and led the development of three educational real-time strategy games�
   <li>Hot-swap sprites &amp; dialogue via CDN—zero-patch live ops.</li>
   <li>iOS/Android companion app pushes quests &amp; loot drops with Firebase.</li>
 </ul>"
-    data-gallery='["./assets/images/projects/project-aether.mp4","./assets/images/projects/project-aether1.jpg","./assets/images/projects/project-aether2.jpg",{"src":"./assets/images/projects/project-aether3.webp","fit":"full"},"./assets/images/projects/project-aether4.jpg"]'
+    data-gallery='["./assets/images/projects/project-aether.mp4","./assets/images/projects/project-aether5.png","./assets/images/projects/project-aether1.jpg","./assets/images/projects/project-aether2.jpg",{"src":"./assets/images/projects/project-aether3.webp","fit":"full"},"./assets/images/projects/project-aether4.jpg"]'
     data-link="https://the-aetherlight.webflow.io/">
   <a href="#">
     <figure class="project-img">
-      <div class="project-item-icon-box"><ion-icon name="scan-outline"></ion-icon></div>
-      <img src="./assets/images/projects/projectthumb-aetherhighres.jpg" alt="Aetherlight thumbnail" loading="lazy">
+<img src="./assets/images/projects/projectthumb-aetherhighres.jpg" alt="Aetherlight thumbnail" loading="lazy">
     </figure>
     <h3 class="project-title">The Aetherlight</h3>
     <p class="project-category">Games</p>
+  </a>
+</li>
+
+<li class="project-item active"
+    data-filter-item data-category="apps"
+    id="museum-of-the-bible"
+    data-title="Museum of the Bible — Digital Guide"
+    data-subtitle="Children's gamified museum experience"
+    data-genre="Interactive / AR-Adjacent"
+    data-studio="Scarlet City Studios"
+    data-platforms="android"
+    data-year="2017"
+    data-text="<b>Gamified children's digital guide for the Museum of the Bible, adapting The Aetherlight's steampunk narrative into a custom museum experience.</b>
+<ul class='proj-bullets'>
+  <li>Designed for ages 9–12: children explored exhibits via story-driven missions led by MBOT, a robot companion, collecting helper bots and uncovering exhibit-linked clues.</li>
+  <li>Experience synced to an adult's itinerary — routing adapted dynamically by age, timing, interests, and family group via the museum's indoor navigation platform.</li>
+  <li>Ran on a customised Lenovo Phab 2 Pro-based Digital Guide device, purpose-built for the museum's immersive visitor tech stack.</li>
+</ul>"
+    data-gallery='["./assets/images/projects/project-motb-poster.png","./assets/images/projects/project-motb1.jpg","./assets/images/projects/project-motb2.png"]'
+    data-link="https://gospelmusic.org/news/museum-of-the-bible-adapts-the-aetherlight-gaming-narrative-into-immersive-experience">
+  <a href="#">
+    <figure class="project-img">
+      <img src="./assets/images/projects/projectthumb-motb.png"
+           alt="Museum of the Bible Digital Guide thumbnail"
+           loading="lazy">
+    </figure>
+    <h3 class="project-title">Museum of the Bible</h3>
+    <p class="project-category">Apps</p>
   </a>
 </li>
 
@@ -958,8 +1029,7 @@ Designed and led the development of three educational real-time strategy games�
     data-link="https://skillsvr.com/modules/working-at-heights">
   <a href="#">
     <figure class="project-img">
-      <div class="project-item-icon-box"><ion-icon name="scan-outline"></ion-icon></div>
-      <img src="./assets/images/projects/projectthumb-heights.png" alt="Working at Heights VR thumbnail" loading="lazy">
+<img src="./assets/images/projects/projectthumb-heights.png" alt="Working at Heights VR thumbnail" loading="lazy">
     </figure>
     <h3 class="project-title">Working at Heights</h3>
     <p class="project-category">VR / XR</p>
@@ -985,8 +1055,7 @@ Designed and led the development of three educational real-time strategy games�
     data-gallery='[{"src":"./assets/images/projects/project-builder-set.png","fit":"full"},{"src":"./assets/images/projects/project-builder-minifig.png","fit":"full"},{"src":"./assets/images/projects/project-builder-box.png","fit":"full"},{"src":"./assets/images/projects/project-builder1.png","fit":"full"},{"src":"./assets/images/projects/project-builder-stickers.png","fit":"full"}]'>
   <a href="#">
     <figure class="project-img">
-      <div class="project-item-icon-box"><ion-icon name="scan-outline"></ion-icon></div>
-      <img src="./assets/images/projects/projectthumb-builder.png" alt="Builder LEGO game thumbnail" loading="lazy">
+<img src="./assets/images/projects/projectthumb-builder.png" alt="Builder LEGO game thumbnail" loading="lazy">
     </figure>
     <h3 class="project-title">Builder</h3>
     <p class="project-category">Games</p>
@@ -1008,12 +1077,11 @@ Designed and led the development of three educational real-time strategy games�
   <li>Dialogue powered by ElevenLabs TTS — designer-led iteration without code changes keeps content current.</li>
   <li>In-world tablet UI, scene markers, and NPC-led decision points guide learners through structured, repeatable training workflows.</li>
 </ul>"
-    data-gallery='["./assets/images/projects/project-warehousing.mp4","./assets/images/projects/project-warehousing-ss1.jpg","./assets/images/projects/project-warehousing-ss2.jpg","./assets/images/projects/project-warehousing-ss3.jpg","./assets/images/projects/project-warehousing-ss4.jpg"]'
+    data-gallery='["./assets/images/projects/project-warehousing.mp4","./assets/images/projects/project-warehouse-art.png","./assets/images/projects/project-warehousing-ss1.jpg","./assets/images/projects/project-warehousing-ss2.jpg","./assets/images/projects/project-warehousing-ss3.jpg","./assets/images/projects/project-warehousing-ss4.jpg"]'
     data-link="https://skillsvr.com/modules">
   <a href="#">
     <figure class="project-img">
-      <div class="project-item-icon-box"><ion-icon name="scan-outline"></ion-icon></div>
-      <img src="./assets/images/projects/projectthumb-warehousing.jpg" alt="Warehousing Foundation Passport VR thumbnail" loading="lazy">
+<img src="./assets/images/projects/projectthumb-warehousing.jpg" alt="Warehousing Foundation Passport VR thumbnail" loading="lazy">
     </figure>
     <h3 class="project-title">Warehousing Foundation Passport</h3>
     <p class="project-category">VR / XR</p>
@@ -1021,6 +1089,7 @@ Designed and led the development of three educational real-time strategy games�
 </li>
 
 <li class="project-item active"
+    id="dungems"
     data-filter-item data-category="games"
     data-title="Dungems"
     data-subtitle="Reverse-dungeon roguelike"
@@ -1043,8 +1112,7 @@ Designed and led the development of three educational real-time strategy games�
     data-link="https://foldthirteen.itch.io/dungems">
   <a href="#">
     <figure class="project-img">
-      <div class="project-item-icon-box"><ion-icon name="scan-outline"></ion-icon></div>
-        <img src="./assets/images/projects/projectthumb-dungem.png" alt="Dungems thumbnail" loading="lazy">
+  <img src="./assets/images/projects/projectthumb-dungem.png" alt="Dungems thumbnail" loading="lazy">
     </figure>
     <h3 class="project-title">Dungems</h3>
     <p  class="project-category">Games</p>
@@ -1070,8 +1138,7 @@ Designed and led the development of three educational real-time strategy games�
     data-link="https://skillsvr.com/modules">
   <a href="#">
     <figure class="project-img">
-      <div class="project-item-icon-box"><ion-icon name="scan-outline"></ion-icon></div>
-      <img src="./assets/images/projects/projectthumb-hospitality.png" alt="Hospitality Foundation Passport VR thumbnail" loading="lazy">
+<img src="./assets/images/projects/projectthumb-hospitality.png" alt="Hospitality Foundation Passport VR thumbnail" loading="lazy">
     </figure>
     <h3 class="project-title">Hospitality Foundation Passport</h3>
     <p class="project-category">VR / XR</p>
@@ -1096,8 +1163,7 @@ Designed and led the development of three educational real-time strategy games�
     data-link="https://bootless.itch.io/clutter-king">
   <a href="#">
     <figure class="project-img">
-      <div class="project-item-icon-box"><ion-icon name="scan-outline"></ion-icon></div>
-      <img src="./assets/images/projects/projectthumb-clutterking.png" alt="Clutterking thumbnail" loading="lazy">
+<img src="./assets/images/projects/projectthumb-clutterking.png" alt="Clutterking thumbnail" loading="lazy">
     </figure>
     <h3 class="project-title">Clutterking</h3>
     <p class="project-category">Games</p>
@@ -1123,8 +1189,7 @@ Designed and led the development of three educational real-time strategy games�
     data-link="https://socialwork.uky.edu">
   <a href="#">
     <figure class="project-img">
-      <div class="project-item-icon-box"><ion-icon name="scan-outline"></ion-icon></div>
-      <img src="./assets/images/projects/projectthumb-millertraining.png" alt="Child Welfare VR Simulation thumbnail" loading="lazy">
+<img src="./assets/images/projects/projectthumb-millertraining.png" alt="Child Welfare VR Simulation thumbnail" loading="lazy">
     </figure>
     <h3 class="project-title">Child Welfare VR Simulation</h3>
     <p class="project-category">VR / XR</p>
@@ -1151,8 +1216,7 @@ Designed and led the development of three educational real-time strategy games�
     data-link="https://appadvice.com/app/construction-tycoon/1458448825">
   <a href="#">
     <figure class="project-img">
-      <div class="project-item-icon-box"><ion-icon name="scan-outline"></ion-icon></div>
-      <img src="./assets/images/projects/tycoon-construction.png" alt="Construction Tycoon thumbnail" loading="lazy">
+<img src="./assets/images/projects/tycoon-construction.png" alt="Construction Tycoon thumbnail" loading="lazy">
     </figure>
     <h3 class="project-title">Construction Tycoon</h3>
     <p class="project-category">Games</p>
@@ -1179,8 +1243,7 @@ Designed and led the development of three educational real-time strategy games�
     data-link="https://skillsvr.com/modules/kiwifruit-pruning">
   <a href="#">
     <figure class="project-img">
-      <div class="project-item-icon-box"><ion-icon name="scan-outline"></ion-icon></div>
-      <img src="./assets/images/projects/projectthumb-kiwifruit.png" alt="Kiwifruit Pruning VR thumbnail" loading="lazy">
+<img src="./assets/images/projects/projectthumb-kiwifruit.png" alt="Kiwifruit Pruning VR thumbnail" loading="lazy">
     </figure>
     <h3 class="project-title">Kiwifruit Pruning</h3>
     <p class="project-category">VR / XR</p>
@@ -1206,8 +1269,7 @@ Designed and led the development of three educational real-time strategy games�
     data-link="https://apps.apple.com/us/app/tumbly-beasts/id1067782839">
   <a href="#">
     <figure class="project-img">
-      <div class="project-item-icon-box"><ion-icon name="scan-outline"></ion-icon></div>
-      <img src="./assets/images/projects/projectthumb-tumbly1.png" alt="Tumbly Beasts thumbnail" loading="lazy">
+<img src="./assets/images/projects/projectthumb-tumbly1.png" alt="Tumbly Beasts thumbnail" loading="lazy">
     </figure>
     <h3 class="project-title">Tumbly Beasts</h3>
     <p class="project-category">Games</p>
@@ -1235,8 +1297,7 @@ Designed and led the development of three educational real-time strategy games�
     data-link="https://skillsvr.com/modules/hazard-management">
   <a href="#">
     <figure class="project-img">
-      <div class="project-item-icon-box"><ion-icon name="scan-outline"></ion-icon></div>
-      <img src="./assets/images/projects/projectthumb-sustainability.png" alt="sustain  VR thumbnail" loading="lazy">
+<img src="./assets/images/projects/projectthumb-sustainability.png" alt="sustain  VR thumbnail" loading="lazy">
     </figure>
     <h3 class="project-title">Sustainability</h3>
     <p class="project-category">VR / XR</p>
@@ -1246,6 +1307,7 @@ Designed and led the development of three educational real-time strategy games�
 <!-- 2019 ─────────────────────────────────────────────────────────── -->
 
 <li class="project-item active"
+    id="huia"
     data-filter-item data-category="games"
     data-title="Huia"
     data-subtitle="Story of Aotearoa's last huia"
@@ -1259,12 +1321,11 @@ Designed and led the development of three educational real-time strategy games�
   <li>Branching journal pages intertwine Māori folklore&nbsp;&amp;&nbsp;modern ecology.</li>
   <li>FMOD spectral-morphing blends location audio with recovered whistle notes.</li>
 </ul>"
-    data-gallery='["./assets/images/projects/project-huia.mp4","./assets/images/projects/HUIA-ss.png","./assets/images/projects/HUIA-ss1.png","./assets/images/projects/HUIA-ss2.png"]'
+    data-gallery='["./assets/images/projects/project-huia.mp4","./assets/images/projects/project-huia-art.png","./assets/images/projects/HUIA-ss.png","./assets/images/projects/HUIA-ss1.png","./assets/images/projects/HUIA-ss2.png"]'
     data-link="https://coronalabs.com/blog/2016/09/08/featured-app-12-huia-birds-bringing-extinct-birds-back-to-life-through-interactive-storytelling/">
   <a href="#">
     <figure class="project-img">
-      <div class="project-item-icon-box"><ion-icon name="scan-outline"></ion-icon></div>
-      <img src="./assets/images/projects/projectthumb-huia.png" alt="Huia thumbnail" loading="lazy">
+<img src="./assets/images/projects/projectthumb-huia.png" alt="Huia thumbnail" loading="lazy">
     </figure>
     <h3 class="project-title">Huia</h3>
     <p class="project-category">Games</p>
@@ -1291,8 +1352,7 @@ Designed and led the development of three educational real-time strategy games�
     data-link="https://apkpure.net/jba-tech-tycoon/com.jba.tt">
   <a href="#">
     <figure class="project-img">
-      <div class="project-item-icon-box"><ion-icon name="scan-outline"></ion-icon></div>
-      <img src="./assets/images/projects/tycoon-tech.png" alt="Tech Tycoon thumbnail" loading="lazy">
+<img src="./assets/images/projects/tycoon-tech.png" alt="Tech Tycoon thumbnail" loading="lazy">
     </figure>
     <h3 class="project-title">Tech Tycoon</h3>
     <p class="project-category">Games</p>
@@ -1321,8 +1381,7 @@ Designed and led the development of three educational real-time strategy games�
     data-link="www.comsim.co.nz">
   <a href="#">
     <figure class="project-img">
-      <div class="project-item-icon-box"><ion-icon name="scan-outline"></ion-icon></div>
-      <img src="./assets/images/projects/projectthumb-comsimPoster.png" alt="Comsim thumbnail" loading="lazy">
+<img src="./assets/images/projects/projectthumb-comsimPoster.png" alt="Comsim thumbnail" loading="lazy">
     </figure>
     <h3 class="project-title">Comsim</h3>
     <p  class="project-category">Apps</p>
@@ -1347,8 +1406,7 @@ Designed and led the development of three educational real-time strategy games�
     data-link="https://appadvice.com/game/app/restaurant-tycoon/1436672122">
   <a href="#">
     <figure class="project-img">
-      <div class="project-item-icon-box"><ion-icon name="scan-outline"></ion-icon></div>
-      <img src="./assets/images/projects/tycoon-rest.png" alt="Restaurant Tycoon thumbnail" loading="lazy">
+<img src="./assets/images/projects/tycoon-rest.png" alt="Restaurant Tycoon thumbnail" loading="lazy">
     </figure>
     <h3 class="project-title">Restaurant Tycoon</h3>
     <p class="project-category">Games</p>
@@ -1373,8 +1431,7 @@ Designed and led the development of three educational real-time strategy games�
     data-link="https://corovcam.itch.io/pipe-world">
   <a href="#">
     <figure class="project-img">
-      <div class="project-item-icon-box"><ion-icon name="scan-outline"></ion-icon></div>
-      <img src="./assets/images/projects/projectthumb-pipeworld.png" alt="Pipeworld thumbnail" loading="lazy">
+<img src="./assets/images/projects/projectthumb-pipeworld.png" alt="Pipeworld thumbnail" loading="lazy">
     </figure>
     <h3 class="project-title">Pipeworld</h3>
     <p class="project-category">Games</p>
@@ -1401,8 +1458,7 @@ Designed and led the development of three educational real-time strategy games�
     data-link="https://www.amazon.com/Thunderstorm-Maths-Castle/dp/B00CNJUL50">
   <a href="#">
     <figure class="project-img">
-      <div class="project-item-icon-box"><ion-icon name="scan-outline"></ion-icon></div>
-      <img src="./assets/images/projects/projectthumb-mathcastle.png" alt="Math Castle thumbnail" loading="lazy">
+<img src="./assets/images/projects/projectthumb-mathcastle.png" alt="Math Castle thumbnail" loading="lazy">
     </figure>
     <h3 class="project-title">Math Castle</h3>
     <p class="project-category">Games</p>
