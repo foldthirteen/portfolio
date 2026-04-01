@@ -1646,8 +1646,12 @@ main {
 
 
 .project-list {
-  columns: 1;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-auto-rows: 1px;
   column-gap: 30px;
+  row-gap: 0;
+  align-items: start;
   margin-bottom: 10px;
 }
 
@@ -1655,8 +1659,6 @@ main {
 
 .project-item.active {
   display: block;
-  break-inside: avoid;
-  margin-bottom: 30px;
   animation: scaleUp 0.25s ease forwards;
 }
 
@@ -2503,7 +2505,7 @@ strong {
 
   /* portfolio and blog grid */
 
-  .project-list { columns: 2; }
+  .project-list { grid-template-columns: repeat(2, 1fr); }
   .blog-posts-list { grid-template-columns: 1fr 1fr; }
 
 
@@ -2625,7 +2627,7 @@ strong {
    * PORTFOLIO
    */
 
-  .project-list { columns: 3; }
+  .project-list { grid-template-columns: repeat(3, 1fr); }
 
 
 

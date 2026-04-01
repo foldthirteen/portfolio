@@ -815,11 +815,9 @@ const grid       = document.querySelector('.project-list');
 const allItems   = () => grid.querySelectorAll('.project-item.active');  // convenience
 
 function resizeMasonryItem(item){
-  const rowGap    = 30;   // keep in sync with CSS gap
-  const rowHeight = 12;   // keep in sync with grid-auto-rows
-  const height    = item.getBoundingClientRect().height;
-  const rowSpan   = Math.ceil((height + rowGap) / (rowHeight + rowGap));
-  item.style.gridRowEnd = `span ${rowSpan}`;
+  const gap    = 30;   // visual gap between cards (px)
+  const height = item.getBoundingClientRect().height;
+  item.style.gridRowEnd = `span ${Math.ceil(height + gap)}`;
 }
 
 function resizeAllMasonryItems(){ allItems().forEach(resizeMasonryItem); }
