@@ -856,6 +856,15 @@ allItems().forEach(item=>{
   });
 });
 
+/* ─ Fade-in for all remaining images (ticker, blog, etc.) ──────────── */
+document.querySelectorAll('.ticker-track img, .blog-banner-box img').forEach(img => {
+  if (img.complete) {
+    img.classList.add('img-loaded');
+  } else {
+    img.addEventListener('load', () => img.classList.add('img-loaded'), { once: true });
+  }
+});
+
 /* ─ run again every time you change the filter (after your filterFunc) ─ */
 const originalFilterFunc = filterFunc;
 filterFunc = function(selected){

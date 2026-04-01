@@ -28,7 +28,7 @@
   <link rel="dns-prefetch" href="https://unpkg.com">
 
   <!-- avatar is always visible â€” fetch it at high priority -->
-  <link rel="preload" as="image" href="./assets/images/avatar_ben.png">
+  <link rel="preload" as="image" href="./assets/images/avatar_ben.webp">
 
   <!-- first 4 project thumbnails are above the fold -->
   <link rel="preload" as="image" href="./assets/images/projects/projectthumb-crossy-hires.webp">
@@ -37,8 +37,9 @@
   <link rel="preload" as="image" href="./assets/images/projects/projectthumb-motb.webp">
 
 
-<!-- swiper -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+<!-- swiper (deferred â€” only needed for modal gallery) -->
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" as="style" onload="this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"></noscript>
 <script defer src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 
 </head>
@@ -60,7 +61,7 @@
       <div class="sidebar-info">
 
         <figure class="avatar-box">
-          <img src="./assets/images/avatar_ben.png" alt="Ben jamin" width="80" fetchpriority="high">
+          <img src="./assets/images/avatar_ben.webp" alt="Ben jamin" width="80" fetchpriority="high">
         </figure>
 
         <div class="info-content">
@@ -465,55 +466,55 @@
 
               <li class="clients-item">
                 <a href="#" data-scroll="crossy">
-                  <img src="./assets/images/view-crossy.png" alt="project logo">
+                  <img width="800" height="800" src="./assets/images/view-crossy.webp" alt="project logo" loading="lazy">
                 </a>
               </li>
 
               <li class="clients-item">
                 <a href="#" data-scroll="comsim">
-                  <img src="./assets/images/view-comsim.png" alt="project logo">
+                  <img width="260" height="260" src="./assets/images/view-comsim.webp" alt="project logo" loading="lazy">
                 </a>
               </li>
 
               <li class="clients-item">
                 <a href="#" data-scroll="vr-singing-club">
-                  <img src="./assets/images/view-sing.png" alt="project logo">
+                  <img width="800" height="800" src="./assets/images/view-sing.webp" alt="project logo" loading="lazy">
                 </a>
               </li>
 
               <li class="clients-item">
                 <a href="#" data-scroll="tumbly">
-                  <img src="./assets/images/view-tum.png" alt="project logo">
+                  <img width="800" height="800" src="./assets/images/view-tum.webp" alt="project logo" loading="lazy">
                 </a>
               </li>
 
               <li class="clients-item">
                 <a href="#" data-scroll="heights">
-                  <img src="./assets/images/view-heights.png" alt="project logo">
+                  <img width="800" height="800" src="./assets/images/view-heights.webp" alt="project logo" loading="lazy">
                 </a>
               </li>
 
               <li class="clients-item">
                 <a href="#" data-scroll="dungems">
-                  <img src="./assets/images/view-dungems.png" alt="project logo">
+                  <img width="800" height="800" src="./assets/images/view-dungems.webp" alt="project logo" loading="lazy">
                 </a>
               </li>
 
               <li class="clients-item">
                 <a href="#" data-scroll="aetherlight">
-                  <img src="./assets/images/view-aether.png" alt="project logo">
+                  <img width="800" height="800" src="./assets/images/view-aether.webp" alt="project logo" loading="lazy">
                 </a>
               </li>
 
               <li class="clients-item">
                 <a href="#" data-scroll="huia">
-                  <img src="./assets/images/view-huia.png" alt="project logo">
+                  <img width="800" height="800" src="./assets/images/view-huia.webp" alt="project logo" loading="lazy">
                 </a>
               </li>
 
               <li class="clients-item">
                 <a href="#" data-scroll="warehousing-passport">
-                  <img src="./assets/images/view-warehousing.png" alt="project logo">
+                  <img width="800" height="800" src="./assets/images/view-warehousing.webp" alt="project logo" loading="lazy">
                 </a>
               </li>
 
@@ -1227,7 +1228,7 @@ Designed and led the development of three educational real-time strategy gamesâ€
     data-link="https://appadvice.com/app/construction-tycoon/1458448825">
   <a href="#">
     <figure class="project-img">
-<img src="./assets/images/projects/tycoon-construction.png" alt="Construction Tycoon thumbnail" loading="lazy">
+<img width="1024" height="1536" src="./assets/images/projects/tycoon-construction.png" alt="Construction Tycoon thumbnail" loading="lazy">
     </figure>
     <h3 class="project-title">Construction Tycoon</h3>
     <p class="project-category">Games</p>
@@ -1363,7 +1364,7 @@ Designed and led the development of three educational real-time strategy gamesâ€
     data-link="https://apkpure.net/jba-tech-tycoon/com.jba.tt">
   <a href="#">
     <figure class="project-img">
-<img src="./assets/images/projects/tycoon-tech.png" alt="Tech Tycoon thumbnail" loading="lazy">
+<img width="1024" height="1536" src="./assets/images/projects/tycoon-tech.png" alt="Tech Tycoon thumbnail" loading="lazy">
     </figure>
     <h3 class="project-title">Tech Tycoon</h3>
     <p class="project-category">Games</p>
@@ -1417,7 +1418,7 @@ Designed and led the development of three educational real-time strategy gamesâ€
     data-link="https://appadvice.com/game/app/restaurant-tycoon/1436672122">
   <a href="#">
     <figure class="project-img">
-<img src="./assets/images/projects/tycoon-rest.png" alt="Restaurant Tycoon thumbnail" loading="lazy">
+<img width="1024" height="1536" src="./assets/images/projects/tycoon-rest.png" alt="Restaurant Tycoon thumbnail" loading="lazy">
     </figure>
     <h3 class="project-title">Restaurant Tycoon</h3>
     <p class="project-category">Games</p>
@@ -1513,7 +1514,7 @@ Designed and led the development of three educational real-time strategy gamesâ€
               <a href="#">
 
                 <figure class="blog-banner-box">
-                  <img src="./assets/images/blog-1.jpg" alt="Design conferences in 2022" loading="lazy">
+                  <img width="601" height="401" src="./assets/images/blog-1.jpg" alt="Design conferences in 2022" loading="lazy">
                 </figure>
 
                 <div class="blog-content">
@@ -1541,7 +1542,7 @@ Designed and led the development of three educational real-time strategy gamesâ€
               <a href="#">
 
                 <figure class="blog-banner-box">
-                  <img src="./assets/images/blog-2.jpg" alt="Best fonts every designer" loading="lazy">
+                  <img width="601" height="401" src="./assets/images/blog-2.jpg" alt="Best fonts every designer" loading="lazy">
                 </figure>
 
                 <div class="blog-content">
@@ -1569,7 +1570,7 @@ Designed and led the development of three educational real-time strategy gamesâ€
               <a href="#">
 
                 <figure class="blog-banner-box">
-                  <img src="./assets/images/blog-3.jpg" alt="Design digest #80" loading="lazy">
+                  <img width="601" height="401" src="./assets/images/blog-3.jpg" alt="Design digest #80" loading="lazy">
                 </figure>
 
                 <div class="blog-content">
@@ -1597,7 +1598,7 @@ Designed and led the development of three educational real-time strategy gamesâ€
               <a href="#">
 
                 <figure class="blog-banner-box">
-                  <img src="./assets/images/blog-4.jpg" alt="UI interactions of the week" loading="lazy">
+                  <img width="601" height="401" src="./assets/images/blog-4.jpg" alt="UI interactions of the week" loading="lazy">
                 </figure>
 
                 <div class="blog-content">
@@ -1625,7 +1626,7 @@ Designed and led the development of three educational real-time strategy gamesâ€
               <a href="#">
 
                 <figure class="blog-banner-box">
-                  <img src="./assets/images/blog-5.jpg" alt="The forgotten art of spacing" loading="lazy">
+                  <img width="600" height="391" src="./assets/images/blog-5.jpg" alt="The forgotten art of spacing" loading="lazy">
                 </figure>
 
                 <div class="blog-content">
@@ -1653,7 +1654,7 @@ Designed and led the development of three educational real-time strategy gamesâ€
               <a href="#">
 
                 <figure class="blog-banner-box">
-                  <img src="./assets/images/blog-6.jpg" alt="Design digest #79" loading="lazy">
+                  <img width="600" height="394" src="./assets/images/blog-6.jpg" alt="Design digest #79" loading="lazy">
                 </figure>
 
                 <div class="blog-content">
@@ -1787,8 +1788,8 @@ Designed and led the development of three educational real-time strategy gamesâ€
   <!--
     - ionicon link
   -->
-  <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
-  <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+  <script defer type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+  <script defer nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 
 </body>
 
