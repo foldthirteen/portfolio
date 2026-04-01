@@ -1659,7 +1659,6 @@ main {
 
 .project-item.active {
   display: block;
-  animation: scaleUp 0.25s ease forwards;
 }
 
 .proj-link {

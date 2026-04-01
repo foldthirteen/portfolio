@@ -825,6 +825,10 @@ function resizeAllMasonryItems(){ allItems().forEach(resizeMasonryItem); }
 /* ─ run when the page finishes, whenever you resize, and whenever an
      image *inside* a card finishes loading ─────────────────────────── */
 
+/* Run immediately at DOM-ready (script is defer'd) so intrinsic
+   width/height attrs can size the grid before images arrive.       */
+resizeAllMasonryItems();
+
 window.addEventListener('load',   resizeAllMasonryItems);
 window.addEventListener('resize', resizeAllMasonryItems);
 
