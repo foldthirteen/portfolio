@@ -24,6 +24,18 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
 
+  <!-- warm up ionicons CDN -->
+  <link rel="dns-prefetch" href="https://unpkg.com">
+
+  <!-- avatar is always visible ‚Äî fetch it at high priority -->
+  <link rel="preload" as="image" href="./assets/images/avatar_ben.png">
+
+  <!-- first 4 project thumbnails are above the fold -->
+  <link rel="preload" as="image" href="./assets/images/projects/projectthumb-crossy-hires.webp">
+  <link rel="preload" as="image" href="./assets/images/projects/projectthumb-sing.webp">
+  <link rel="preload" as="image" href="./assets/images/projects/projectthumb-aetherhighres.webp">
+  <link rel="preload" as="image" href="./assets/images/projects/projectthumb-motb.webp">
+
 
 <!-- swiper -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
@@ -48,7 +60,7 @@
       <div class="sidebar-info">
 
         <figure class="avatar-box">
-          <img src="./assets/images/avatar_ben.png" alt="Ben jamin" width="80">
+          <img src="./assets/images/avatar_ben.png" alt="Ben jamin" width="80" fetchpriority="high">
         </figure>
 
         <div class="info-content">
@@ -917,9 +929,9 @@ Designed and led the development of three educational real-time strategy games‚Ä
 
   <a href="#">
     <figure class="project-img">
-      <img src="./assets/images/projects/projectthumb-crossy-hires.jpg"
+      <img width="800" height="420" src="./assets/images/projects/projectthumb-crossy-hires.webp"
            alt="Crossy Road Castle thumbnail"
-           loading="lazy">
+           fetchpriority="high">
     </figure>
 
     <h3 class="project-title">Crossy Road Castle</h3>
@@ -939,17 +951,17 @@ Designed and led the development of three educational real-time strategy games‚Ä
     data-studio="SkillsVR"
     data-platforms="quest"
     data-text="
-<b>Social karaoke experience for Quest with live pitch analysis and avatar lip-sync.</b>
+<b>Social karaoke experience for Quest ‚Äî sing with friends, get live pitch feedback, and watch your avatar match your performance.</b>
 <ul class='proj-bullets'>
-  <li>Designer-friendly node-based action &amp; dialogue graph that plugs straight into Eleven-Labs TTS + Unity Animator.</li>
-  <li>Mobile-budget real-time lip-sync: viseme blend-shapes, procedural eye-contact and additive gestures that make Quest-class NPCs feel alive.</li>
-  <li>Photon PUN 2 multiplayer scaffold with lobby, relay and auto-reconnect.</li>
+  <li>Built a node-based dialogue system that lets designers script NPC behaviour and wire up TTS without touching code.</li>
+  <li>Real-time lip-sync keeps NPC characters expressive and responsive within Quest's performance budget.</li>
+  <li>Multiplayer with lobby, matchmaking, and auto-reconnect.</li>
 </ul>"
     data-gallery='["./assets/images/projects/project-sing1.png","./assets/images/projects/project-sing2.png","./assets/images/projects/project-sing.mp4"]'
     data-link="https://www.meta.com/experiences/vr-singing-club/7705466689539922/">
   <a href="#">
     <figure class="project-img">
-<img src="./assets/images/projects/projectthumb-sing.png" alt="VR Sing Together thumbnail" loading="lazy">
+<img width="768" height="432" src="./assets/images/projects/projectthumb-sing.webp" alt="VR Sing Together thumbnail" fetchpriority="high">
     </figure>
     <h3 class="project-title">VR Singing Club</h3>
     <p  class="project-category">VR / XR</p>
@@ -965,17 +977,17 @@ Designed and led the development of three educational real-time strategy games‚Ä
     data-studio="Scripture Union"
     data-platforms="pc,ios,android"
     data-year="2016"
-    data-text="<b>Cross-platform MMORPG plus mobile companions; authored turn-based combat &amp; CDN-fed asset pipeline.</b>
+    data-text="<b>Cross-platform MMORPG set in a steampunk world ‚Äî a biblical allegory with team-combo turn-based combat.</b>
 <ul class='proj-bullets'>
-  <li>Steampunk allegory of biblical narrative with team-combo combat system.</li>
-  <li>Hot-swap sprites &amp; dialogue via CDN‚Äîzero-patch live ops.</li>
-  <li>iOS/Android companion app pushes quests &amp; loot drops with Firebase.</li>
+  <li>Built the combat system with team synergy mechanics and combo chains.</li>
+  <li>Live content pipeline let sprites and dialogue update without app patches.</li>
+  <li>iOS/Android companion app delivered quests and loot drops to players.</li>
 </ul>"
     data-gallery='["./assets/images/projects/project-aether.mp4","./assets/images/projects/project-aether5.png","./assets/images/projects/project-aether1.jpg","./assets/images/projects/project-aether2.jpg",{"src":"./assets/images/projects/project-aether3.webp","fit":"full"},"./assets/images/projects/project-aether4.jpg"]'
     data-link="https://the-aetherlight.webflow.io/">
   <a href="#">
     <figure class="project-img">
-<img src="./assets/images/projects/projectthumb-aetherhighres.jpg" alt="Aetherlight thumbnail" loading="lazy">
+<img width="800" height="401" src="./assets/images/projects/projectthumb-aetherhighres.webp" alt="Aetherlight thumbnail" fetchpriority="high">
     </figure>
     <h3 class="project-title">The Aetherlight</h3>
     <p class="project-category">Games</p>
@@ -993,17 +1005,17 @@ Designed and led the development of three educational real-time strategy games‚Ä
     data-year="2017"
     data-text="<b>Gamified children's digital guide for the Museum of the Bible, adapting The Aetherlight's steampunk narrative into a custom museum experience.</b>
 <ul class='proj-bullets'>
-  <li>Designed for ages 9‚Äì12: children explored exhibits via story-driven missions led by MBOT, a robot companion, collecting helper bots and uncovering exhibit-linked clues.</li>
-  <li>Experience synced to an adult's itinerary ‚Äî routing adapted dynamically by age, timing, interests, and family group via the museum's indoor navigation platform.</li>
-  <li>Ran on a customised Lenovo Phab 2 Pro-based Digital Guide device, purpose-built for the museum's immersive visitor tech stack.</li>
+  <li>Designed for ages 9‚Äì12: kids explored exhibits through story-driven missions led by MBOT, a robot companion, collecting helper bots and uncovering exhibit-linked clues.</li>
+  <li>Experience synced to an adult's itinerary ‚Äî routing adapted dynamically by age, timing, interests, and family group.</li>
+  <li>Ran on purpose-built Digital Guide hardware designed for the museum's immersive visitor experience.</li>
 </ul>"
     data-gallery='["./assets/images/projects/project-motb-poster.png","./assets/images/projects/project-motb1.jpg","./assets/images/projects/project-motb2.png"]'
     data-link="https://gospelmusic.org/news/museum-of-the-bible-adapts-the-aetherlight-gaming-narrative-into-immersive-experience">
   <a href="#">
     <figure class="project-img">
-      <img src="./assets/images/projects/projectthumb-motb.png"
+      <img width="800" height="533" src="./assets/images/projects/projectthumb-motb.webp"
            alt="Museum of the Bible Digital Guide thumbnail"
-           loading="lazy">
+           fetchpriority="high">
     </figure>
     <h3 class="project-title">Museum of the Bible</h3>
     <p class="project-category">Apps</p>
@@ -1019,17 +1031,17 @@ Designed and led the development of three educational real-time strategy games‚Ä
     data-studio="SkillsVR"
     data-platforms="quest"
     data-year="2021"
-    data-text="<b>Immersive safety training for harness work, ladders&nbsp;&amp;&nbsp;scaffolding. Learn how to manage and understand the risks and requirements of working at height.</b>
+    data-text="<b>Immersive VR safety training for harness work, ladders, and scaffolding.</b>
 <ul class='proj-bullets'>
-  <li>Designed to teach and test users understanding of working at heights in an engaging non-repeative manner.</li>
-  <li>Competency testing and mapping, project being measure for NZQA 23229 & 15757.</li>
-  <li>Built with OpenXR targeting the Meta Quest & Pico with a desktop companion for supervisor learning support.</li>
+  <li>Designed to teach and test height-safety knowledge in an engaging, non-repetitive way.</li>
+  <li>Competency mapping aligned to NZQA standards.</li>
+  <li>Runs on Meta Quest and Pico, with a desktop companion app for supervisors.</li>
 </ul>"
     data-gallery='["./assets/images/projects/project-heights1.png","./assets/images/projects/project-heights2.png","./assets/images/projects/project-heights3.png","./assets/images/projects/project-heightsvideo.mp4"]'
     data-link="https://skillsvr.com/modules/working-at-heights">
   <a href="#">
     <figure class="project-img">
-<img src="./assets/images/projects/projectthumb-heights.png" alt="Working at Heights VR thumbnail" loading="lazy">
+<img width="800" height="1200" src="./assets/images/projects/projectthumb-heights.webp" alt="Working at Heights VR thumbnail" loading="lazy">
     </figure>
     <h3 class="project-title">Working at Heights</h3>
     <p class="project-category">VR / XR</p>
@@ -1045,17 +1057,16 @@ Designed and led the development of three educational real-time strategy games‚Ä
     data-genre="Casual / Puzzle"
     data-studio="Hipster Whale"
     data-platforms="ios,android"
-    data-text="<b>Unreleased mobile LEGO title developed with Hipster Whale ‚Äî a tactile building game spanning unboxing, mini-figure assembly, sticker placement, and free-build.</b>
+    data-text="<b>Unreleased mobile LEGO title built with Hipster Whale ‚Äî a tactile building game covering unboxing, mini-figure assembly, sticker placement, and free-build.</b>
 <ul class='proj-bullets'>
-  <li>Implemented physics-driven part-scattering and sorting ‚Äî LEGO pieces tumble out of sets and settle naturally across the play surface.</li>
-  <li>Built the mini-figure assembly system: snap-to-socket mechanics with haptic feedback for head, torso, legs, and accessory slots.</li>
-  <li>Developed the sticker-sheet UI ‚Äî precision drag-and-place with per-sticker hit detection mapped to real brick geometry.</li>
-  <li>Worked within a small cross-studio team alongside Hipster Whale on a tight mobile performance budget (iOS &amp; Android).</li>
+  <li>LEGO pieces tumble out of sets with physics and settle naturally across the play surface.</li>
+  <li>Built the mini-figure assembly system with satisfying haptic snap feedback.</li>
+  <li>Developed the sticker-sheet UI with precision drag-and-place on iOS and Android.</li>
 </ul>"
     data-gallery='[{"src":"./assets/images/projects/project-builder-set.png","fit":"full"},{"src":"./assets/images/projects/project-builder-minifig.png","fit":"full"},{"src":"./assets/images/projects/project-builder-box.png","fit":"full"},{"src":"./assets/images/projects/project-builder1.png","fit":"full"},{"src":"./assets/images/projects/project-builder-stickers.png","fit":"full"}]'>
   <a href="#">
     <figure class="project-img">
-<img src="./assets/images/projects/projectthumb-builder.png" alt="Builder LEGO game thumbnail" loading="lazy">
+<img width="800" height="800" src="./assets/images/projects/projectthumb-builder.webp" alt="Builder LEGO game thumbnail" loading="lazy">
     </figure>
     <h3 class="project-title">Builder</h3>
     <p class="project-category">Games</p>
@@ -1081,7 +1092,7 @@ Designed and led the development of three educational real-time strategy games‚Ä
     data-link="https://skillsvr.com/modules">
   <a href="#">
     <figure class="project-img">
-<img src="./assets/images/projects/projectthumb-warehousing.jpg" alt="Warehousing Foundation Passport VR thumbnail" loading="lazy">
+<img width="800" height="450" src="./assets/images/projects/projectthumb-warehousing.webp" alt="Warehousing Foundation Passport VR thumbnail" loading="lazy">
     </figure>
     <h3 class="project-title">Warehousing Foundation Passport</h3>
     <p class="project-category">VR / XR</p>
@@ -1099,20 +1110,20 @@ Designed and led the development of three educational real-time strategy games‚Ä
     id="comsim"
     data-year="2022"
     data-hero="./assets/images/projects/projectthumb-dungem.png"
-    data-text= "<b>Reverse-dungeon roguelike: lay traps, carve tunnels, train monsters, then watch AI-driven heroes try to beat your design.</b>
+    data-text= "<b>Reverse-dungeon roguelike: lay traps, carve tunnels, train monsters, then watch AI heroes try to beat your design.</b>
 <ul class='proj-bullets'>
-  <li><strong>GOAP-powered adventurers </strong>‚Äîeach hero plans on the fly, swapping tactics when ambushed or low on health.</li>
-  <li><strong>Gem-cutting economy </strong>‚Äîmine shards from the walls you destroy, then socket them into traps for elemental effects.</li>
-  <li><strong>Blueprint trap editor </strong>‚Äîdrag-and-drop traps and enemies that will chain react & bring your foes down.</li>
-  <li><strong>Six upgradable towers</strong> ‚Äî each with its own branching tech tree: poison, freeze, volley and more.</li>
-  <li><strong>Deck-building progression</strong> ‚Äî earn bones & gold to draft new mob and trap card synergies.</li>
+  <li><strong>Smart adventurers</strong> ‚Äî each hero adapts their tactics on the fly, swapping strategies when ambushed or running low on health.</li>
+  <li><strong>Gem-cutting economy</strong> ‚Äî mine shards from destroyed walls and socket them into traps for elemental effects.</li>
+  <li><strong>Blueprint trap editor</strong> ‚Äî drag-and-drop traps and enemies that chain react to bring your foes down.</li>
+  <li><strong>Six upgradeable towers</strong> ‚Äî each with its own branching tech tree: poison, freeze, volley and more.</li>
+  <li><strong>Deck-building progression</strong> ‚Äî earn bones &amp; gold to draft new mob and trap card synergies.</li>
 </ul>"
 
         data-gallery='["./assets/images/projects/project-dungems.mp4", "./assets/images/projects/project-dungems2.gif", "./assets/images/projects/project-dungemstitle.gif"]'
     data-link="https://foldthirteen.itch.io/dungems">
   <a href="#">
     <figure class="project-img">
-  <img src="./assets/images/projects/projectthumb-dungem.png" alt="Dungems thumbnail" loading="lazy">
+  <img width="800" height="1083" src="./assets/images/projects/projectthumb-dungem.webp" alt="Dungems thumbnail" loading="lazy">
     </figure>
     <h3 class="project-title">Dungems</h3>
     <p  class="project-category">Games</p>
@@ -1138,7 +1149,7 @@ Designed and led the development of three educational real-time strategy games‚Ä
     data-link="https://skillsvr.com/modules">
   <a href="#">
     <figure class="project-img">
-<img src="./assets/images/projects/projectthumb-hospitality.png" alt="Hospitality Foundation Passport VR thumbnail" loading="lazy">
+<img width="800" height="450" src="./assets/images/projects/projectthumb-hospitality.webp" alt="Hospitality Foundation Passport VR thumbnail" loading="lazy">
     </figure>
     <h3 class="project-title">Hospitality Foundation Passport</h3>
     <p class="project-category">VR / XR</p>
@@ -1163,7 +1174,7 @@ Designed and led the development of three educational real-time strategy games‚Ä
     data-link="https://bootless.itch.io/clutter-king">
   <a href="#">
     <figure class="project-img">
-<img src="./assets/images/projects/projectthumb-clutterking.png" alt="Clutterking thumbnail" loading="lazy">
+<img width="800" height="1200" src="./assets/images/projects/projectthumb-clutterking.webp" alt="Clutterking thumbnail" loading="lazy">
     </figure>
     <h3 class="project-title">Clutterking</h3>
     <p class="project-category">Games</p>
@@ -1189,7 +1200,7 @@ Designed and led the development of three educational real-time strategy games‚Ä
     data-link="https://socialwork.uky.edu">
   <a href="#">
     <figure class="project-img">
-<img src="./assets/images/projects/projectthumb-millertraining.png" alt="Child Welfare VR Simulation thumbnail" loading="lazy">
+<img width="800" height="443" src="./assets/images/projects/projectthumb-millertraining.webp" alt="Child Welfare VR Simulation thumbnail" loading="lazy">
     </figure>
     <h3 class="project-title">Child Welfare VR Simulation</h3>
     <p class="project-category">VR / XR</p>
@@ -1206,11 +1217,11 @@ Designed and led the development of three educational real-time strategy games‚Ä
     data-studio="JBA Digital"
     data-platforms="ios,android,pc"
     data-year="2019"
-    data-text="<b>City-scale RTS that teaches budgeting, staffing &amp; cash-flow in civil construction.</b>
+    data-text="<b>City-scale RTS that teaches budgeting, staffing, and cash-flow in civil construction.</b>
 <ul class='proj-bullets'>
-  <li>Lay roads, batch concrete &amp; juggle contracts while weather delays chew margin.</li>
-  <li>Excel-style cost-sheet export aligns gameplay with classroom accounting.</li>
-  <li>Built in Unity + DOTS; scales to 1 000+ AI workers on mid-range laptops.</li>
+  <li>Lay roads, pour concrete, and juggle contracts while weather delays eat into your margins.</li>
+  <li>Exports real-format cost sheets to connect gameplay to classroom accounting.</li>
+  <li>Large-scale AI simulation keeps hundreds of workers running smoothly on modest hardware.</li>
 </ul>"
     data-gallery='["./assets/images/projects/project-construction-gameplay.mp4","./assets/images/projects/project-construction1.jpg","./assets/images/projects/project-construction2.jpg","./assets/images/projects/project-construction3.jpg","./assets/images/projects/project-construction4.jpg"]'
     data-link="https://appadvice.com/app/construction-tycoon/1458448825">
@@ -1233,17 +1244,17 @@ Designed and led the development of three educational real-time strategy games‚Ä
     data-studio="SkillsVR"
     data-platforms="quest"
     data-year="2021"
-    data-text="<b>OpenXR built orchard sim with realistic pruning within a malleable envrionment.  Learn winter cane selection &amp; summer tip pruning.</b>
+    data-text="<b>VR orchard sim teaching winter cane selection and summer tip pruning in a realistic, hands-on environment.</b>
 <ul class='proj-bullets'>
-  <li>Worked with team to rapidly prototype several different approaches to the pruning process, iterated and passed concrete working example to development team to continue with. </li>
-  <li>Framerate friendly snip gestures with haptic feedback and leaf-shedding particle FX.</li>
-  <li>Provided technical and artistic support to help keep project on time and within framerate.</li>
+  <li>Rapidly prototyped several approaches to the pruning mechanics, then handed a solid working example to the dev team to build on.</li>
+  <li>Haptic snip gestures with satisfying leaf-shedding particle effects.</li>
+  <li>Provided technical and artistic support to keep the project on time and on budget.</li>
 </ul>"
     data-gallery='["./assets/images/projects/project-kiwi1.png","./assets/images/projects/project-kiwi2.png","./assets/images/projects/project-kiwi3.png"]'
     data-link="https://skillsvr.com/modules/kiwifruit-pruning">
   <a href="#">
     <figure class="project-img">
-<img src="./assets/images/projects/projectthumb-kiwifruit.png" alt="Kiwifruit Pruning VR thumbnail" loading="lazy">
+<img width="800" height="1200" src="./assets/images/projects/projectthumb-kiwifruit.webp" alt="Kiwifruit Pruning VR thumbnail" loading="lazy">
     </figure>
     <h3 class="project-title">Kiwifruit Pruning</h3>
     <p class="project-category">VR / XR</p>
@@ -1269,7 +1280,7 @@ Designed and led the development of three educational real-time strategy games‚Ä
     data-link="https://apps.apple.com/us/app/tumbly-beasts/id1067782839">
   <a href="#">
     <figure class="project-img">
-<img src="./assets/images/projects/projectthumb-tumbly1.png" alt="Tumbly Beasts thumbnail" loading="lazy">
+<img width="800" height="1200" src="./assets/images/projects/projectthumb-tumbly1.webp" alt="Tumbly Beasts thumbnail" loading="lazy">
     </figure>
     <h3 class="project-title">Tumbly Beasts</h3>
     <p class="project-category">Games</p>
@@ -1297,7 +1308,7 @@ Designed and led the development of three educational real-time strategy games‚Ä
     data-link="https://skillsvr.com/modules/hazard-management">
   <a href="#">
     <figure class="project-img">
-<img src="./assets/images/projects/projectthumb-sustainability.png" alt="sustain  VR thumbnail" loading="lazy">
+<img width="800" height="1200" src="./assets/images/projects/projectthumb-sustainability.webp" alt="sustain  VR thumbnail" loading="lazy">
     </figure>
     <h3 class="project-title">Sustainability</h3>
     <p class="project-category">VR / XR</p>
@@ -1315,17 +1326,17 @@ Designed and led the development of three educational real-time strategy games‚Ä
     data-studio="Fold Thirteen"
     data-platforms="ios,android"
     data-year="2018"
-    data-text="<b>Explorative narrative about the last song of Aotearoa‚Äôs extinct huia.</b>
-<ul class='proj-bullets'>
-  <li>Hand-painted ngahere; track spectral echoes to rebuild the bird‚Äôs call.</li>
-  <li>Branching journal pages intertwine MƒÅori folklore&nbsp;&amp;&nbsp;modern ecology.</li>
-  <li>FMOD spectral-morphing blends location audio with recovered whistle notes.</li>
+    data-text="<b>A short narrative game about Aotearoa‚Äôs extinct huia bird.</b>
+<ul class=‚Äôproj-bullets‚Äô>
+  <li>Explore hand-painted bush environments and piece together the huia‚Äôs lost song.</li>
+  <li>Uncover the story through journal entries mixing MƒÅori folklore and ecology.</li>
+  <li>Ambient audio blends field recordings with the bird‚Äôs reconstructed call.</li>
 </ul>"
     data-gallery='["./assets/images/projects/project-huia.mp4","./assets/images/projects/HUIA-ss.png","./assets/images/projects/HUIA-ss1.png","./assets/images/projects/HUIA-ss2.png"]'
     data-link="https://coronalabs.com/blog/2016/09/08/featured-app-12-huia-birds-bringing-extinct-birds-back-to-life-through-interactive-storytelling/">
   <a href="#">
     <figure class="project-img">
-<img src="./assets/images/projects/projectthumb-huia.png" alt="Huia thumbnail" loading="lazy">
+<img width="800" height="248" src="./assets/images/projects/projectthumb-huia.webp" alt="Huia thumbnail" loading="lazy">
     </figure>
     <h3 class="project-title">Huia</h3>
     <p class="project-category">Games</p>
@@ -1342,11 +1353,11 @@ Designed and led the development of three educational real-time strategy games‚Ä
     data-studio="JBA Digital"
     data-platforms="ios,android,pc"
     data-year="2018"
-    data-text="<b>STEM factory-builder: automate solder lines, manage R&amp;D, ship gadgets.</b>
+    data-text="<b>STEM factory-builder: automate production lines, manage R&amp;D, and ship gadgets to market.</b>
 <ul class='proj-bullets'>
-  <li>PCB conveyor logic &amp; SMT placement mini-games track real DPMO metrics.</li>
-  <li>Idle-production layer with crisis events‚Äîcomponent shortages, QC failures.</li>
-  <li>Lesson-plan PDF bundles map game loops to supply-chain maths topics.</li>
+  <li>Mini-games cover real manufacturing steps ‚Äî circuit board assembly, component placement, and quality control.</li>
+  <li>Idle production layer with crisis events like supply shortages and factory failures.</li>
+  <li>Lesson plans connect the game loops to supply-chain and maths topics.</li>
 </ul>"
     data-gallery='["./assets/images/projects/project-techtycoon-trailer.mp4","./assets/images/projects/project-techtycoon1.png","./assets/images/projects/project-techtycoon2.png"]'
     data-link="https://apkpure.net/jba-tech-tycoon/com.jba.tt">
@@ -1369,19 +1380,19 @@ Designed and led the development of three educational real-time strategy games‚Ä
     data-platforms="ios,android,desktop"
     data-year="2023"
     data-text=
-    "<b>Cross-platform desktop &amp; mobile app that reduces paperwork & speeds up workflows for electrical engineers.</b>
+    "<b>Cross-platform desktop and mobile app for electrical engineers ‚Äî cuts paperwork and speeds up field workflows.</b>
 <ul class='proj-bullets'>
-  <li>Offline-first datastore (MongoDB + Realm) with seamless cloud sync ‚Äì data is never out of reach.</li>
-  <li>One-screen capture for notes, photos and calibration metrics; designed for gloved hands in the field.</li>
-  <li>Brother B-PAC integration: print QR codes on-site and scan them later for instant asset lookup.</li>
-  <li>Iterated side-by-side with stakeholders with real-world workflows.</li>
+  <li>Works offline and syncs to the cloud when connected ‚Äî data is always available.</li>
+  <li>Capture notes, photos, and calibration data on one screen, designed for use in gloves.</li>
+  <li>Print QR codes on-site and scan them later for instant asset lookup.</li>
+  <li>Built iteratively alongside engineers using real-world workflows.</li>
 </ul>"
 
         data-gallery='[ "./assets/images/projects/project-comsim3.png", "./assets/images/projects/project-comsim2.png", "./assets/images/projects/project-comsim.png"]'
     data-link="www.comsim.co.nz">
   <a href="#">
     <figure class="project-img">
-<img src="./assets/images/projects/projectthumb-comsimPoster.png" alt="Comsim thumbnail" loading="lazy">
+<img width="749" height="1028" src="./assets/images/projects/projectthumb-comsimPoster.webp" alt="Comsim thumbnail" loading="lazy">
     </figure>
     <h3 class="project-title">Comsim</h3>
     <p  class="project-category">Apps</p>
@@ -1396,11 +1407,11 @@ Designed and led the development of three educational real-time strategy games‚Ä
     data-studio="JBA Digital"
     data-platforms="ios,android,pc"
     data-year="2017"
-    data-text="<b>Fast-casual empire sim: engineer menus, juggle staffing &amp; stave off burnout.</b>
+    data-text="<b>Fast-casual empire sim: design menus, juggle staffing, and keep burnout at bay.</b>
 <ul class='proj-bullets'>
-  <li>Ingredient sourcing &amp; wastage modelling keeps margins razor-thin.</li>
-  <li>AI staff personalities‚Äîrosters affect fatigue spikes &amp; turnover risk.</li>
-  <li>Split-screen kitchen view turns management into a couch-coop party.</li>
+  <li>Ingredient sourcing and wastage modelling keeps margins tight.</li>
+  <li>Staff have personalities ‚Äî rosters affect morale and turnover.</li>
+  <li>Split-screen kitchen view turns management into a couch co-op game.</li>
 </ul>"
     data-gallery='["./assets/images/projects/project-restaurant-trailer.mp4","./assets/images/projects/project-restaurant1.png","./assets/images/projects/project-restaurant2.png","./assets/images/projects/project-restaurant3.png"]'
     data-link="https://appadvice.com/game/app/restaurant-tycoon/1436672122">
@@ -1421,17 +1432,17 @@ Designed and led the development of three educational real-time strategy games‚Ä
     data-studio="Fold Thirteen"
     data-platforms="pc"
     data-year="2017"
-    data-text="<b>Logic-pipe puzzler based the windows classic Pipe Dreams</b>
+    data-text="<b>Logic-pipe puzzler based on the Windows classic Pipe Dreams.</b>
 <ul class='proj-bullets'>
-  <li>Maps and puzzles made in design-friendly click to build scriptable object format.</li>
-  <li>Built with analytics to recognise and respond to churn</li>
-  <li>Built with unity ads</li>
+  <li>Maps and puzzles built in a designer-friendly, click-to-place format.</li>
+  <li>Analytics track where players drop off to keep difficulty balanced.</li>
+  <li>Ad-supported with Unity Ads.</li>
 </ul>"
     data-gallery='[{"src":"./assets/images/projects/project-pipe1.png","fit":"full"},{"src":"./assets/images/projects/project-pipe3.png","fit":"full"},{"src":"./assets/images/projects/project-pipe4.png","fit":"full"},{"src":"./assets/images/projects/project-pipe5.png","fit":"full"}]'
     data-link="https://corovcam.itch.io/pipe-world">
   <a href="#">
     <figure class="project-img">
-<img src="./assets/images/projects/projectthumb-pipeworld.png" alt="Pipeworld thumbnail" loading="lazy">
+<img width="800" height="1200" src="./assets/images/projects/projectthumb-pipeworld.webp" alt="Pipeworld thumbnail" loading="lazy">
     </figure>
     <h3 class="project-title">Pipeworld</h3>
     <p class="project-category">Games</p>
@@ -1458,7 +1469,7 @@ Designed and led the development of three educational real-time strategy games‚Ä
     data-link="https://www.amazon.com/Thunderstorm-Maths-Castle/dp/B00CNJUL50">
   <a href="#">
     <figure class="project-img">
-<img src="./assets/images/projects/projectthumb-mathcastle.png" alt="Math Castle thumbnail" loading="lazy">
+<img width="800" height="1200" src="./assets/images/projects/projectthumb-mathcastle.webp" alt="Math Castle thumbnail" loading="lazy">
     </figure>
     <h3 class="project-title">Math Castle</h3>
     <p class="project-category">Games</p>
@@ -1689,7 +1700,8 @@ Designed and led the development of three educational real-time strategy games‚Ä
         <section class="mapbox" data-mapbox>
           <figure>
             <iframe
-                 src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d255444.20638271957!2d174.7542782!3d-36.913751!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2snz!4v1720406000000!5m2!1sen!2snz" 
+              src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d127722.0!2d174.7633!3d-36.8485!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2snz!4v1720406000000!5m2!1sen!2snz"
+              title="Auckland, New Zealand"
               width="400" height="300" loading="lazy"></iframe>
           </figure>
         </section>
@@ -1770,7 +1782,7 @@ Designed and led the development of three educational real-time strategy games‚Ä
   <!--
     - custom js link
   -->
-  <script src="./assets/js/script.js"></script>
+  <script defer src="./assets/js/script.js"></script>
 
   <!--
     - ionicon link

@@ -830,12 +830,28 @@ function resizeAllMasonryItems(){ allItems().forEach(resizeMasonryItem); }
 window.addEventListener('load',   resizeAllMasonryItems);
 window.addEventListener('resize', resizeAllMasonryItems);
 
+/* Batch masonry recalculations: collect all load events within a single
+   animation frame and reflow once instead of once-per-image.            */
+let _masonryRafId = null;
+function scheduleMasonryResize(){
+  if (_masonryRafId) return;
+  _masonryRafId = requestAnimationFrame(()=>{
+    _masonryRafId = null;
+    resizeAllMasonryItems();
+  });
+}
+
 allItems().forEach(item=>{
   item.querySelectorAll('img').forEach(img=>{
+    const onLoad = () => {
+      img.classList.add('img-loaded');
+      scheduleMasonryResize();
+    };
     if (img.complete){
-      resizeMasonryItem(item);
+      img.classList.add('img-loaded');
+      scheduleMasonryResize();
     }else{
-      img.addEventListener('load', ()=>resizeMasonryItem(item));
+      img.addEventListener('load', onLoad, { once: true });
     }
   });
 });

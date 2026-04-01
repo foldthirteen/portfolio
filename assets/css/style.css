@@ -1838,8 +1838,14 @@ main {
   height: 100%;
   object-fit: contain;
   z-index: 1;
+  opacity: 0;
   transition: transform 0.5s cubic-bezier(0.33, 1, 0.68, 1),
-              filter   0.5s cubic-bezier(0.33, 1, 0.68, 1);
+              filter   0.5s cubic-bezier(0.33, 1, 0.68, 1),
+              opacity  0.4s ease;
+}
+
+.project-img img.img-loaded {
+  opacity: 1;
 }
 
 .project-item > a:hover img {
@@ -1972,37 +1978,7 @@ main {
   overflow: hidden;
 }
 
-.mapbox figure {
-  position: relative;
-  height: 100%;
-}
-
-/* Gradient overlays to mask Google Maps UI controls */
-.mapbox figure::before,
-.mapbox figure::after {
-  content: '';
-  position: absolute;
-  pointer-events: none;
-  z-index: 1;
-}
-
-/* Right edge — covers the pan/move control */
-.mapbox figure::before {
-  top: 0;
-  right: 0;
-  bottom: 0;
-  width: 64px;
-  background: linear-gradient(to right, transparent, hsl(240, 2%, 10%));
-}
-
-/* Bottom edge — covers keyboard shortcuts text and satellite thumbnail */
-.mapbox figure::after {
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 44px;
-  background: linear-gradient(to bottom, transparent, hsl(240, 2%, 10%));
-}
+.mapbox figure { height: 100%; }
 
 .mapbox iframe {
   width: 100%;
@@ -2010,13 +1986,13 @@ main {
   border: none;
   filter: grayscale(1) invert(1);
   pointer-events: none;    /* map is decorative — disable pan/zoom/click */
-  transform: scale(1.18); /* resting state — keeps Google Maps chrome clipped */
-  transform-origin: center center;
+  transform: scale(1.24); /* resting state — keeps Google Maps chrome clipped */
+  transform-origin: center 62%;  /* bias clip toward the top to hide top-left control */
 }
 
 @keyframes mapSettle {
-  from { transform: scale(1.45); }
-  to   { transform: scale(1.18); }
+  from { transform: scale(1.5); }
+  to   { transform: scale(1.24); }
 }
 
 /* Replay the settle-in every time the Contact tab is opened */
@@ -2133,6 +2109,9 @@ textarea.form-input::-webkit-resizer { display: none; }
 
   .project-img,
   .blog-banner-box { height: auto; }
+
+  /* Let intrinsic width/height attrs drive the aspect ratio — prevents CLS */
+  .project-img img { height: auto; }
 
   /* icon-box follows figure natural height */
   .project-item-icon-box { height: auto; bottom: 0; }
