@@ -1653,6 +1653,12 @@ main {
   row-gap: 0;
   align-items: start;
   margin-bottom: 10px;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.project-list.masonry-ready {
+  opacity: 1;
 }
 
 .project-item { display: none; }

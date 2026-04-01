@@ -537,6 +537,15 @@ for (let i = 0; i < navigationLinks.length; i++) {
     // (IntersectionObserver can't see hidden sections until they become visible)
     if (this.innerHTML.trim().toLowerCase() === 'portfolio') {
       document.querySelectorAll('.project-item').forEach(prefetchCardVideos);
+      // Recalculate masonry now that the section is visible — getBoundingClientRect
+      // returns 0 for hidden elements so the DOM-ready call couldn't size correctly.
+      // Two rAFs: first lets the browser paint the visible section, second measures.
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          resizeAllMasonryItems();
+          grid.classList.add('masonry-ready');
+        });
+      });
     }
 
   });
