@@ -36,11 +36,58 @@ const testimonialsModalFunc = function () {
 
 let heroSwiper = null;                   // keeps reference between opens
 
+// ── Video prefetch cache ───────────────────────────────────────────────────
+// Keys are video src strings; values are hidden <video> elements that have
+// already started fetching metadata, so modal open is instant.
+const videoPreloadCache = new Map();
+
+function prefetchVideoMetadata(src) {
+  if (videoPreloadCache.has(src)) return;
+  const v = document.createElement('video');
+  v.preload = 'metadata';
+  v.playsInline = true;
+  v.style.cssText = 'position:absolute;width:0;height:0;opacity:0;pointer-events:none';
+  v.src = src;
+  document.body.appendChild(v);
+  videoPreloadCache.set(src, v);
+}
+
+function prefetchCardVideos(card) {
+  const raw = card.dataset.gallery;
+  if (!raw) return;
+  try {
+    const gallery = JSON.parse(raw);
+    for (const entry of gallery) {
+      const src = typeof entry === 'string' ? entry : entry.src;
+      if (/\.(mp4|webm|ogg)$/i.test(src)) {
+        prefetchVideoMetadata(src);
+        break; // only the first video per card — enough to warm up the most likely one
+      }
+    }
+  } catch (_) {}
+}
+
+// Watch project cards — prefetch as they scroll into view
+const cardObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      prefetchCardVideos(entry.target);
+      cardObserver.unobserve(entry.target); // only need to prefetch once
+    }
+  });
+}, { rootMargin: '200px' }); // start 200px before the card is visible
+
+document.querySelectorAll('.project-item').forEach(card => cardObserver.observe(card));
+
 function buildHeroSwiper(slideSrcArray){
   const wrapper = document.querySelector('#heroSwiper .swiper-wrapper');
   wrapper.innerHTML = '';                // clear previous slides
 
-  slideSrcArray.forEach(entry => {
+  // Videos always first
+  const isVideoSrc = s => /\.(mp4|webm|ogg)$/i.test(typeof s === 'string' ? s : s.src);
+  const sorted = [...slideSrcArray].sort((a, b) => isVideoSrc(b) - isVideoSrc(a));
+
+  sorted.forEach(entry => {
     // Entry can be a plain string or { src, fit }
     // fit: "full"  → constrain to container in both axes (no cropping)
     // fit: "cover" → (default) fill width, height auto
@@ -52,11 +99,24 @@ function buildHeroSwiper(slideSrcArray){
     if (fit === 'full') slide.classList.add('slide-fit-full');
 
     const isVideo = /\.(mp4|webm|ogg)$/i.test(src);
-    const media   = isVideo
-      ? Object.assign(document.createElement('video'), {
-          src, controls:true, playsInline:true, preload:'metadata' })
-      : Object.assign(new Image(), {
-          src, alt:'project asset', loading:'lazy' });
+    let media;
+    if (isVideo) {
+      // Reuse a pre-fetched element if available, otherwise create fresh
+      const cached = videoPreloadCache.get(src);
+      if (cached) {
+        cached.removeAttribute('style'); // unhide
+        cached.controls = true;
+        cached.muted = true;
+        cached.autoplay = true;
+        media = cached;
+        videoPreloadCache.delete(src);   // it's now in the DOM; don't reuse again
+      } else {
+        media = Object.assign(document.createElement('video'), {
+          src, controls: true, playsInline: true, preload: 'metadata', muted: true, autoplay: true });
+      }
+    } else {
+      media = Object.assign(new Image(), { src, alt: 'project asset', loading: 'lazy' });
+    }
 
     slide.appendChild(media);
     wrapper.appendChild(slide);
@@ -66,12 +126,17 @@ function buildHeroSwiper(slideSrcArray){
   if (heroSwiper) heroSwiper.destroy(true, true);
 
   heroSwiper = new Swiper('#heroSwiper', {
-    loop:        slideSrcArray.length > 3,
+    loop:        sorted.length > 3,
     speed:       600,
     grabCursor:  true,
     keyboard:    { enabled:true },
     navigation:  { nextEl: '#heroSwiper-next', prevEl: '#heroSwiper-prev' },
-    pagination:  { el: '.swiper-pagination', clickable:true }
+    pagination:  { el: '.swiper-pagination', clickable:true },
+    on: {
+      slideChange() {
+        wrapper.querySelectorAll('video').forEach(v => v.pause());
+      }
+    }
   });
 }
 
@@ -460,6 +525,12 @@ for (let i = 0; i < navigationLinks.length; i++) {
         pages[i].classList.remove("active");
         navigationLinks[i].classList.remove("active");
       }
+    }
+
+    // When navigating to Portfolio, kick off video prefetch for all cards
+    // (IntersectionObserver can't see hidden sections until they become visible)
+    if (this.innerHTML.trim().toLowerCase() === 'portfolio') {
+      document.querySelectorAll('.project-item').forEach(prefetchCardVideos);
     }
 
   });
