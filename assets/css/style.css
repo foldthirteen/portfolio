@@ -1581,9 +1581,9 @@ main {
 }
 
 #heroSwiper .swiper-slide {
-  max-height: 58vh;
+  height: 58vh;
   display: flex;
-  align-items: center;    /* vertically centre content within the equalised height */
+  align-items: center;
   justify-content: center;
 }
 
@@ -1604,10 +1604,11 @@ main {
 
 #heroSwiper video {
   width: 100%;
+  height: 100%;
   max-height: 58vh;
   border-radius: 12px;
   display: block;
-  margin: auto; /* vertically centre video when slide is taller than video */
+  object-fit: contain;
 }
 
 /* pagination bullets tight under slides */
@@ -1971,13 +1972,56 @@ main {
   overflow: hidden;
 }
 
-.mapbox figure { height: 100%; }
+.mapbox figure {
+  position: relative;
+  height: 100%;
+}
+
+/* Gradient overlays to mask Google Maps UI controls */
+.mapbox figure::before,
+.mapbox figure::after {
+  content: '';
+  position: absolute;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Right edge — covers the pan/move control */
+.mapbox figure::before {
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 64px;
+  background: linear-gradient(to right, transparent, hsl(240, 2%, 10%));
+}
+
+/* Bottom edge — covers keyboard shortcuts text and satellite thumbnail */
+.mapbox figure::after {
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 44px;
+  background: linear-gradient(to bottom, transparent, hsl(240, 2%, 10%));
+}
 
 .mapbox iframe {
   width: 100%;
   height: 100%;
   border: none;
   filter: grayscale(1) invert(1);
+  pointer-events: none;    /* map is decorative — disable pan/zoom/click */
+  transform: scale(1.18); /* resting state — keeps Google Maps chrome clipped */
+  transform-origin: center center;
+}
+
+@keyframes mapSettle {
+  from { transform: scale(1.45); }
+  to   { transform: scale(1.18); }
+}
+
+/* Replay the settle-in every time the Contact tab is opened */
+[data-page="contact"].active .mapbox iframe {
+  animation: mapSettle 2.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
 }
 
 .contact-form { margin-bottom: 10px; }

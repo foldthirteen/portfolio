@@ -139,6 +139,10 @@ function buildHeroSwiper(slideSrcArray){
     navigation:  { nextEl: '#heroSwiper-next', prevEl: '#heroSwiper-prev' },
     pagination:  { el: '.swiper-pagination', clickable:true },
     on: {
+      afterInit(swiper) {
+        const firstVideo = swiper.slides[swiper.activeIndex]?.querySelector('video');
+        if (firstVideo) firstVideo.play().catch(() => {});
+      },
       slideChange() {
         wrapper.querySelectorAll('video').forEach(v => v.pause());
       }
