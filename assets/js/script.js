@@ -111,8 +111,14 @@ function buildHeroSwiper(slideSrcArray){
         media = cached;
         videoPreloadCache.delete(src);   // it's now in the DOM; don't reuse again
       } else {
-        media = Object.assign(document.createElement('video'), {
-          src, controls: true, playsInline: true, preload: 'metadata', muted: true, autoplay: true });
+        media = document.createElement('video');
+        media.muted = true;          // must be set before src to guarantee muted autoplay
+        media.setAttribute('muted', '');
+        media.src = src;
+        media.controls = true;
+        media.playsInline = true;
+        media.preload = 'metadata';
+        media.autoplay = true;
       }
     } else {
       media = Object.assign(new Image(), { src, alt: 'project asset', loading: 'lazy' });
