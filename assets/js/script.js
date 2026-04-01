@@ -54,7 +54,7 @@ function buildHeroSwiper(slideSrcArray){
     const isVideo = /\.(mp4|webm|ogg)$/i.test(src);
     const media   = isVideo
       ? Object.assign(document.createElement('video'), {
-          src, controls:true, playsInline:true })
+          src, controls:true, playsInline:true, preload:'metadata' })
       : Object.assign(new Image(), {
           src, alt:'project asset', loading:'lazy' });
 
