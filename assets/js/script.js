@@ -284,13 +284,16 @@ form.addEventListener("submit", async function (e) {
       formBtn.querySelector("span").textContent = "Sent!";
       form.reset();
       formInputs.forEach(input => input.classList.remove("touched"));
+      form.dispatchEvent(new CustomEvent('formResult', { detail: { status: 'success' } }));
     } else {
       formBtn.querySelector("span").textContent = "Error — try again";
       formBtn.removeAttribute("disabled");
+      form.dispatchEvent(new CustomEvent('formResult', { detail: { status: 'error' } }));
     }
   } catch {
     formBtn.querySelector("span").textContent = "Error — try again";
     formBtn.removeAttribute("disabled");
+    form.dispatchEvent(new CustomEvent('formResult', { detail: { status: 'error' } }));
   }
 });
 
