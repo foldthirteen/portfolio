@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ben Visser — CV</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,600;1,400;1,600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ff-display: 'Space Grotesk', Georgia, sans-serif;
+      --ff-body:    'Crimson Pro', Georgia, serif;
+      --color-bg:      #ffffff;
+      --color-surface: #ebebeb;
+      --color-text:    #111111;
+      --color-muted:   #505050;
+      --color-rule:    #c0c0c0;
+      --fs-name:   clamp(2rem, 5vw, 2.6rem);
+      --fs-label:  clamp(0.58rem, 1.2vw, 0.72rem);
+      --fs-head:   clamp(0.62rem, 1.3vw, 0.76rem);
+      --fs-body:   clamp(0.64rem, 1.25vw, 0.76rem);
+      --fs-small:  clamp(0.56rem, 1.05vw, 0.66rem);
+    }
+
+    html { font-size: 16px; }
+
+    body {
+      font-family: var(--ff-body);
+      background: #e8e8e8;
+      color: var(--color-text);
+      line-height: 1.45;
+      padding: 48px 16px 48px;
+      margin: 0;
+    }
+
+    /* ── TOOLBAR ── */
+    .cv-toolbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      height: 44px;
+      background: var(--color-bg);
+      border-bottom: 1px solid var(--color-rule);
+    }
+
+    .cv-toolbar__label {
+      font-family: var(--ff-display);
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--color-muted);
+    }
+
+    .cv-toolbar__btn {
+      font-family: var(--ff-display);
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--color-text);
+      background: none;
+      border: 1px solid var(--color-text);
+      border-radius: 3px;
+      padding: 5px 12px;
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s;
+    }
+
+    .cv-toolbar__btn:hover {
+      background: var(--color-text);
+      color: var(--color-bg);
+    }
+
+    /* ── PAGE CARD ── */
+    .cv-page {
+      background: var(--color-bg);
+      max-width: 794px;
+      margin: 0 auto;
+      padding: 28px 32px;
+      box-shadow: 0 2px 20px rgba(0,0,0,0.15);
+    }
+
+    /* ── HEADER ── */
+    .cv-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      padding-bottom: 8px;
+      border-bottom: 1.5px solid var(--color-text);
+      margin-bottom: 16px;
+    }
+
+    .cv-header__right {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 3px;
+    }
+
+    .cv-header__name {
+      font-family: var(--ff-display);
+      font-size: var(--fs-name);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1;
+    }
+
+    .cv-header__title {
+      font-family: var(--ff-display);
+      font-size: var(--fs-label);
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      text-align: right;
+    }
+
+    .cv-header__contact {
+      font-size: var(--fs-small);
+      color: var(--color-muted);
+      text-align: right;
+      letter-spacing: 0.02em;
+    }
+
+    /* ── BODY: two-column grid ── */
+    .cv-body {
+      display: grid;
+      grid-template-columns: 62fr 38fr;
+      column-gap: 32px;
+      align-items: stretch;
+    }
+
+    /* ── SECTION HEADING ── */
+    .cv-section-title {
+      font-family: var(--ff-display);
+      font-size: var(--fs-head);
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--color-text);
+      border-bottom: 1px solid var(--color-rule);
+      padding-bottom: 4px;
+      margin-bottom: 9px;
+    }
+
+    /* ── LEFT COLUMN ── */
+    .cv-left {
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── EXPERIENCE ENTRIES ── */
+    .cv-experience {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 20px;
+    }
+
+    .cv-roles {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    article.cv-role {}
+
+    .cv-role__header {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      column-gap: 8px;
+      align-items: baseline;
+      margin-bottom: 2px;
+    }
+
+    .cv-role__title {
+      font-family: var(--ff-display);
+      font-size: var(--fs-body);
+      font-weight: 700;
+      line-height: 1.3;
+    }
+
+    .cv-role__company {
+      font-weight: 400;
+      color: var(--color-muted);
+    }
+
+    .cv-role__dates {
+      font-size: var(--fs-small);
+      color: var(--color-muted);
+      white-space: nowrap;
+      text-align: right;
+    }
+
+    .cv-role__bullets {
+      list-style: none;
+      padding: 0;
+    }
+
+    .cv-role__bullets li {
+      font-size: var(--fs-body);
+      color: var(--color-muted);
+      padding-left: 1em;
+      position: relative;
+      line-height: 1.4;
+      margin-bottom: 2px;
+    }
+
+    .cv-role__bullets li::before {
+      content: "–";
+      position: absolute;
+      left: 0;
+    }
+
+    /* ── EDUCATION ── */
+    .cv-education { margin-top: 20px; }
+
+    .cv-edu__degree {
+      font-family: var(--ff-display);
+      font-size: var(--fs-body);
+      font-weight: 700;
+    }
+
+    .cv-edu__detail {
+      font-size: var(--fs-small);
+      color: var(--color-muted);
+    }
+
+    /* ── SUMMARY ── */
+    .cv-summary { margin-bottom: 18px; }
+
+    .cv-summary__para {
+      font-size: var(--fs-body);
+      color: var(--color-muted);
+      margin-bottom: 8px;
+      line-height: 1.5;
+    }
+
+    .cv-summary__para strong {
+      color: var(--color-text);
+      font-weight: 400;
+      font-style: italic;
+    }
+
+    /* ── INDEPENDENT TITLES ── */
+    .cv-titles-list { margin-top: 8px; }
+
+    .cv-titles-year {
+      margin-top: 11px;
+      margin-bottom: 3px;
+    }
+
+    .cv-titles-year:first-child { margin-top: 2px; }
+
+    .cv-titles-year__num {
+      font-family: var(--ff-display);
+      font-size: var(--fs-small);
+      font-weight: 700;
+      color: var(--color-rule);
+      letter-spacing: 0.04em;
+    }
+
+    .cv-titles-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2px 6px;
+    }
+
+    .cv-title-entry {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .cv-title-entry__thumb {
+      width: 20px;
+      height: 20px;
+      border-radius: 4px;
+      object-fit: cover;
+      flex-shrink: 0;
+    }
+
+    .cv-title-entry__thumb--placeholder {
+      width: 20px;
+      height: 20px;
+      border-radius: 4px;
+      background: var(--color-surface);
+      flex-shrink: 0;
+    }
+
+    .cv-title-entry__info {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .cv-title-entry__name {
+      font-family: var(--ff-display);
+      font-size: var(--fs-small);
+      font-weight: 500;
+      line-height: 1.2;
+    }
+
+    .cv-title-entry__studio {
+      font-size: calc(var(--fs-small) * 0.88);
+      color: var(--color-rule);
+      line-height: 1.2;
+      letter-spacing: 0.02em;
+    }
+
+    /* ── PRINT ── */
+    @media print {
+      .cv-toolbar { display: none; }
+      body { background: none; padding: 0; }
+      .cv-page { box-shadow: none; max-width: none; padding: 0; margin: 0; }
+      @page { size: A4; margin: 12mm 15mm; }
+      * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      article.cv-role { page-break-inside: avoid; }
+      .cv-education { page-break-inside: avoid; }
+    }
+
+    /* ── NARROW SCREENS ── */
+    @media (max-width: 640px) {
+      body { padding: 8px; }
+      .cv-page { padding: 16px; }
+      .cv-body { grid-template-columns: 1fr; }
+      .cv-right { margin-top: 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── TOOLBAR ── -->
+  <nav class="cv-toolbar">
+    <span class="cv-toolbar__label">Ben Visser &mdash; CV</span>
+    <button class="cv-toolbar__btn" onclick="window.print()">Print / Save as PDF</button>
+  </nav>
+
+  <div class="cv-page">
+
+  <!-- ── HEADER ── -->
+  <header class="cv-header">
+    <h1 class="cv-header__name">Ben Visser</h1>
+    <div class="cv-header__right">
+      <span class="cv-header__title">Engineering &amp; Design</span>
+      <p class="cv-header__contact">Auckland, New Zealand &nbsp;·&nbsp; 0226810558 &nbsp;·&nbsp; foldthirteen@gmail.com</p>
+    </div>
+  </header>
+
+  <main class="cv-body">
+
+    <!-- ══════════════════════════════════════
+         LEFT COLUMN
+    ═══════════════════════════════════════ -->
+    <div class="cv-left">
+
+      <section id="experience" class="cv-experience">
+        <h2 class="cv-section-title">Professional Experience</h2>
+
+        <div class="cv-roles">
+
+        <article class="cv-role"
+          data-role="Gameplay and AI Engineer"
+          data-company="SkillsVR"
+          data-from="2025"
+          data-to="2026">
+          <div class="cv-role__header">
+            <span class="cv-role__title">Gameplay &amp; AI Engineer &mdash; <span class="cv-role__company">SkillsVR</span></span>
+            <span class="cv-role__dates">2025 &ndash; 2026</span>
+          </div>
+          <ul class="cv-role__bullets">
+            <li>Built AI-driven NPC systems for immersive VR training scenarios</li>
+            <li>Vue.js asset-browser widget: browse and preview Unity packages without opening the editor</li>
+            <li>Editor tooling and automation to accelerate CCK content authoring</li>
+          </ul>
+        </article>
+
+        <article class="cv-role"
+          data-role="Lead Application Development"
+          data-company="E&amp;I Services"
+          data-from="2022"
+          data-to="2025">
+          <div class="cv-role__header">
+            <span class="cv-role__title">Lead Application Development &mdash; <span class="cv-role__company">E&amp;I Services</span></span>
+            <span class="cv-role__dates">2022 &ndash; 2025</span>
+          </div>
+          <ul class="cv-role__bullets">
+            <li>Cross-platform app for electrician calibration and documentation workflows</li>
+            <li>Offline-first MongoDB datastore with seamless background sync</li>
+            <li>Over-the-air update pipeline with staging environment, no manual installs</li>
+            <li>B-PAC printer integration for automatic QR-code generation in the field</li>
+          </ul>
+        </article>
+
+        <article class="cv-role"
+          data-role="Lead Developer"
+          data-company="VRTogether"
+          data-from="2023"
+          data-to="2025">
+          <div class="cv-role__header">
+            <span class="cv-role__title">Lead Developer &mdash; <span class="cv-role__company">VRTogether</span></span>
+            <span class="cv-role__dates">2023 &ndash; 2025</span>
+          </div>
+          <ul class="cv-role__bullets">
+            <li>Led VR training and interactive experience development end-to-end</li>
+            <li>Reusable editor tools enabling branching narrative without code changes</li>
+            <li>VR healthcare sim for University of Kentucky; prototyped real-time voice for a singing game</li>
+          </ul>
+        </article>
+
+        <article class="cv-role"
+          data-role="Gameplay Engineer"
+          data-company="Hipster Whale"
+          data-from="2022"
+          data-to="2023">
+          <div class="cv-role__header">
+            <span class="cv-role__title">Gameplay Engineer &mdash; <span class="cv-role__company">Hipster Whale</span></span>
+            <span class="cv-role__dates">2022 &ndash; 2023</span>
+          </div>
+          <ul class="cv-role__bullets">
+            <li>Gameplay development and polish on a LEGO mobile title</li>
+            <li>Editor tooling and test harness for designer-driven feature validation</li>
+            <li>Crossy Road Castle: new events and live-ops content to drive retention</li>
+          </ul>
+        </article>
+
+        <article class="cv-role"
+          data-role="Prototyping and Technical Design"
+          data-company="SkillsVR"
+          data-from="2020"
+          data-to="2022">
+          <div class="cv-role__header">
+            <span class="cv-role__title">Prototyping &amp; Technical Design &mdash; <span class="cv-role__company">SkillsVR</span></span>
+            <span class="cv-role__dates">2020 &ndash; 2022</span>
+          </div>
+          <ul class="cv-role__bullets">
+            <li>Rapid prototyping bridging design and engineering to optimise flow and timelines</li>
+            <li>Shared Unity packages and UI Styles used across TradeMe, Mainfreight, and MSD VR titles</li>
+          </ul>
+        </article>
+
+        <article class="cv-role"
+          data-role="Game Team Manager"
+          data-company="Joy Business Academy"
+          data-from="2017"
+          data-to="2020">
+          <div class="cv-role__header">
+            <span class="cv-role__title">Game Team Manager &mdash; <span class="cv-role__company">Joy Business Academy</span></span>
+            <span class="cv-role__dates">2017 &ndash; 2020</span>
+          </div>
+          <ul class="cv-role__bullets">
+            <li>Grew gaming department from zero to 12+ during pivot from e-learning to games</li>
+            <li>Production pipelines, government-funded project oversight, stakeholder liaison</li>
+            <li>Designed and shipped the Tycoon Series, three RTS titles teaching small business skills</li>
+          </ul>
+        </article>
+
+        <article class="cv-role"
+          data-role="Gameplay Engineer"
+          data-company="Scarlet City Studios"
+          data-from="2014"
+          data-to="2017">
+          <div class="cv-role__header">
+            <span class="cv-role__title">Gameplay Engineer &mdash; <span class="cv-role__company">Scarlet City Studios</span></span>
+            <span class="cv-role__dates">2014 &ndash; 2017</span>
+          </div>
+          <ul class="cv-role__bullets">
+            <li>Core gameplay systems for a cross-platform MMORPG: combat, quests, economy</li>
+            <li>Shipped companion app with mini-games and interactive comic; handled live ops</li>
+            <li>CDN-backed content pipeline enabling hot-pull asset updates and smaller patches</li>
+          </ul>
+        </article>
+
+        <article class="cv-role"
+          data-role="UX Designer Internship"
+          data-company="Orion Health"
+          data-from="2012"
+          data-to="2013">
+          <div class="cv-role__header">
+            <span class="cv-role__title">UX Designer &ndash; Internship &mdash; <span class="cv-role__company">Orion Health</span></span>
+            <span class="cv-role__dates">2012 &ndash; 2013</span>
+          </div>
+          <ul class="cv-role__bullets">
+            <li>User research and behaviour analysis informing internal and external style guides</li>
+            <li>Documented use cases and usage patterns to sharpen UX guidelines</li>
+          </ul>
+        </article>
+
+        </div><!-- /cv-roles -->
+
+      </section>
+
+      <!-- Education -->
+      <section id="education" class="cv-education">
+        <h2 class="cv-section-title">Education</h2>
+        <div class="cv-edu__entry">
+          <p class="cv-edu__degree">Bachelor of Computing and Mathematical Science</p>
+          <p class="cv-edu__detail">Waikato University &mdash; 2014 &nbsp;&middot;&nbsp; First Class Honours &nbsp;&middot;&nbsp; Chair of Class Representatives</p>
+        </div>
+      </section>
+
+    </div><!-- /cv-left -->
+
+
+    <!-- ══════════════════════════════════════
+         RIGHT COLUMN
+    ═══════════════════════════════════════ -->
+    <div class="cv-right">
+
+      <!-- Summary -->
+      <section id="summary" class="cv-summary">
+        <h2 class="cv-section-title">Summary</h2>
+
+        <p class="cv-summary__para" data-point="1">
+          <strong>Experienced software engineer</strong> with cross-platform development expertise working with both small and large teams.
+        </p>
+
+        <p class="cv-summary__para" data-point="2">
+          <strong>Ten years game development experience</strong>, bringing a deep passion for the gaming industry with over ten independently released titles.
+        </p>
+
+        <p class="cv-summary__para" data-point="3">
+          <strong>Proficient in implementing and utilising a strategic technical approach</strong> that solves problems, skilled in taking a holistic approach to project specifications, and adept at developing matched systems within agile work environments.
+        </p>
+
+        <p class="cv-summary__para" data-point="4">
+          <strong>Backed with strong industry proficiency</strong> in 3D with a strong focus on gameplay engineering and a passion for AI-driven systems.
+        </p>
+
+        <p class="cv-summary__para" data-point="5">
+          <strong>Well versed in usability heuristics</strong>, constructing intuitive designs that support the end user.
+        </p>
+
+        <p class="cv-summary__para" data-point="6">
+          <strong>Experienced in VR and AR development</strong>, creating immersive augmented and virtual worlds. Emphasis on cross-platform solutions through XR technologies.
+        </p>
+      </section>
+
+      <!-- Titles -->
+      <section id="titles" class="cv-titles">
+        <h2 class="cv-section-title">Titles</h2>
+
+        <div class="cv-titles-list">
+
+          <div class="cv-titles-year"><span class="cv-titles-year__num">2025</span></div>
+          <div class="cv-titles-row">
+            <div class="cv-title-entry" data-title="VR Singing Club" data-studio="SkillsVR">
+              <img class="cv-title-entry__thumb" src="assets/images/projects/projectthumb-sing.webp" alt="VR Singing Club">
+              <div class="cv-title-entry__info">
+                <span class="cv-title-entry__name">VR Singing Club</span>
+                <span class="cv-title-entry__studio">SkillsVR</span>
+              </div>
+            </div>
+            <div class="cv-title-entry" data-title="Warehousing Foundation Passport" data-studio="SkillsVR">
+              <img class="cv-title-entry__thumb" src="assets/images/projects/projectthumb-warehousing.webp" alt="Warehousing Foundation Passport">
+              <div class="cv-title-entry__info">
+                <span class="cv-title-entry__name">Warehousing FP</span>
+                <span class="cv-title-entry__studio">SkillsVR</span>
+              </div>
+            </div>
+            <div class="cv-title-entry" data-title="Hospitality Foundation Passport" data-studio="SkillsVR">
+              <img class="cv-title-entry__thumb" src="assets/images/projects/projectthumb-hospitality.webp" alt="Hospitality Foundation Passport">
+              <div class="cv-title-entry__info">
+                <span class="cv-title-entry__name">Hospitality FP</span>
+                <span class="cv-title-entry__studio">SkillsVR</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="cv-titles-year"><span class="cv-titles-year__num">2024</span></div>
+          <div class="cv-titles-row">
+            <div class="cv-title-entry" data-title="Crossy Road Castle" data-studio="Hipster Whale">
+              <img class="cv-title-entry__thumb" src="assets/images/projects/projectthumb-crossy-hires.webp" alt="Crossy Road Castle">
+              <div class="cv-title-entry__info">
+                <span class="cv-title-entry__name">Crossy Road Castle</span>
+                <span class="cv-title-entry__studio">Hipster Whale</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="cv-titles-year"><span class="cv-titles-year__num">2023</span></div>
+          <div class="cv-titles-row">
+            <div class="cv-title-entry" data-title="Child Welfare VR Simulation" data-studio="VRTogether">
+              <img class="cv-title-entry__thumb" src="assets/images/projects/projectthumb-millertraining.webp" alt="Child Welfare VR Simulation">
+              <div class="cv-title-entry__info">
+                <span class="cv-title-entry__name">Child Welfare VR</span>
+                <span class="cv-title-entry__studio">VRTogether</span>
+              </div>
+            </div>
+            <div class="cv-title-entry" data-title="Comsim" data-studio="HI PO">
+              <img class="cv-title-entry__thumb" src="assets/images/projects/projectthumb-comsimPoster.webp" alt="Comsim">
+              <div class="cv-title-entry__info">
+                <span class="cv-title-entry__name">Comsim</span>
+                <span class="cv-title-entry__studio">HI PO</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="cv-titles-year"><span class="cv-titles-year__num">2022</span></div>
+          <div class="cv-titles-row">
+            <div class="cv-title-entry" data-title="Dungems" data-studio="HI PO">
+              <img class="cv-title-entry__thumb" src="assets/images/projects/projectthumb-dungem.webp" alt="Dungems">
+              <div class="cv-title-entry__info">
+                <span class="cv-title-entry__name">Dungems</span>
+                <span class="cv-title-entry__studio">HI PO</span>
+              </div>
+            </div>
+            <div class="cv-title-entry" data-title="Clutterking" data-studio="Bootless">
+              <img class="cv-title-entry__thumb" src="assets/images/projects/projectthumb-clutterking.webp" alt="Clutterking">
+              <div class="cv-title-entry__info">
+                <span class="cv-title-entry__name">Clutterking</span>
+                <span class="cv-title-entry__studio">Bootless</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="cv-titles-year"><span class="cv-titles-year__num">2021</span></div>
+          <div class="cv-titles-row">
+            <div class="cv-title-entry" data-title="Working at Heights" data-studio="SkillsVR">
+              <img class="cv-title-entry__thumb" src="assets/images/projects/projectthumb-heights.webp" alt="Working at Heights">
+              <div class="cv-title-entry__info">
+                <span class="cv-title-entry__name">Working at Heights</span>
+                <span class="cv-title-entry__studio">SkillsVR</span>
+              </div>
+            </div>
+            <div class="cv-title-entry" data-title="Builder" data-studio="Hipster Whale">
+              <img class="cv-title-entry__thumb" src="assets/images/projects/projectthumb-builder.webp" alt="Builder">
+              <div class="cv-title-entry__info">
+                <span class="cv-title-entry__name">Builder</span>
+                <span class="cv-title-entry__studio">Hipster Whale</span>
+              </div>
+            </div>
+            <div class="cv-title-entry" data-title="Kiwifruit Pruning" data-studio="SkillsVR">
+              <img class="cv-title-entry__thumb" src="assets/images/projects/projectthumb-kiwifruit.webp" alt="Kiwifruit Pruning">
+              <div class="cv-title-entry__info">
+                <span class="cv-title-entry__name">Kiwifruit Pruning</span>
+                <span class="cv-title-entry__studio">SkillsVR</span>
+              </div>
+            </div>
+            <div class="cv-title-entry" data-title="Sustainability" data-studio="SkillsVR">
+              <img class="cv-title-entry__thumb" src="assets/images/projects/projectthumb-sustainability.webp" alt="Sustainability">
+              <div class="cv-title-entry__info">
+                <span class="cv-title-entry__name">Sustainability</span>
+                <span class="cv-title-entry__studio">SkillsVR</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="cv-titles-year"><span class="cv-titles-year__num">2018</span></div>
+          <div class="cv-titles-row">
+            <div class="cv-title-entry" data-title="Huia" data-studio="HI PO">
+              <img class="cv-title-entry__thumb" src="assets/images/projects/projectthumb-huia.webp" alt="Huia">
+              <div class="cv-title-entry__info">
+                <span class="cv-title-entry__name">Huia</span>
+                <span class="cv-title-entry__studio">HI PO</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="cv-titles-year"><span class="cv-titles-year__num">2017</span></div>
+          <div class="cv-titles-row">
+            <div class="cv-title-entry" data-title="Pipeworld" data-studio="HI PO">
+              <img class="cv-title-entry__thumb" src="assets/images/projects/projectthumb-pipeworld.webp" alt="Pipeworld">
+              <div class="cv-title-entry__info">
+                <span class="cv-title-entry__name">Pipeworld</span>
+                <span class="cv-title-entry__studio">HI PO</span>
+              </div>
+            </div>
+            <div class="cv-title-entry" data-title="Museum of the Bible" data-studio="Scarlet City Studios">
+              <img class="cv-title-entry__thumb" src="assets/images/projects/projectthumb-motb.webp" alt="Museum of the Bible">
+              <div class="cv-title-entry__info">
+                <span class="cv-title-entry__name">Museum of the Bible</span>
+                <span class="cv-title-entry__studio">Scarlet City Studios</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="cv-titles-year"><span class="cv-titles-year__num">2016</span></div>
+          <div class="cv-titles-row">
+            <div class="cv-title-entry" data-title="Tumbly Beasts" data-studio="THUNDERSTORM">
+              <img class="cv-title-entry__thumb" src="assets/images/projects/projectthumb-tumbly1.webp" alt="Tumbly Beasts">
+              <div class="cv-title-entry__info">
+                <span class="cv-title-entry__name">Tumbly Beasts</span>
+                <span class="cv-title-entry__studio">THUNDERSTORM</span>
+              </div>
+            </div>
+            <div class="cv-title-entry" data-title="The Aetherlight" data-studio="Scarlet City Studios">
+              <img class="cv-title-entry__thumb" src="assets/images/projects/projectthumb-aetherhighres.webp" alt="The Aetherlight">
+              <div class="cv-title-entry__info">
+                <span class="cv-title-entry__name">The Aetherlight</span>
+                <span class="cv-title-entry__studio">Scarlet City Studios</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="cv-titles-year"><span class="cv-titles-year__num">2015</span></div>
+          <div class="cv-titles-row">
+            <div class="cv-title-entry" data-title="Math Castle" data-studio="Thunderstorm">
+              <img class="cv-title-entry__thumb" src="assets/images/projects/projectthumb-mathcastle.webp" alt="Math Castle">
+              <div class="cv-title-entry__info">
+                <span class="cv-title-entry__name">Math Castle</span>
+                <span class="cv-title-entry__studio">Thunderstorm</span>
+              </div>
+            </div>
+          </div>
+
+        </div><!-- /cv-titles-list -->
+      </section>
+
+    </div><!-- /cv-right -->
+
+  </main>
+
+  </div><!-- /cv-page -->
+
+</body>
+</html>

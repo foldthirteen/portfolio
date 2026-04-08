@@ -478,6 +478,7 @@ main {
 
 .contact-info address { font-style: normal; }
 
+
 .social-list {
   display: flex;
   justify-content: flex-start;
@@ -950,11 +951,8 @@ main {
 
 .clients-item img {
   width: 100%;
-  filter: grayscale(1);
   transition: var(--transition-1);
 }
-
-.clients-item img:hover { filter: grayscale(0); }
 
 /* ── Infinite ticker ── */
 .ticker-wrap {
@@ -993,21 +991,24 @@ main {
 
 /* Natural-width items inside ticker — override all responsive min-width rules */
 .ticker-track .clients-item,
-.ticker-track li { min-width: auto; flex-shrink: 0; scroll-snap-align: none; }
+.ticker-track li { min-width: auto; flex-shrink: 0; scroll-snap-align: none; background: var(--eerie-black-2); }
 
 /* Keep project logo images at a consistent small height in the ticker */
 .ticker-track .clients-item img {
   height: 160px;
   width: auto;
-  filter: grayscale(1);
   opacity: 0;
-  transition: filter var(--transition-1), opacity 0.4s ease;
+  filter: grayscale(1);
+  mix-blend-mode: screen;
+  -webkit-mask-image: radial-gradient(ellipse 90% 90% at 50% 50%, black 55%, transparent 100%);
+  mask-image: radial-gradient(ellipse 90% 90% at 50% 50%, black 55%, transparent 100%);
+  transition: opacity 0.4s ease, filter var(--transition-1);
 }
 
 .ticker-track .clients-item img.img-loaded { opacity: 1; }
 
 .ticker-track .clients-item img:hover {
-  filter: sepia(1) saturate(2.4) hue-rotate(5deg) brightness(1.1);
+  filter: grayscale(0) drop-shadow(0 0 14px var(--orange-yellow-crayola));
 }
 
 /* Org name pill */
@@ -1038,6 +1039,61 @@ main {
 /*-----------------------------------*\
   #RESUME
 \*-----------------------------------*/
+
+.resume-header {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 30px;
+}
+
+.resume-header .article-title { margin-bottom: 0; }
+
+.cv-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  padding: .55em 1.2em .55em 1em;
+  border-radius: 10px;
+  border: 1.5px solid hsla(45, 85%, 45%, 0.55);
+  background: hsl(0, 0%, 97%);
+  color: hsl(235, 18%, 14%);
+  font-family: var(--ff-display);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.6px;
+  text-transform: uppercase;
+  text-decoration: none;
+  flex-shrink: 0;
+  box-shadow: 0 2px 18px hsla(45, 100%, 55%, 0.12),
+              0 2px 8px hsla(0, 0%, 0%, 0.14);
+  transition: background .25s ease, color .2s ease,
+              box-shadow .25s ease, transform .22s cubic-bezier(0.33,1,0.68,1);
+}
+
+.cv-btn .arrow {
+  font-style: normal;
+  display: inline-block;
+  font-size: 15px;
+  line-height: 1;
+  transform: translate(0, 0);
+  transition: transform .22s cubic-bezier(0.33,1,0.68,1);
+}
+
+.cv-btn:hover,
+.cv-btn:focus {
+  background: hsl(45, 100%, 64%);
+  color: hsl(235, 18%, 9%);
+  box-shadow: 0 0 22px hsla(45, 100%, 60%, 0.35),
+              0 4px 12px hsla(45, 100%, 40%, 0.25);
+  transform: translateY(-2px);
+}
+
+.cv-btn:hover .arrow,
+.cv-btn:focus .arrow {
+  transform: translate(3px, -3px);
+}
 
 .article-title { margin-bottom: 30px; }
 
@@ -1204,16 +1260,22 @@ main {
 
 .skill-card{
   background:var(--border-gradient-onyx);
-  padding:22px 24px;
+  padding:24px 26px;
   border-radius:16px;
+  border:1px solid hsla(0,0%,100%,.07);
+  border-top:2px solid hsl(45,100%,58%);
   box-shadow:var(--shadow-2);
   position:relative;
+  transition:transform 160ms ease-out, box-shadow 160ms ease-out;
 }
 
+.skill-card:has(.badge.expert)     { border-top-color:hsl(45,100%,62%); }
+.skill-card:has(.badge.advanced)   { border-top-color:hsl(45,100%,56%); }
+.skill-card:has(.badge.proficient) { border-top-color:hsl(45,100%,50%); }
+
 .skill-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 2px 6px rgba(0,0,0,.25);
-  transition: all 120ms ease-out;
+  transform:translateY(-5px);
+  box-shadow:0 24px 48px hsla(0,0%,0%,.45);
 }
 
 .skill-card h4{
@@ -1236,6 +1298,7 @@ main {
   top:-14px;right:-14px;
   font-size:11px;
   font-weight:600;
+  color:hsl(0,0%,10%);
   padding:6px 10px;
   border-radius:12px;
   letter-spacing:.4px;
@@ -1760,21 +1823,9 @@ main {
   border-radius: 16px;
   overflow: hidden;
   margin-bottom: 15px;
-  background: var(--eerie-black-1);
+  background: transparent;
 }
 
-/* Blurred backdrop — same image, blurred+darkened, fills the frame.
-   Transitions slower than the image → parallax depth separation. */
-.project-img::before {
-  content: "";
-  position: absolute;
-  inset: -8px; /* overshoot edges to hide blur fringing */
-  background: var(--thumb, transparent) center / cover no-repeat;
-  filter: blur(14px) brightness(0.28) saturate(1.3);
-  z-index: 0;
-  transition: transform 0.65s cubic-bezier(0.33, 1, 0.68, 1),
-              filter   0.65s cubic-bezier(0.33, 1, 0.68, 1);
-}
 
 /* Holographic foil overlay — driven by JS --mx/--my/--ha/--cm/--c1 vars */
 .project-img::after {
@@ -1808,10 +1859,6 @@ main {
   opacity: 1;
 }
 
-.project-item > a:hover .project-img::before {
-  transform: scale(1.12);
-  filter: blur(14px) brightness(0.42) saturate(1.5); /* warms up on hover */
-}
 
 /* Smooth 3-D tilt snap-back */
 .project-item > a {
@@ -1840,27 +1887,18 @@ main {
 
 
 
-/* Image: contained so no cropping, sits above backdrop.
-   Slightly shorter than backdrop → image leads, backdrop follows = depth. */
 .project-img img {
   position: relative;
   width: 100%;
   height: 100%;
   object-fit: contain;
-  z-index: 1;
-  opacity: 0;
   transition: transform 0.5s cubic-bezier(0.33, 1, 0.68, 1),
-              filter   0.5s cubic-bezier(0.33, 1, 0.68, 1),
-              opacity  0.4s ease;
-}
-
-.project-img img.img-loaded {
-  opacity: 1;
+              filter   0.5s cubic-bezier(0.33, 1, 0.68, 1);
 }
 
 .project-item > a:hover img {
   transform: scale(1.07);
-  filter: brightness(1.06); /* subtle lighting-up */
+  filter: brightness(1.06);
 }
 
 .project-title,
@@ -2049,6 +2087,17 @@ textarea.form-input {
 textarea.form-input::-webkit-resizer { display: none; }
 
 .form-input:focus:invalid { border-color: var(--bittersweet-shimmer); }
+
+.form-input.touched:invalid { border-color: var(--bittersweet-shimmer); }
+
+@keyframes field-wobble {
+  0%,100% { transform: translateX(0); }
+  15%     { transform: translateX(-7px); }
+  35%     { transform: translateX(7px); }
+  55%     { transform: translateX(-4px); }
+  75%     { transform: translateX(4px); }
+}
+.form-input.wobble { animation: field-wobble 380ms ease; }
 
 .form-btn {
   position: relative;
@@ -2425,6 +2474,20 @@ strong {
 
   .form-btn ion-icon { font-size: 18px; }
 
+  /* Resume: row layout + full-size button from 580px */
+  .resume-header {
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-between;
+  }
+
+  .cv-btn {
+    font-size: 13px;
+    letter-spacing: 1.8px;
+    padding: .7em 1.6em .7em 1.4em;
+    gap: .55rem;
+  }
+
 }
 
 
@@ -2603,6 +2666,17 @@ strong {
   }
 
   .navbar-link { font-weight: var(--fw-500); }
+
+  /* Resume: pull the button out of flow, hug the right edge below the navbar */
+  .resume-header { position: static; }
+
+  article[data-page="resume"] { position: relative; }
+
+  .cv-btn {
+    position: absolute;
+    top: 62px;
+    right: 0;
+  }
 
 
 

@@ -234,29 +234,41 @@ const form = document.querySelector("[data-form]");
 const formInputs = document.querySelectorAll("[data-form-input]");
 const formBtn = document.querySelector("[data-form-btn]");
 
-// add event to all form input field
 let messagesSent = 0;
 
-for (let i = 0; i < formInputs.length; i++) {
-  formInputs[i].addEventListener("input", function () {
+// Mark a field as touched on blur so persistent :invalid styling activates
+formInputs.forEach(input => {
+  input.addEventListener("blur", () => input.classList.add("touched"));
 
-    // check form validation
-    if (form.checkValidity()) {
-      formBtn.removeAttribute("disabled");
-    } else {
-      formBtn.setAttribute("disabled", "");
-    }
-
-    // joke label kicks in as soon as they start a second message
+  // Update button label on any input change
+  input.addEventListener("input", () => {
     formBtn.querySelector("span").textContent = messagesSent > 0
       ? "Two messages? I'm flattered."
       : "Send Message";
+  });
+});
 
+function wobbleInvalid() {
+  formInputs.forEach(input => {
+    if (!input.checkValidity()) {
+      input.classList.add("touched");
+      input.classList.remove("wobble");
+      void input.offsetWidth; // force reflow so animation restarts
+      input.classList.add("wobble");
+      input.addEventListener("animationend", () => input.classList.remove("wobble"), { once: true });
+    }
   });
 }
 
 form.addEventListener("submit", async function (e) {
   e.preventDefault();
+
+  // If anything's invalid, show errors and bail
+  if (!form.checkValidity()) {
+    wobbleInvalid();
+    return;
+  }
+
   formBtn.setAttribute("disabled", "");
   formBtn.querySelector("span").textContent = "Sending…";
 
@@ -271,6 +283,7 @@ form.addEventListener("submit", async function (e) {
       messagesSent++;
       formBtn.querySelector("span").textContent = "Sent!";
       form.reset();
+      formInputs.forEach(input => input.classList.remove("touched"));
     } else {
       formBtn.querySelector("span").textContent = "Error — try again";
       formBtn.removeAttribute("disabled");
