@@ -77,7 +77,10 @@
       "Bash(sips -s format webp --resampleWidth 800 /Users/ben/portfolio/assets/images/projects/projectthumb-builder.png --out /tmp/test_builder.webp)",
       "Bash(python3 -c \"from PIL import Image; print\\(''Pillow OK'', Image.__version__\\)\")",
       "Bash(python3 -c \"import PIL; print\\(PIL.__version__\\)\")",
-      "Bash(python3:*)"
+      "Bash(python3:*)",
+      "Bash(git lfs:*)",
+      "Bash(/opt/homebrew/bin/brew install:*)",
+      "Bash(export PATH=\"/opt/homebrew/bin:$PATH\")"
     ]
   }
 }
