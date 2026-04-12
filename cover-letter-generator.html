@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ben Visser - Cover Letter Generator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,600;1,400;1,600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./assets/css/cover-letter-generator.css">
+  <script defer src="./assets/js/cover-letter-generator.js"></script>
+</head>
+<body>
+  <main class="letter-workbench">
+    <section class="builder-panel">
+      <p class="builder-panel__eyebrow">Private Workflow</p>
+      <h1 class="builder-panel__title">Cover Letter Generator</h1>
+      <p class="builder-panel__intro">
+        Paste the role brief and your drafted letter. In Chrome, this page can save a standalone HTML file into
+        <code>covers/</code>, preview it instantly, and print straight to PDF. In Safari, it can still preview and download.
+      </p>
+
+      <div class="status-card">
+        <div>
+          <p class="status-card__label">Output folder</p>
+          <p class="status-card__value" data-connection-status>In Chrome, choose your portfolio folder or the covers folder for one-click saves.</p>
+        </div>
+        <button class="action-button action-button--secondary" type="button" data-action="connect-folder">Choose Output Folder</button>
+      </div>
+
+      <form class="generator-form" data-generator-form>
+        <label class="field">
+          <span class="field__label">Role details</span>
+          <span class="field__hint">Paste the role brief, job ad, or your notes here. The role heading will auto-fill from this.</span>
+          <textarea
+            class="field__control field__control--textarea"
+            name="roleDetails"
+            rows="10"
+            data-role-details
+            placeholder="Senior Product Engineer - Example Co&#10;&#10;Paste the role details here..."
+          ></textarea>
+        </label>
+
+        <div class="field-grid">
+          <label class="field">
+            <span class="field__label">Role heading</span>
+            <span class="field__hint">Used in the generated page title and filename.</span>
+            <input class="field__control" type="text" name="roleHeading" data-role-heading placeholder="Auto-filled from role details">
+          </label>
+
+          <label class="field">
+            <span class="field__label">Letter date</span>
+            <span class="field__hint">Shown at the top of the letter.</span>
+            <input class="field__control" type="date" name="letterDate" data-letter-date>
+          </label>
+        </div>
+
+        <label class="field">
+          <span class="field__label">Cover letter content</span>
+          <span class="field__hint">Paste the full letter, or just the body paragraphs. If needed, the page adds a greeting and sign-off automatically.</span>
+          <textarea
+            class="field__control field__control--textarea field__control--letter"
+            name="letterContent"
+            rows="18"
+            data-letter-content
+            placeholder="Dear Hiring Team,&#10;&#10;I'm writing to apply for...&#10;&#10;Kind regards,&#10;Ben Visser"
+          ></textarea>
+        </label>
+
+        <div class="output-bar">
+          <div>
+            <p class="output-bar__label">Next file</p>
+            <p class="output-bar__value" data-filename-preview>cover-letter.html</p>
+          </div>
+          <div>
+            <p class="output-bar__label">Last save</p>
+            <p class="output-bar__value" data-output-path>Preview only. In Chrome, choose your portfolio folder or covers/ to save automatically.</p>
+          </div>
+        </div>
+
+        <div class="action-row">
+          <button class="action-button" type="button" data-action="generate">Generate HTML</button>
+          <button class="action-button action-button--secondary" type="button" data-action="view" disabled>View Letter</button>
+          <button class="action-button action-button--secondary" type="button" data-action="print" disabled>Print / Save PDF</button>
+          <button class="action-button action-button--ghost" type="button" data-action="download" disabled>Download HTML</button>
+        </div>
+
+        <p class="status-message" data-status-message>
+          In Chrome, choose your portfolio folder or covers/ once, then each generation can write straight into covers/.
+        </p>
+      </form>
+    </section>
+
+    <section class="preview-panel">
+      <div class="preview-panel__header">
+        <div>
+          <p class="preview-panel__eyebrow">Live Preview</p>
+          <h2 class="preview-panel__title" data-preview-title>Cover letter preview</h2>
+        </div>
+        <button class="preview-panel__print" type="button" data-action="print" disabled>Print</button>
+      </div>
+
+      <div class="preview-panel__frame-wrap">
+        <iframe class="preview-panel__frame" title="Generated cover letter preview" data-preview-frame></iframe>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

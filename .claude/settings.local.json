@@ -80,7 +80,9 @@
       "Bash(python3:*)",
       "Bash(git lfs:*)",
       "Bash(/opt/homebrew/bin/brew install:*)",
-      "Bash(export PATH=\"/opt/homebrew/bin:$PATH\")"
+      "Bash(export PATH=\"/opt/homebrew/bin:$PATH\")",
+      "Bash(ls /Users/ben/portfolio/assets/images/*.svg)",
+      "Bash(ls /Users/ben/portfolio/assets/images/icon-*)"
     ]
   }
 }
