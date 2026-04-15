@@ -232,6 +232,23 @@ article.active {
   animation: fade 0.5s ease backwards;
 }
 
+/* Keep the Contact article always-rendered (off-screen) so the Google
+   Maps iframe inside can start loading at page init. First click on
+   Contact just reveals an already-initialized iframe instead of
+   triggering a fresh load + Maps JS runtime init. Width matches the
+   active state closely so tile requests don't duplicate on reveal. */
+article.contact:not(.active) {
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 75vw;
+  max-width: 1200px;
+  visibility: hidden;
+  pointer-events: none;
+  z-index: -1;
+}
+
 @keyframes fade {
   0% { opacity: 0; }
   100% { opacity: 1; }
@@ -969,15 +986,14 @@ main {
   /* override clients-list scroll behaviour */
   overflow: visible;
   scroll-snap-type: none;
-  animation: ticker-fwd 32s linear infinite;
+  animation: ticker-fwd 55s linear infinite;
 }
 
 .ticker-track.ticker-reverse {
   animation: ticker-rev 55s linear infinite;
 }
 
-.ticker-wrap:hover .ticker-track,
-.ticker-wrap:focus-within .ticker-track { animation-play-state: paused; }
+/* Ticker slow-down on hover is handled in JS via playbackRate (smooth, no jump). */
 
 @keyframes ticker-fwd {
   from { transform: translateX(0); }
@@ -993,9 +1009,25 @@ main {
 .ticker-track .clients-item,
 .ticker-track li { min-width: auto; flex-shrink: 0; scroll-snap-align: none; background: var(--eerie-black-2); }
 
-/* Keep project logo images at a consistent small height in the ticker */
+/* Projects ticker: vertical card layout — thumbnail + title + genre tag. */
+.ticker-track .clients-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 180px;
+  transition: transform var(--transition-1);
+}
+
+.ticker-track .clients-item a {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  text-decoration: none;
+}
+
 .ticker-track .clients-item img {
-  height: 160px;
+  height: 130px;
   width: auto;
   opacity: 0;
   filter: grayscale(1);
@@ -1007,29 +1039,99 @@ main {
 
 .ticker-track .clients-item img.img-loaded { opacity: 1; }
 
-.ticker-track .clients-item img:hover {
+.proj-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  text-align: center;
+  max-width: 180px;
+}
+
+.proj-title {
+  color: var(--light-gray);
+  font-size: 13px;
+  font-weight: var(--fw-500);
+  line-height: 1.2;
+  max-width: 180px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  transition: color var(--transition-1);
+}
+
+.proj-tag {
+  color: var(--vegas-gold);
+  font-size: 10px;
+  font-weight: var(--fw-500);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  transition: color var(--transition-1);
+}
+
+/* Hover enrichment — the whole card responds, text doesn't hide/reveal */
+.ticker-track .clients-item:hover { transform: translateY(-3px); }
+
+.ticker-track .clients-item:hover img {
   filter: grayscale(0) drop-shadow(0 0 14px var(--orange-yellow-crayola));
 }
 
-/* Org name pill */
-.org-pill { list-style: none; }
+.ticker-track .clients-item:hover .proj-title { color: var(--white-2); }
+.ticker-track .clients-item:hover .proj-tag   { color: var(--orange-yellow-crayola); }
 
-.org-pill span {
-  display: block;
-  padding: 7px 18px;
-  border: 1px solid var(--jet);
-  border-radius: 6px;
-  font-size: var(--fs-7);
-  font-weight: var(--fw-500);
-  color: var(--light-gray);
-  white-space: nowrap;
-  letter-spacing: 0.04em;
-  transition: border-color var(--transition-1), color var(--transition-1);
+/* Org logo — silhouette on dark, matches Projects ticker aesthetic */
+.org-pill { list-style: none; display: flex; align-items: center; }
+.org-pill span { display: flex; align-items: center; }
+
+.org-pill img {
+  height: 44px;
+  width: auto;
+  max-width: 200px;
+  object-fit: contain;
+  opacity: 0.7;
+  /* Force every logo to a uniform white silhouette. Loses internal
+     colour detail but creates a consistent look and unifies with the
+     Projects ticker above. */
+  filter: brightness(0) invert(1);
+  transition: opacity var(--transition-1), filter var(--transition-1);
 }
 
-.org-pill:hover span {
-  border-color: var(--orange-yellow-crayola);
-  color: var(--orange-yellow-crayola);
+/* Per-logo size tweaks — re-baselined against the new 44px default */
+.org-pill img[src*="logo-jba"]           { height: 56px; }
+.org-pill img[src*="logo-xero"]          { height: 52px; }
+.org-pill img[src*="logo-skillsvr"]      { height: 34px; }
+.org-pill img[src*="logo-site-safe"]     { height: 58px; }
+.org-pill img[src*="logo-bunnings"]      { height: 58px; max-width: 260px; }
+
+/* Logos whose identity depends on internal contrast (the X in Xero, the
+   "warehouse" bar in Bunnings) — use plain grayscale+brightness so the
+   lighter inner elements stay distinct from the darker surrounding shapes
+   after filtering. The silhouette filter collapses both to pure white and
+   they merge into a blob. */
+.org-pill img[src*="logo-xero"],
+.org-pill img[src*="logo-bunnings"] {
+  filter: grayscale(1) brightness(1.3);
+  opacity: 0.85;
+}
+
+/* JBA is a special case: the white "JBA" text sits on the darkest (purple)
+   of three overlapping blobs, while the brightest blob (light-blue) is on
+   the side. A plain grayscale+brightness leaves the purple centre dark
+   grey — it merges into the dark page background and the text floats on
+   nothing, while the side blob steals attention.
+   Inverting the luminance flips this: the purple centre becomes light
+   (giving the text a visible platform) and the blue side blob becomes dark
+   (recedes into the page). The white text flips to near-black and reads
+   against its now-light background. */
+.org-pill img[src*="logo-jba"] {
+  filter: grayscale(1) invert(1);
+  opacity: 0.9;
+}
+
+.org-pill:hover img {
+  opacity: 1;
+  filter: grayscale(0) drop-shadow(0 0 10px var(--orange-yellow-crayola));
 }
 
 
@@ -1057,8 +1159,8 @@ main {
   padding: .55em 1.2em .55em 1em;
   border-radius: 10px;
   border: 1.5px solid hsla(45, 85%, 45%, 0.55);
-  background: hsl(0, 0%, 97%);
-  color: hsl(235, 18%, 14%);
+  background: var(--onyx);
+  color: var(--vegas-gold);
   font-family: var(--ff-display);
   font-size: 11px;
   font-weight: 700;
@@ -1160,9 +1262,118 @@ main {
   line-height: 1.6;
 }
 
+/* Experience accordion */
+[data-accordion] .timeline-body {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.38s cubic-bezier(0.4, 0, 0.2, 1),
+              opacity 0.28s ease;
+  opacity: 0;
+}
+
+[data-accordion].open .timeline-body {
+  max-height: 700px;
+  opacity: 1;
+}
+
+/* Accordion items — whole row is pointer, with a subtle hover bg */
+[data-accordion] {
+  cursor: pointer;
+  border-radius: 8px;
+  padding: 6px 32px 6px 4px;   /* right padding makes room for the button */
+  margin-right: -4px;
+  transition: background 0.18s ease;
+}
+[data-accordion]:hover { background: hsla(45, 100%, 55%, 0.05); }
+[data-accordion].open  { background: hsla(45, 100%, 55%, 0.04); }
+
+.timeline-toggle {
+  position: absolute;
+  right: 4px;
+  top: 8px;
+  left: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  background: hsla(45, 100%, 55%, 0.08);
+  border: 1px solid hsla(45, 85%, 55%, 0.35);
+  border-radius: 6px;
+  cursor: pointer;
+  color: var(--vegas-gold);
+  font-size: 13px;
+  line-height: 1;
+  transition: background 0.18s ease, border-color 0.18s ease;
+}
+
+.timeline-toggle:hover {
+  background: hsla(45, 100%, 55%, 0.18);
+  border-color: hsla(45, 85%, 55%, 0.65);
+}
+
+.timeline-toggle-chevron {
+  display: inline-block;
+  transition: transform 0.25s ease;
+}
+
+[data-accordion].open .timeline-toggle-chevron {
+  transform: rotate(180deg);
+}
+
+/* Tech Stack section */
+.stack { margin-bottom: 30px; }
+
+.stack-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.stack-group {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.stack-label {
+  flex-shrink: 0;
+  width: 130px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  color: var(--light-gray-70);
+  padding-top: 5px;
+}
+
+.stack-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.stack-pill {
+  font-size: 12px;
+  font-weight: 500;
+  padding: 4px 10px;
+  border-radius: 20px;
+  border: 1px solid hsla(45, 85%, 55%, 0.28);
+  color: var(--light-gray);
+  background: hsla(45, 100%, 55%, 0.06);
+  letter-spacing: 0.2px;
+}
+
+.stack-pill.primary {
+  border-color: hsla(45, 100%, 60%, 0.55);
+  color: hsl(45, 100%, 75%);
+  background: hsla(45, 100%, 55%, 0.12);
+  font-weight: 600;
+}
+
 
 /**
- * skills 
+ * skills
  */
 
 .skills-title { margin-bottom: 20px; }
@@ -1252,62 +1463,190 @@ main {
 }
 
 
-.skills-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
-  gap:25px;
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 22px;
 }
 
-.skill-card{
-  background:var(--border-gradient-onyx);
-  padding:24px 26px;
-  border-radius:16px;
-  border:1px solid hsla(0,0%,100%,.07);
-  border-top:2px solid hsl(45,100%,58%);
-  box-shadow:var(--shadow-2);
-  position:relative;
-  transition:transform 160ms ease-out, box-shadow 160ms ease-out;
+/* Contain the hop so cards can't visually bleed into the fixed navbar below.
+   `clip` is the modern no-BFC variant; `hidden` is the fallback. */
+.skill {
+  overflow: hidden;
+  overflow: clip;
 }
 
-.skill-card:has(.badge.expert)     { border-top-color:hsl(45,100%,62%); }
-.skill-card:has(.badge.advanced)   { border-top-color:hsl(45,100%,56%); }
-.skill-card:has(.badge.proficient) { border-top-color:hsl(45,100%,50%); }
+.skill-card {
+  background: linear-gradient(
+    160deg,
+    hsla(240, 8%, 19%, 0.88) 0%,
+    hsla(240, 5%, 13%, 0.94) 100%
+  );
+  padding: 22px 24px 24px;
+  border-radius: 20px;
+  border: 1px solid hsla(0, 0%, 100%, 0.09);
+  box-shadow:
+    inset 0 1px 0 hsla(0, 0%, 100%, 0.07),   /* top inner highlight — the glass sheen */
+    0 20px 40px hsla(0, 0%, 0%, 0.42),
+    0 4px 12px  hsla(0, 0%, 0%, 0.28);
+  position: relative;
+  transform-origin: 50% 100%;                /* pivot from the bottom — sells the "plant and leap" feel */
+
+  /* Initial crouched state for cards that haven't entered viewport yet */
+  translate: 0 60px;
+  scale: 0.7 0.45;
+  rotate: -7deg;
+  opacity: 0;
+  filter: blur(7px);
+
+  transition:
+    transform    200ms ease-out,             /* hover lift */
+    border-color 200ms ease,
+    box-shadow   200ms ease-out;
+}
+
+/* ─── Three hop variants for little-fella differentiation ─────────────────
+   Each has a distinct launch angle, apex height, landing impact, and tempo.
+   Assigned round-robin via :nth-child(3n+1/2/3) so any row of 3 cards
+   animating together has one of each. */
+
+/* Variant A — "standard hop": left-leaning, medium overshoot */
+@keyframes skillCardHopA {
+  0%   { translate: 0 60px;  scale: 0.70 0.45; rotate: -7deg;    opacity: 0; filter: blur(7px); animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1); }
+  20%  { opacity: 1; filter: blur(0); }
+  42%  { translate: 0 -20px; scale: 0.92 1.12; rotate:  4deg;    opacity: 1; filter: blur(0); animation-timing-function: cubic-bezier(0.55, 0.06, 0.9, 0.5); }
+  58%  { translate: 0 4px;   scale: 1.14 0.88; rotate: -2.5deg;              animation-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1); }
+  72%  { translate: 0 -7px;  scale: 0.96 1.05; rotate:  1.2deg;              animation-timing-function: cubic-bezier(0.55, 0.06, 0.9, 0.5); }
+  85%  { translate: 0 1px;   scale: 1.03 0.98; rotate: -0.4deg;              animation-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1); }
+  100% { translate: 0 0;     scale: 1;         rotate:  0deg;    opacity: 1; filter: blur(0); }
+}
+
+/* Variant B — "big leap": right-leaning, higher overshoot, heavier landing, slower */
+@keyframes skillCardHopB {
+  0%   { translate: 0 70px;  scale: 0.68 0.42; rotate:  9deg;    opacity: 0; filter: blur(8px); animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1); }
+  20%  { opacity: 1; filter: blur(0); }
+  42%  { translate: 0 -28px; scale: 0.88 1.16; rotate: -4deg;    opacity: 1; filter: blur(0); animation-timing-function: cubic-bezier(0.55, 0.06, 0.9, 0.5); }
+  58%  { translate: 0 6px;   scale: 1.18 0.84; rotate:  3.5deg;              animation-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1); }
+  72%  { translate: 0 -10px; scale: 0.94 1.07; rotate: -1.8deg;              animation-timing-function: cubic-bezier(0.55, 0.06, 0.9, 0.5); }
+  85%  { translate: 0 2px;   scale: 1.04 0.97; rotate:  0.6deg;              animation-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1); }
+  100% { translate: 0 0;     scale: 1;         rotate:  0deg;    opacity: 1; filter: blur(0); }
+}
+
+/* Variant C — "perky pop": nearly straight, smaller arc, snappier, bouncier secondary */
+@keyframes skillCardHopC {
+  0%   { translate: 0 50px;  scale: 0.78 0.58; rotate: -3deg;    opacity: 0; filter: blur(6px); animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1); }
+  18%  { opacity: 1; filter: blur(0); }
+  40%  { translate: 0 -15px; scale: 0.95 1.08; rotate:  1.5deg;  opacity: 1; filter: blur(0); animation-timing-function: cubic-bezier(0.55, 0.06, 0.9, 0.5); }
+  55%  { translate: 0 3px;   scale: 1.09 0.93; rotate: -1deg;                animation-timing-function: cubic-bezier(0.34, 1.62, 0.64, 1); }
+  70%  { translate: 0 -8px;  scale: 0.95 1.06; rotate:  0.8deg;              animation-timing-function: cubic-bezier(0.55, 0.06, 0.9, 0.5); }
+  83%  { translate: 0 1px;   scale: 1.03 0.98; rotate: -0.3deg;              animation-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1); }
+  100% { translate: 0 0;     scale: 1;         rotate:  0deg;    opacity: 1; filter: blur(0); }
+}
+
+.skill-card.is-in:nth-child(3n+1) { animation: skillCardHopA 920ms linear var(--enter-delay, 0ms) both; }
+.skill-card.is-in:nth-child(3n+2) { animation: skillCardHopB 990ms linear var(--enter-delay, 0ms) both; }
+.skill-card.is-in:nth-child(3n)   { animation: skillCardHopC 860ms linear var(--enter-delay, 0ms) both; }
 
 .skill-card:hover {
-  transform:translateY(-5px);
-  box-shadow:0 24px 48px hsla(0,0%,0%,.45);
+  transform: translateY(-4px);
+  border-color: hsla(0, 0%, 100%, 0.16);
+  box-shadow:
+    inset 0 1px 0 hsla(0, 0%, 100%, 0.10),
+    0 28px 52px hsla(0, 0%, 0%, 0.52),
+    0 6px 16px  hsla(0, 0%, 0%, 0.34);
 }
 
-.skill-card h4{
-  margin:6px 0 12px;
-  color:var(--white-2);
-  line-height:1.3;
+/* Respect reduced-motion: skip the hop, show cards immediately */
+@media (prefers-reduced-motion: reduce) {
+  .skill-card {
+    translate: 0 0;
+    scale: 1;
+    rotate: 0deg;
+    opacity: 1;
+    filter: none;
+  }
+  .skill-card.is-in { animation: none; }
 }
 
-.skill-card ul{
-  color:var(--light-gray);
-  font-size:var(--fs-7);
-  line-height:1.5;
-  padding-left:18px;
+/* Blur when the browser supports it — true frosted glass */
+@supports (backdrop-filter: blur(1px)) {
+  .skill-card {
+    backdrop-filter: blur(14px) saturate(1.4);
+    -webkit-backdrop-filter: blur(14px) saturate(1.4);
+    background: linear-gradient(
+      160deg,
+      hsla(240, 8%, 19%, 0.70) 0%,
+      hsla(240, 5%, 13%, 0.78) 100%
+    );
+  }
 }
 
-.skill-card li{margin-bottom:4px;}
-
-.badge{
-  position:absolute;
-  top:-14px;right:-14px;
-  font-size:11px;
-  font-weight:600;
-  color:hsl(0,0%,10%);
-  padding:6px 10px;
-  border-radius:12px;
-  letter-spacing:.4px;
+.skill-card h4 {
+  margin: 0 0 10px;
+  color: var(--white-2);
+  line-height: 1.3;
 }
 
-.badge.expert      { background:hsl(45,100%,60%); }  /* brightest */
-.badge.advanced    { background:hsl(45,100%,57%); }  /* –3 % L */
-.badge.proficient  { background:hsl(45,100%,54%); }  /* –3 % L */
-.badge.competent   { background:hsl(45,100%,51%); }  /* –3 % L */
+.skill-card ul {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+  color: var(--light-gray);
+  font-size: var(--fs-7);
+  line-height: 1.55;
+}
+
+.skill-card li {
+  position: relative;
+  padding-left: 20px;
+  margin-bottom: 6px;
+
+  /* Hidden resting state — bullets only appear after their card has landed */
+  opacity: 0;
+  translate: -10px 0;
+}
+
+/* Gold diamond marker — small, crisp, warm. The "targeted shot". */
+.skill-card li::before {
+  content: "";
+  position: absolute;
+  left: 3px;
+  top: 0.58em;
+  width: 7px;
+  height: 7px;
+  background: linear-gradient(135deg,
+    hsl(45, 100%, 74%) 0%,
+    hsl(42, 100%, 54%) 100%);
+  transform: rotate(45deg);
+  box-shadow:
+    0 0 6px hsla(45, 100%, 60%, 0.55),
+    inset 0 1px 0 hsla(45, 100%, 92%, 0.65);
+}
+
+/* Bullet cascade — fires after the card lands (~720ms into the hop)
+   then each bullet 55ms after the previous. Sharp back-out snap. */
+@keyframes bulletSnapIn {
+  0%   { opacity: 0; translate: -10px 0; }
+  100% { opacity: 1; translate:   0   0; }
+}
+
+.skill-card.is-in li {
+  animation: bulletSnapIn 280ms cubic-bezier(0.34, 1.56, 0.64, 1)
+    calc(var(--enter-delay, 0ms) + 720ms + (var(--bullet-index, 0) * 55ms))
+    both;
+}
+.skill-card.is-in li:nth-child(1) { --bullet-index: 0; }
+.skill-card.is-in li:nth-child(2) { --bullet-index: 1; }
+.skill-card.is-in li:nth-child(3) { --bullet-index: 2; }
+.skill-card.is-in li:nth-child(4) { --bullet-index: 3; }
+
+@media (prefers-reduced-motion: reduce) {
+  .skill-card li {
+    opacity: 1;
+    translate: 0 0;
+  }
+  .skill-card.is-in li { animation: none; }
+}
 
 
 /*-----------------------------------*\
@@ -1924,96 +2263,6 @@ main {
 
 
 
-/*-----------------------------------*\
-  #BLOG
-\*-----------------------------------*/
-
-.blog-posts { margin-bottom: 10px; }
-
-.blog-posts-list {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 20px;
-}
-
-.blog-post-item > a {
-  position: relative;
-  background: var(--border-gradient-onyx);
-  height: 100%;
-  box-shadow: var(--shadow-4);
-  border-radius: 16px;
-  z-index: 1;
-}
-
-.blog-post-item > a::before {
-  content: "";
-  position: absolute;
-  inset: 1px;
-  border-radius: inherit;
-  background: var(--eerie-black-1);
-  z-index: -1;
-}
-
-.blog-banner-box {
-  width: 100%;
-  height: 200px;
-  border-radius: 12px;
-  overflow: hidden;
-}
-
-.blog-banner-box img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  opacity: 0;
-  transition: var(--transition-1), opacity 0.4s ease;
-}
-
-.blog-banner-box img.img-loaded { opacity: 1; }
-
-.blog-post-item > a:hover .blog-banner-box img { transform: scale(1.1); }
-
-.blog-content { padding: 15px; }
-
-.blog-meta {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  gap: 7px;
-  margin-bottom: 10px;
-}
-
-.blog-meta :is(.blog-category, time) {
-  color: var(--light-gray-70);
-  font-size: var(--fs-6);
-  font-weight: var(--fw-300);
-}
-
-.blog-meta .dot {
-  background: var(--light-gray-70);
-  width: 4px;
-  height: 4px;
-  border-radius: 4px;
-}
-
-.blog-item-title {
-  margin-bottom: 10px;
-  line-height: 1.3;
-  transition: var(--transition-1);
-}
-
-.blog-post-item > a:hover .blog-item-title { color: var(--orange-yellow-crayola); }
-
-.blog-text {
-  color: var(--light-gray);
-  font-size: var(--fs-6);
-  font-weight: var(--fw-300);
-  line-height: 1.6;
-}
-
-
-
-
 
 /*-----------------------------------*\
   #CONTACT
@@ -2166,11 +2415,10 @@ textarea.form-input::-webkit-resizer { display: none; }
 
 
   /**
-   * #PORTFOLIO, BLOG 
+   * #PORTFOLIO
    */
 
-  .project-img,
-  .blog-banner-box { height: auto; }
+  .project-img { height: auto; }
 
   /* Let intrinsic width/height attrs drive the aspect ratio — prevents CLS */
   .project-img img { height: auto; }
@@ -2438,14 +2686,10 @@ strong {
 
 
   /**
-   * #PORTFOLIO, BLOG
+   * #PORTFOLIO
    */
 
-  .project-img, .blog-banner-box { border-radius: 16px; }
-
-  .blog-posts-list { gap: 30px; }
-
-  .blog-content { padding: 25px; }
+  .project-img { border-radius: 16px; }
 
 
 
@@ -2571,10 +2815,9 @@ strong {
 
   .filter-item button.active { color: var(--orange-yellow-crayola); }
 
-  /* portfolio and blog grid */
+  /* portfolio grid */
 
   .project-list { grid-template-columns: repeat(2, 1fr); }
-  .blog-posts-list { grid-template-columns: 1fr 1fr; }
 
 
 
@@ -2676,6 +2919,7 @@ strong {
     position: absolute;
     top: 62px;
     right: 0;
+    padding: .85em 1.8em .85em 1.6em;
   }
 
 
@@ -2707,14 +2951,6 @@ strong {
    */
 
   .project-list { grid-template-columns: repeat(3, 1fr); }
-
-
-
-  /**
-   * BLOG
-   */
-
-  .blog-banner-box { height: 230px; }
 
 }
 

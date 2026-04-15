@@ -564,6 +564,37 @@ for (let i = 0; i < navigationLinks.length; i++) {
       });
     }
 
+    // When navigating to Resume for the first time this session, set up the
+    // skill-card scroll-in animation. IntersectionObserver on display:none
+    // ancestors doesn't fire, so we wait until the tab is visible to attach.
+    if (this.innerHTML.trim().toLowerCase() === 'resume' && !window._skillCardsObserved) {
+      window._skillCardsObserved = true;
+      const skillCards = document.querySelectorAll('.skill-card');
+      if (skillCards.length) {
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+          skillCards.forEach(c => c.classList.add('is-in'));
+        } else {
+          const observer = new IntersectionObserver((entries) => {
+            // Stagger cards that enter viewport in the same batch — gives the
+            // "cascade" feel when a row crosses the threshold together.
+            const entering = entries.filter(e => e.isIntersecting);
+            entering.forEach((entry, i) => {
+              entry.target.style.setProperty('--enter-delay', `${i * 70}ms`);
+              entry.target.classList.add('is-in');
+              observer.unobserve(entry.target);
+            });
+          }, { threshold: 0.12, rootMargin: '0px 0px -60px 0px' });
+
+          // Two rAFs so the Resume article has painted before observer starts
+          requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+              skillCards.forEach(card => observer.observe(card));
+            });
+          });
+        }
+      }
+    }
+
   });
 }
 
@@ -588,20 +619,73 @@ document.addEventListener('click', e => {
 });
 
 // ── Infinite ticker ───────────────────────────────────────────────────────
-document.querySelectorAll('.ticker-track').forEach(track => {
+// Wait for every <img> inside `el` to finish loading (or error out) so that
+// natural dimensions are settled before we clone + animate. Prevents the
+// "pop-in / resize as pill scrolls into view" regression, esp. in Safari.
+const waitForImgs = el => Promise.all(
+  Array.from(el.querySelectorAll('img')).map(img =>
+    img.complete
+      ? Promise.resolve()
+      : new Promise(res => {
+          img.addEventListener('load',  res, { once: true });
+          img.addEventListener('error', res, { once: true });
+        })
+  )
+);
+
+// Pull title + genre tag from the portfolio article for each project ticker
+// item, and inject a .proj-meta block into the card. Single source of truth:
+// the data-title / data-genre on the portfolio <article> wins.
+document.querySelectorAll('.clients-list .clients-item a[data-scroll]').forEach(link => {
+  const targetId = link.dataset.scroll;
+  const article  = document.getElementById(targetId);
+  if (!article) return;
+  const title = article.dataset.title;
+  const genre = article.dataset.genre;
+  if (!title) return;
+  const meta = document.createElement('div');
+  meta.className = 'proj-meta';
+  const titleEl = document.createElement('span');
+  titleEl.className = 'proj-title';
+  titleEl.textContent = title.replace(/&amp;/g, '&');
+  meta.appendChild(titleEl);
+  if (genre) {
+    const tagEl = document.createElement('span');
+    tagEl.className = 'proj-tag';
+    tagEl.textContent = genre;
+    meta.appendChild(tagEl);
+  }
+  link.appendChild(meta);
+});
+
+document.querySelectorAll('.ticker-track').forEach(async track => {
+  await waitForImgs(track);
+
   // Duplicate all items for seamless loop (-50% animation works on 2× content)
   Array.from(track.children).forEach(item => {
     track.appendChild(item.cloneNode(true));
   });
 
-  // Touch: pause while finger is down, resume on lift
   const wrap = track.closest('.ticker-wrap');
-  wrap.addEventListener('touchstart', () => {
-    track.style.animationPlayState = 'paused';
-  }, { passive: true });
-  wrap.addEventListener('touchend', () => {
-    track.style.animationPlayState = '';
-  }, { passive: true });
+
+  // Hover slow-down is only for the Projects (forward) ticker where items
+  // are clickable and readable. The Worked With (reverse) ticker is
+  // display-only, so hover doesn't need to pause it.
+  if (track.classList.contains('ticker-reverse')) return;
+
+  const SLOW_RATE = 0.15;
+  const setRate = rate => {
+    if (!track.getAnimations) return;
+    track.getAnimations().forEach(a => { a.playbackRate = rate; });
+  };
+
+  // Hover: slow down (not stop)
+  wrap.addEventListener('mouseenter', () => setRate(SLOW_RATE));
+  wrap.addEventListener('mouseleave', () => setRate(1));
+
+  // Touch: slow down while finger is down, resume on lift
+  wrap.addEventListener('touchstart', () => setRate(SLOW_RATE), { passive: true });
+  wrap.addEventListener('touchend',   () => setRate(1),         { passive: true });
 });
 
 
@@ -883,8 +967,8 @@ allItems().forEach(item=>{
   });
 });
 
-/* ─ Fade-in for all remaining images (ticker, blog, etc.) ──────────── */
-document.querySelectorAll('.ticker-track img, .blog-banner-box img').forEach(img => {
+/* ─ Fade-in for ticker images as they load ──────────────────────────── */
+document.querySelectorAll('.ticker-track img').forEach(img => {
   if (img.complete) {
     img.classList.add('img-loaded');
   } else {
@@ -1040,3 +1124,40 @@ function initCardShine() {
   });
 }
 initCardShine();
+
+
+
+// ── Experience accordion ───────────────────────────────────────────────────
+// Each [data-accordion] timeline-item collapses its .timeline-body by default.
+// Clicking the toggle button (or anywhere on the item header row) opens it;
+// any previously-open item closes first.
+(function () {
+  const items = document.querySelectorAll('[data-accordion]');
+  if (!items.length) return;
+
+  items.forEach(item => {
+    const btn = item.querySelector('.timeline-toggle');
+    if (!btn) return;
+
+    function toggle() {
+      const isOpen = item.classList.contains('open');
+      // Close all open items
+      items.forEach(el => {
+        el.classList.remove('open');
+        const b = el.querySelector('.timeline-toggle');
+        if (b) b.setAttribute('aria-expanded', 'false');
+      });
+      // Open this one if it was closed
+      if (!isOpen) {
+        item.classList.add('open');
+        btn.setAttribute('aria-expanded', 'true');
+      }
+    }
+
+    // Clicking anywhere on the li (title, chevron, dates) — but NOT inside
+    // the expanded body text — triggers the accordion toggle.
+    item.addEventListener('click', e => {
+      if (!e.target.closest('.timeline-body')) toggle();
+    });
+  });
+}());
