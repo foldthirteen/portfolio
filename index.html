@@ -1,11 +1,32 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-variant="default">
 
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Ben Visser - Portfolio</title>
+
+  <!-- Portfolio variant bootstrap — resolves variant before first paint so
+       variant-hidden content (e.g. avatar on AI variant) never flashes. -->
+  <script>
+    (function () {
+      var p = new URLSearchParams(location.search);
+      var q = p.get('v');
+      var v = q || (function () { try { return localStorage.getItem('pv'); } catch (e) { return null; } })()
+                || (document.cookie.match(/(?:^|;\s*)pv=([^;]+)/) || [])[1]
+                || 'default';
+      if (['default', 'ai'].indexOf(v) < 0) v = 'default';
+      if (q) {
+        try { localStorage.setItem('pv', v); } catch (e) {}
+        document.cookie = 'pv=' + v + ';path=/;max-age=31536000;samesite=lax';
+        p.delete('v');
+        var qs = p.toString();
+        history.replaceState(null, '', location.pathname + (qs ? '?' + qs : '') + location.hash);
+      }
+      document.documentElement.dataset.variant = v;
+    })();
+  </script>
 
   <!-- Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-DHZDKWL3HM"></script>
@@ -28,12 +49,17 @@
   <!--
     - favicon
   -->
-  <link rel="shortcut icon" href="./assets/images/logo.ico" type="image/x-icon">
+  <link rel="icon" href="./assets/images/favicon.svg" type="image/svg+xml">
+  <link rel="shortcut icon" href="./assets/images/favicon.ico" type="image/x-icon">
 
   <!--
     - custom css link
   -->
   <link rel="stylesheet" href="./assets/css/style.css">
+  <link rel="stylesheet" href="./assets/css/variants.css">
+
+  <!-- Variants bootstrap runs before script.js so ticker cloning sees reordered source nodes. -->
+  <script defer src="./assets/js/variants.js"></script>
 
   <!--
     - google font link
@@ -97,14 +123,14 @@
 
       <div class="sidebar-info">
 
-        <figure class="avatar-box">
+        <figure class="avatar-box" data-variant-hide="ai">
           <img src="./assets/images/avatar_ben.webp" alt="Ben jamin" width="80" fetchpriority="high">
         </figure>
 
         <div class="info-content">
           <h1 class="name" title="Ben Visser">Ben Visser</h1>
 
-          <p class="title">Interactive Applications</p>
+          <p class="title" data-variant-text-ai="Software Engineer, AI Systems">Interactive Applications</p>
         </div>
 
         <button class="info_more-btn" data-sidebar-btn>
@@ -248,17 +274,37 @@
         </header>
 
         <section class="about-text">
-          <p>
-            I’m a Unity developer based in Auckland, New Zealand, working across games, VR simulation, and interactive training software. Over more than a decade of professional C# development, I’ve shipped projects across mobile, desktop, and head-mounted platforms, but the thread that runs through all of my work is a belief that interactive systems can make complex ideas feel intuitive.
-          </p>
+          <div data-variant-hide="ai">
+            <p>
+              I’m a Unity developer based in Auckland, New Zealand, working across games, VR simulation, and interactive training software. Over more than a decade of professional C# development, I’ve shipped projects across mobile, desktop, and head-mounted platforms, but the thread that runs through all of my work is a belief that interactive systems can make complex ideas feel intuitive.
+            </p>
 
-          <p>
-            I’m drawn to the point where design and development overlap: where responsiveness, clarity, and feel shape whether something is merely functional or genuinely engaging. In games, that means building experiences with enough craft and momentum to keep players invested. In training software, it means creating systems where learning happens naturally through doing, exploration, and feedback.
-          </p>
+            <p>
+              I’m drawn to the point where design and development overlap: where responsiveness, clarity, and feel shape whether something is merely functional or genuinely engaging. In games, that means building experiences with enough craft and momentum to keep players invested. In training software, it means creating systems where learning happens naturally through doing, exploration, and feedback.
+            </p>
 
-          <p>
-            I like getting ideas into a playable state early, because there is often a real gap between the idea of something and the reality of it. For me, iteration is where good work emerges: testing, refining, and pushing toward software that feels polished, considered, and worth people’s time.
-          </p>
+            <p>
+              I like getting ideas into a playable state early, because there is often a real gap between the idea of something and the reality of it. For me, iteration is where good work emerges: testing, refining, and pushing toward software that feels polished, considered, and worth people’s time.
+            </p>
+          </div>
+
+          <div data-variant-only="ai">
+            <p>
+              I’m a software engineer based in Auckland, New Zealand, working across agentic AI systems, interactive software, and real-world product engineering. Over more than a decade of shipping production software across C#, TypeScript, and Python, I’ve built everything from games and VR training systems to local-first LLM tools, retrieval pipelines, and agents that support real workflows end to end.
+            </p>
+
+            <p>
+              The thread that runs through my work is a belief that good software should make complexity feel manageable. I’m especially drawn to systems that sit at the overlap of design, engineering, and behaviour: where the challenge is not just getting a model or feature to work, but shaping it into something clear, dependable, and genuinely useful.
+            </p>
+
+            <p>
+              In AI work, that means building more than a chat interface. I’m interested in the engineering around the model: tool design, retrieval, structured outputs, evals, orchestration, latency, and the practical realities of integrating AI into products that people actually use. A recent example is Porter, my local-first job application agent, which combines structured parsing, RAG over my own career corpus, and a Playwright sidecar that can carry tasks through in the browser.
+            </p>
+
+            <p>
+              I like getting systems into a working state early, because there’s usually a gap between what seems convincing in theory and what holds up in practice. For me, good work comes from iteration: testing, refining, and building toward software that feels considered, resilient, and worth relying on.
+            </p>
+          </div>
         </section>
 
 
@@ -272,7 +318,7 @@
 
           <ul class="service-list">
 
-            <li class="service-item">
+            <li class="service-item" data-variant-hide="ai">
 
               <div class="service-icon-box">
                 <img src="./assets/images/icon-ai.svg" alt="AI icon" width="40">
@@ -289,7 +335,7 @@
 
             </li>
 
-            <li class="service-item">
+            <li class="service-item" data-variant-hide="ai">
 
               <div class="service-icon-box">
                 <img src="./assets/images/icon-app.svg" alt="mobile app icon" width="40">
@@ -305,7 +351,75 @@
 
             </li>
 
-            <li class="service-item">
+            <li class="service-item" data-variant-only="ai" data-variant-order-ai="1">
+
+              <div class="service-icon-box">
+                <img src="./assets/images/icon-ai.svg" alt="AI icon" width="40">
+              </div>
+
+              <div class="service-content-box">
+                <h4 class="h4 service-item-title">AI Development</h4>
+
+                <p class="service-item-text">
+                  <strong>Agentic systems that do real work.</strong>
+                  <br>I build practical AI features end-to-end: tool use, structured prompts, evaluation loops, self-hosted models, and workflows that connect models to real products. From AI-driven behaviours in training software to internal assistants and automation, I care about systems that are useful, stable, and shippable.
+                </p>
+              </div>
+
+            </li>
+
+            <li class="service-item" data-variant-only="ai" data-variant-order-ai="2">
+
+              <div class="service-icon-box">
+                <img src="./assets/images/icon-app.svg" alt="mobile app icon" width="40">
+              </div>
+
+              <div class="service-content-box">
+                <h4 class="h4 service-item-title">Desktop &amp; Mobile Apps</h4>
+
+                <p class="service-item-text">
+                  <strong>Production software, not just prototypes.</strong>
+                  <br>Years building and maintaining cross-platform applications across desktop and mobile &mdash; including offline-first systems, multi-tenant apps, companion tools, and the infrastructure behind them. Comfortable owning architecture, implementation, polish, and the messy parts that keep products running.
+                </p>
+              </div>
+
+            </li>
+
+            <li class="service-item" data-variant-only="ai" data-variant-order-ai="3">
+
+              <div class="service-icon-box">
+                <img src="./assets/images/icon-pipeline.svg" alt="pipeline icon" width="40">
+              </div>
+
+              <div class="service-content-box">
+                <h4 class="h4 service-item-title">Pipelines &amp; Automation</h4>
+
+                <p class="service-item-text">
+                  <strong>The plumbing that makes AI reliable.</strong>
+                  <br>Good AI products need more than prompts. I build the surrounding systems: repeatable pipelines, eval harnesses, telemetry, deployment flows, caching, and operational tooling that make AI features easier to ship, observe, and improve over time.
+                </p>
+              </div>
+
+            </li>
+
+            <li class="service-item" data-variant-only="ai" data-variant-order-ai="4">
+
+              <div class="service-icon-box">
+                <img src="./assets/images/icon-report.svg" alt="monitoring icon" width="40">
+              </div>
+
+              <div class="service-content-box">
+                <h4 class="h4 service-item-title">Reporting &amp; Monitoring</h4>
+
+                <p class="service-item-text">
+                  <strong>Systems that surface what matters.</strong>
+                  <br>Automated reporting, performance dashboards, scheduled summaries, and lightweight monitoring that keep teams informed without manual effort. I like building software that not only runs, but also explains how it&rsquo;s running.
+                </p>
+              </div>
+
+            </li>
+
+            <li class="service-item" data-variant-hide="ai">
 
               <div class="service-icon-box">
                 <img src="./assets/images/icon-cube.svg
@@ -323,7 +437,7 @@
 
             </li>
 
-            <li class="service-item">
+            <li class="service-item" data-variant-hide="ai">
 
               <div class="service-icon-box">
                 <img src="./assets/images/icon-dev.svg" alt="Web development icon" width="40">
@@ -504,55 +618,55 @@
           <div class="ticker-wrap">
             <ul class="clients-list ticker-track">
 
-              <li class="clients-item">
+              <li class="clients-item" data-variant-order-ai="10">
                 <a href="#" data-scroll="crossy">
                   <img width="800" height="800" src="./assets/images/view-crossy.png" alt="project logo" loading="lazy">
                 </a>
               </li>
 
-              <li class="clients-item">
+              <li class="clients-item" data-variant-order-ai="2">
                 <a href="#" data-scroll="comsim">
                   <img width="260" height="260" src="./assets/images/view-comsim.png" alt="project logo" loading="lazy">
                 </a>
               </li>
 
-              <li class="clients-item">
+              <li class="clients-item" data-variant-order-ai="5">
                 <a href="#" data-scroll="vr-singing-club">
                   <img width="800" height="800" src="./assets/images/view-sing.png" alt="project logo" loading="lazy">
                 </a>
               </li>
 
-              <li class="clients-item">
+              <li class="clients-item" data-variant-order-ai="15">
                 <a href="#" data-scroll="tumbly">
                   <img width="800" height="800" src="./assets/images/view-tum.png" alt="project logo" loading="lazy">
                 </a>
               </li>
 
-              <li class="clients-item">
+              <li class="clients-item" data-variant-order-ai="7">
                 <a href="#" data-scroll="heights">
                   <img width="800" height="800" src="./assets/images/view-heights.png" alt="project logo" loading="lazy">
                 </a>
               </li>
 
-              <li class="clients-item">
+              <li class="clients-item" data-variant-order-ai="13">
                 <a href="#" data-scroll="dungems">
                   <img width="800" height="800" src="./assets/images/view-dungems.png" alt="project logo" loading="lazy">
                 </a>
               </li>
 
-              <li class="clients-item">
+              <li class="clients-item" data-variant-order-ai="9">
                 <a href="#" data-scroll="aetherlight">
                   <img width="800" height="800" src="./assets/images/view-aether.png" alt="project logo" loading="lazy">
                 </a>
               </li>
 
-              <li class="clients-item">
+              <li class="clients-item" data-variant-order-ai="17">
                 <a href="#" data-scroll="huia">
                   <img width="800" height="800" src="./assets/images/view-huia.png" alt="project logo" loading="lazy">
                 </a>
               </li>
 
-              <li class="clients-item">
+              <li class="clients-item" data-variant-order-ai="3">
                 <a href="#" data-scroll="warehousing-passport">
                   <img width="800" height="800" src="./assets/images/view-warehousing.png" alt="project logo" loading="lazy">
                 </a>
@@ -607,7 +721,7 @@
 
         <header class="resume-header">
           <h2 class="h2 article-title">Resume</h2>
-          <a href="cv.html" target="_blank" class="cv-btn">View CV <em class="arrow">↗</em></a>
+          <a href="cv.html" target="_blank" class="cv-btn" data-variant-href="cv.html">View CV <em class="arrow">↗</em></a>
         </header>
 
         <section class="timeline">
@@ -863,70 +977,16 @@ Designed and led the development of three educational real-time strategy games�
 
   <h3 class="h3 article-title">Core skill stack</h3>
     <ul class="skills-grid">
-<div class="skill-card">
-  <h4>Gameplay Engineering</h4>
+<div class="skill-card" data-variant-order-ai="1">
+  <h4>AI & Agents</h4>
   <ul>
-    <li>12 shipped Unity titles across VR, mobile, and PC</li>
-    <li>Data-driven state machines and ECS patterns</li>
-    <li>Rapid prototyping through to polished live code</li>
+    <li>Agentic workflows on self-hosted LLMs via an OpenClaw home-lab</li>
+    <li>AI-driven NPC behaviour shipped in VR training at SkillsVR</li>
+    <li>Model hosting, prompt and tool design, and end-to-end integration</li>
   </ul>
 </div>
 
-<div class="skill-card">
-  <h4>VR & XR</h4>
-  <ul>
-    <li>OpenXR, Quest and Pico SDK experience across multiple titles</li>
-    <li>Comfort-first, high-retention Mixed Reality design</li>
-    <li>Stable framerates in complex dynamic simulations</li>
-  </ul>
-</div>
-
-<div class="skill-card">
-  <h4>Design</h4>
-  <ul>
-    <li>Paper sketch to playable grey-box in days</li>
-    <li>Progression, economy and difficulty tuned via telemetry</li>
-    <li>Hunts down the fun through player feedback and rapid iteration</li>
-  </ul>
-</div>
-
-<div class="skill-card">
-  <h4>Database & Data Sync</h4>
-  <ul>
-    <li>Offline-first MongoDB and Realm sync pipelines</li>
-    <li>Migration scripts across complex production environments</li>
-    <li>Sharded leaderboards on AWS DynamoDB</li>
-  </ul>
-</div>
-
-<div class="skill-card">
-  <h4>Tooling & Pipelines</h4>
-  <ul>
-    <li>Unity editor tools that cut design iteration loops</li>
-    <li>One-click CLI build and over-the-air patch to CDN</li>
-    <li>Remote config and A/B flags without repatching</li>
-  </ul>
-</div>
-
-<div class="skill-card">
-  <h4>Analytics & Insights</h4>
-  <ul>
-    <li>Unity Analytics, GameAnalytics and GA4 setups</li>
-    <li>Custom dashboards surfacing player motivations</li>
-    <li>Crash and perf telemetry via Cloud Diagnostics and AWS</li>
-  </ul>
-</div>
-
-<div class="skill-card">
-  <h4>Multiplayer / Networking</h4>
-  <ul>
-    <li>PUN 2 and Fusion co-op with offline stat caching</li>
-    <li>Auth, matchmaking, relay and reconnect flows</li>
-    <li>Cross-platform voice and text chat</li>
-  </ul>
-</div>
-
-<div class="skill-card">
+<div class="skill-card" data-variant-order-ai="3">
   <h4>Performance & Debugging</h4>
   <ul>
     <li>Deep CPU/GPU profiling and memory audits</li>
@@ -935,12 +995,66 @@ Designed and led the development of three educational real-time strategy games�
   </ul>
 </div>
 
-<div class="skill-card">
+<div class="skill-card" data-variant-order-ai="2">
+  <h4>Tooling & Pipelines</h4>
+  <ul>
+    <li>Unity editor tools that cut design iteration loops</li>
+    <li>One-click CLI build and over-the-air patch to CDN</li>
+    <li>Agent pipelines and local LLM tool integrations, shipped end-to-end</li>
+  </ul>
+</div>
+
+<div class="skill-card" data-variant-order-ai="7">
+  <h4>Gameplay Engineering</h4>
+  <ul>
+    <li>12 shipped Unity titles across VR, mobile, and PC</li>
+    <li>Data-driven state machines, ECS, and AI-driven NPC behaviour</li>
+    <li>Rapid prototyping through to polished live code</li>
+  </ul>
+</div>
+
+<div class="skill-card" data-variant-order-ai="6">
   <h4>Leadership & Mentoring</h4>
   <ul>
     <li>Ran a 3-year cross-functional game dev team</li>
     <li>Shipped 3 multiplayer titles for NZ schools</li>
     <li>Ownership of stakeholder demos and roadmap alignment</li>
+  </ul>
+</div>
+
+<div class="skill-card" data-variant-order-ai="4">
+  <h4>Database & Data Sync</h4>
+  <ul>
+    <li>Offline-first MongoDB and Realm sync pipelines</li>
+    <li>Migration scripts across complex production environments</li>
+    <li>Sharded leaderboards on AWS DynamoDB</li>
+  </ul>
+</div>
+
+<div class="skill-card" data-variant-order-ai="8">
+  <h4>VR & XR</h4>
+  <ul>
+    <li>OpenXR, Quest and Pico SDK experience across multiple titles</li>
+    <li>Comfort-first, high-retention Mixed Reality design</li>
+    <li>Stable framerates in complex dynamic simulations</li>
+  </ul>
+</div>
+
+<div class="skill-card" data-variant-order-ai="5">
+  <h4>Analytics & Insights</h4>
+  <ul>
+    <li>Unity Analytics, GameAnalytics and GA4 setups</li>
+    <li>Custom dashboards surfacing player motivations</li>
+    <li>Crash and perf telemetry via Cloud Diagnostics and AWS</li>
+  </ul>
+</div>
+
+<div class="skill-card" data-variant-order-ai="9">
+  <h4>Multiplayer / Networking</h4>
+  <ul>
+    <li>PUN 2 and Fusion co-op with offline stat caching</li>
+    <li>Auth, matchmaking, relay and reconnect flows</li>
+    <li>Cross-platform voice and text chat</li>
   </ul>
 </div>
 
@@ -964,16 +1078,36 @@ Designed and led the development of three educational real-time strategy games�
 
           <ul class="filter-list">
 
-            <li class="filter-item">
+            <li class="filter-item" data-variant-hide="ai">
               <button class="active" data-filter-btn>All</button>
             </li>
 
-            <li class="filter-item">
+            <li class="filter-item" data-variant-hide="ai">
+              <button data-filter-btn>AI</button>
+            </li>
+
+            <li class="filter-item" data-variant-hide="ai">
               <button data-filter-btn>VR / XR</button>
             </li>
 
-            <li class="filter-item">
+            <li class="filter-item" data-variant-hide="ai">
               <button data-filter-btn>Games</button>
+            </li>
+
+            <li class="filter-item" data-variant-only="ai">
+              <button data-filter-btn>All</button>
+            </li>
+
+            <li class="filter-item" data-variant-only="ai">
+              <button data-filter-btn>AI</button>
+            </li>
+
+            <li class="filter-item" data-variant-only="ai">
+              <button data-filter-btn>Apps</button>
+            </li>
+
+            <li class="filter-item" data-variant-only="ai">
+              <button data-filter-btn>Interactive</button>
             </li>
 
           </ul>
@@ -992,16 +1126,36 @@ Designed and led the development of three educational real-time strategy games�
 
             <ul class="select-list">
 
-              <li class="select-item">
+              <li class="select-item" data-variant-hide="ai">
                 <button data-select-item>All</button>
               </li>
 
-              <li class="select-item">
+              <li class="select-item" data-variant-hide="ai">
+                <button data-select-item>AI</button>
+              </li>
+
+              <li class="select-item" data-variant-hide="ai">
                 <button data-select-item>VR / XR</button>
               </li>
 
-              <li class="select-item">
+              <li class="select-item" data-variant-hide="ai">
                 <button data-select-item>Games</button>
+              </li>
+
+              <li class="select-item" data-variant-only="ai">
+                <button data-select-item>All</button>
+              </li>
+
+              <li class="select-item" data-variant-only="ai">
+                <button data-select-item>AI</button>
+              </li>
+
+              <li class="select-item" data-variant-only="ai">
+                <button data-select-item>Apps</button>
+              </li>
+
+              <li class="select-item" data-variant-only="ai">
+                <button data-select-item>Interactive</button>
               </li>
 
             </ul>
@@ -1013,8 +1167,40 @@ Designed and led the development of three educational real-time strategy games�
 
 
 <li class="project-item active"
-    id="crossy" 
-    data-filter-item data-category="games"
+    id="porter"
+    data-filter-item data-category="ai" data-ai-category="ai"
+    data-variant-order-ai="1"
+    data-year="2026"
+    data-title="Porter"
+    data-subtitle="Local-first AI job-application agent"
+    data-genre="AI Agent"
+    data-studio="Personal project"
+    data-platforms="mac,web"
+    data-link="https://porter-625c.vercel.app/applications/demo-ai-engineer/"
+    data-text="
+<b>A local-first AI agent that turns messy job postings into tailored, evidence-backed applications — every requirement parsed, scored, and traced back to real evidence from your career.</b>
+<ul class='proj-bullets'>
+  <li>Next.js + TypeScript front-end with a structured-output LLM pipeline (Ollama / Qwen) that parses postings into requirement trees and scores fit with citations back into your corpus.</li>
+  <li>RAG over your own resume, projects, and writing samples — runs locally so nothing about your job hunt leaves the machine.</li>
+  <li>Playwright sidecar drives real application forms across ATS platforms (Greenhouse, Lever, Workday). An agent that does the clicking, not just the writing.</li>
+  <li>Full eval harness with cached runs, stability scoring, and a reproducible demo mode — try the live demo above.</li>
+</ul>"
+    data-gallery='["./assets/images/projects/project-porter-greenhouse.webm","./assets/images/projects/project-porter-simple.webm","./assets/images/projects/project-porter-fit.png","./assets/images/projects/project-porter-draft.png","./assets/images/projects/project-porter-form.png","./assets/images/projects/project-porter-posting.png","./assets/images/projects/project-porter-profile.png","./assets/images/projects/project-porter-settings.png","./assets/images/projects/project-porter-dashboard.png"]'>
+  <a href="#">
+    <figure class="project-img">
+      <img width="800" height="420" src="./assets/images/projects/projectthumb-porter.png"
+           alt="Porter thumbnail"
+           fetchpriority="high">
+    </figure>
+    <h3 class="project-title">Porter</h3>
+    <p class="project-category">AI</p>
+  </a>
+</li>
+
+<li class="project-item active"
+    id="crossy"
+    data-filter-item data-category="games" data-ai-category="interactive"
+    data-variant-order-ai="10"
     data-year="2024"
     data-title="Crossy Road Castle"
     data-subtitle="Tower-climber · Apple Arcade"
@@ -1046,9 +1232,10 @@ Designed and led the development of three educational real-time strategy games�
 <!-- 2023 ─────────────────────────────────────────────────────────── -->
 
 <li class="project-item active"
-    data-filter-item data-category="vr / xr"
-    id="vr-singing-club" 
-    data-year="2025"   
+    data-filter-item data-category="vr / xr" data-ai-category="interactive"
+    data-variant-order-ai="5"
+    id="vr-singing-club"
+    data-year="2025"
     data-title="VR Singing Club"
     data-subtitle="Social karaoke on Meta Quest"
     data-genre="VR Social"
@@ -1074,7 +1261,8 @@ Designed and led the development of three educational real-time strategy games�
 
 <li class="project-item active"
     id="aetherlight"
-    data-filter-item data-category="games"
+    data-filter-item data-category="games" data-ai-category="interactive"
+    data-variant-order-ai="9"
     data-title="The Aetherlight &amp; Companion Apps"
     data-subtitle="Cross-platform MMORPG with companions"
     data-genre="MMORPG"
@@ -1099,7 +1287,8 @@ Designed and led the development of three educational real-time strategy games�
 </li>
 
 <li class="project-item active"
-    data-filter-item data-category="apps"
+    data-filter-item data-category="apps" data-ai-category="apps"
+    data-variant-order-ai="6"
     id="museum-of-the-bible"
     data-title="Museum of the Bible — Digital Guide"
     data-subtitle="Children's gamified museum experience"
@@ -1128,7 +1317,8 @@ Designed and led the development of three educational real-time strategy games�
 
 <li class="project-item active"
     id="heights"
-    data-filter-item data-category="vr / xr"
+    data-filter-item data-category="vr / xr" data-ai-category="interactive"
+    data-variant-order-ai="7"
     data-title="Working at Heights"
     data-subtitle="Immersive safety training"
     data-genre="VR Training"
@@ -1153,7 +1343,8 @@ Designed and led the development of three educational real-time strategy games�
 </li>
 
 <li class="project-item active"
-    data-filter-item data-category="games"
+    data-filter-item data-category="games" data-ai-category="interactive"
+    data-variant-order-ai="16"
     id="builder"
     data-year="2021"
     data-title="Builder"
@@ -1178,7 +1369,8 @@ Designed and led the development of three educational real-time strategy games�
 </li>
 
 <li class="project-item active"
-    data-filter-item data-category="vr / xr"
+    data-filter-item data-category="vr / xr" data-ai-category="ai interactive"
+    data-variant-order-ai="3"
     id="warehousing-passport"
     data-year="2025"
     data-title="Warehousing Foundation Passport"
@@ -1205,13 +1397,13 @@ Designed and led the development of three educational real-time strategy games�
 
 <li class="project-item active"
     id="dungems"
-    data-filter-item data-category="games"
+    data-filter-item data-category="games" data-ai-category="interactive"
+    data-variant-order-ai="13"
     data-title="Dungems"
     data-subtitle="Reverse-dungeon roguelike"
     data-genre="Roguelike"
     data-studio="Fold Thirteen"
     data-platforms="pc"
-    id="comsim"
     data-year="2022"
     data-hero="./assets/images/projects/projectthumb-dungem.png"
     data-text= "<b>Reverse-dungeon roguelike: lay traps, carve tunnels, train monsters, then watch AI heroes try to beat your design.</b>
@@ -1235,7 +1427,8 @@ Designed and led the development of three educational real-time strategy games�
 </li>
 
 <li class="project-item active"
-    data-filter-item data-category="vr / xr"
+    data-filter-item data-category="vr / xr" data-ai-category="interactive"
+    data-variant-order-ai="4"
     id="hospitality-passport"
     data-year="2025"
     data-title="Hospitality Foundation Passport"
@@ -1261,7 +1454,8 @@ Designed and led the development of three educational real-time strategy games�
 </li>
 
 <li class="project-item active"
-    data-filter-item data-category="games"
+    data-filter-item data-category="games" data-ai-category="interactive"
+    data-variant-order-ai="14"
     data-title="Clutterking"
     data-subtitle="Click-to-crumble physics puzzler"
     data-genre="Casual Puzzle"
@@ -1285,7 +1479,8 @@ Designed and led the development of three educational real-time strategy games�
   </a>
 </li>
 <li class="project-item active"
-    data-filter-item data-category="vr / xr"
+    data-filter-item data-category="vr / xr" data-ai-category="interactive"
+    data-variant-order-ai="8"
     id="miller-training"
     data-year="2023"
     data-title="Child Welfare VR Simulation"
@@ -1311,10 +1506,41 @@ Designed and led the development of three educational real-time strategy games�
   </a>
 </li>
 
+<li class="project-item active"
+    data-filter-item data-category="apps" data-ai-category="apps"
+    data-variant-order-ai="2"
+    id="comsim"
+    data-title="Comsim"
+    data-subtitle="Field tool for electrical engineers"
+    data-genre="Productivity App"
+    data-studio="Fold Thirteen"
+    data-platforms="ios,android,desktop"
+    data-year="2023"
+    data-text=
+    "<b>Cross-platform desktop and mobile app for electrical engineers — cuts paperwork and speeds up field workflows.</b>
+<ul class='proj-bullets'>
+  <li>Works offline and syncs to the cloud when connected — data is always available.</li>
+  <li>Capture notes, photos, and calibration data on one screen, designed for use in gloves.</li>
+  <li>Print QR codes on-site and scan them later for instant asset lookup.</li>
+  <li>Built iteratively alongside engineers using real-world workflows.</li>
+</ul>"
+
+        data-gallery='[ "./assets/images/projects/project-comsim3.png", "./assets/images/projects/project-comsim2.png", "./assets/images/projects/project-comsim.png"]'
+    data-link="www.comsim.co.nz">
+  <a href="#">
+    <figure class="project-img">
+<img width="749" height="1028" src="./assets/images/projects/projectthumb-comsimPoster.webp" alt="Comsim thumbnail" loading="lazy">
+    </figure>
+    <h3 class="project-title">Comsim</h3>
+    <p  class="project-category">Apps</p>
+  </a>
+</li>
+
 <!-- 2022 ─────────────────────────────────────────────────────────── -->
 
 <li class="project-item active"
-    data-filter-item data-category="games"
+    data-filter-item data-category="games" data-ai-category="interactive"
+    data-variant-order-ai="18"
     data-title="Construction Tycoon"
     data-subtitle="City-scale RTS and budgeting sim"
     data-genre="Edu Strategy"
@@ -1341,7 +1567,8 @@ Designed and led the development of three educational real-time strategy games�
 <!-- 2018 ─────────────────────────────────────────────────────────── -->
 
 <li class="project-item active"
-    data-filter-item data-category="vr / xr"
+    data-filter-item data-category="vr / xr" data-ai-category="interactive"
+    data-variant-order-ai="11"
     data-title="Kiwifruit Pruning"
     data-subtitle="Orchard simulation for cane pruning"
     data-genre="VR Training"
@@ -1367,7 +1594,8 @@ Designed and led the development of three educational real-time strategy games�
 
 <li class="project-item active"
     id="tumbly"
-    data-filter-item data-category="games"
+    data-filter-item data-category="games" data-ai-category="interactive"
+    data-variant-order-ai="15"
     data-title="Tumbly Beasts"
     data-subtitle="Physics-driven endless runner"
     data-genre="Endless Runner"
@@ -1394,7 +1622,8 @@ Designed and led the development of three educational real-time strategy games�
 <!-- 2015 ─────────────────────────────────────────────────────────── -->
 
 <li class="project-item active"
-    data-filter-item data-category="vr / xr"
+    data-filter-item data-category="vr / xr" data-ai-category="interactive"
+    data-variant-order-ai="12"
     data-title="Sustainability"
     data-subtitle="Branching environmental choices"
     data-genre="VR Training"
@@ -1423,7 +1652,8 @@ Designed and led the development of three educational real-time strategy games�
 
 <li class="project-item active"
     id="huia"
-    data-filter-item data-category="games"
+    data-filter-item data-category="games" data-ai-category="interactive"
+    data-variant-order-ai="17"
     data-title="Huia"
     data-subtitle="Story of Aotearoa's last huia"
     data-genre="Narrative"
@@ -1447,10 +1677,39 @@ Designed and led the development of three educational real-time strategy games�
   </a>
 </li>
 
+<li class="project-item active"
+    id="furlong"
+    data-filter-item data-category="apps" data-ai-category="apps"
+    data-variant-order-ai="2"
+    data-year="2024"
+    data-title="Furlong"
+    data-subtitle="NZ horse-racing digest workflow"
+    data-genre="Automation"
+    data-studio="NZ Thoroughbred Marketing"
+    data-platforms="web"
+    data-text="
+<b>Built a self-hosted n8n workflow that scraped curated NZ horse-racing news sources, deduplicated stories against a rolling seen-stories index, and emailed a daily digest to a shared team inbox each morning.</b>
+<br><br>
+The system used a 12-node pipeline covering scheduling, batched source processing, HTTP fetch, HTML extraction, content normalisation, and SHA-1 hashing. New stories were identified by checking each hash against a Google Sheets index, ensuring only unseen content made it into the digest.
+<br><br>
+A custom Code node rendered the final dark-themed HTML email, with SMTP handling 6am NZT delivery. Self-hosted with no cloud spend, it was designed to run quietly with minimal upkeep and remains live today."
+    data-gallery='["./assets/images/projects/project-furlong-workflow.png","./assets/images/projects/project-furlong-email.png","./assets/images/projects/project-furlong-code.png"]'>
+  <a href="#">
+    <figure class="project-img">
+      <img width="800" height="1200" src="./assets/images/projects/projectthumb-furlong.png"
+           alt="Furlong thumbnail"
+           loading="lazy">
+    </figure>
+    <h3 class="project-title">Furlong</h3>
+    <p class="project-category">Apps</p>
+  </a>
+</li>
+
 <!-- 2017 ─────────────────────────────────────────────────────────── -->
 
 <li class="project-item active"
-    data-filter-item data-category="games"
+    data-filter-item data-category="games" data-ai-category="interactive"
+    data-variant-order-ai="19"
     data-title="Tech Tycoon"
     data-subtitle="STEM factory-builder and supply chain"
     data-genre="Edu Strategy"
@@ -1475,36 +1734,8 @@ Designed and led the development of three educational real-time strategy games�
 </li>
 
 <li class="project-item active"
-    data-filter-item data-category="apps"
-    id="comsim"
-    data-title="Comsim"
-    data-subtitle="Field tool for electrical engineers"
-    data-genre="Productivity App"
-    data-studio="Fold Thirteen"
-    data-platforms="ios,android,desktop"
-    data-year="2023"
-    data-text=
-    "<b>Cross-platform desktop and mobile app for electrical engineers — cuts paperwork and speeds up field workflows.</b>
-<ul class='proj-bullets'>
-  <li>Works offline and syncs to the cloud when connected — data is always available.</li>
-  <li>Capture notes, photos, and calibration data on one screen, designed for use in gloves.</li>
-  <li>Print QR codes on-site and scan them later for instant asset lookup.</li>
-  <li>Built iteratively alongside engineers using real-world workflows.</li>
-</ul>"
-
-        data-gallery='[ "./assets/images/projects/project-comsim3.png", "./assets/images/projects/project-comsim2.png", "./assets/images/projects/project-comsim.png"]'
-    data-link="www.comsim.co.nz">
-  <a href="#">
-    <figure class="project-img">
-<img width="749" height="1028" src="./assets/images/projects/projectthumb-comsimPoster.webp" alt="Comsim thumbnail" loading="lazy">
-    </figure>
-    <h3 class="project-title">Comsim</h3>
-    <p  class="project-category">Apps</p>
-  </a>
-</li>
-
-<li class="project-item active"
-    data-filter-item data-category="games"
+    data-filter-item data-category="games" data-ai-category="interactive"
+    data-variant-order-ai="20"
     data-title="Restaurant Tycoon"
     data-subtitle="Fast-casual empire management"
     data-genre="Edu Strategy"
@@ -1529,7 +1760,8 @@ Designed and led the development of three educational real-time strategy games�
 </li>
 
 <li class="project-item active"
-    data-filter-item data-category="games"
+    data-filter-item data-category="games" data-ai-category="interactive"
+    data-variant-order-ai="21"
     data-title="Pipeworld"
     data-subtitle="Classic pipe puzzle reimagined"
     data-genre="Logic Puzzle"
@@ -1556,7 +1788,8 @@ Designed and led the development of three educational real-time strategy games�
 <!-- 2016 ─────────────────────────────────────────────────────────── -->
 
 <li class="project-item active"
-    data-filter-item data-category="games"
+    data-filter-item data-category="games" data-ai-category="interactive"
+    data-variant-order-ai="22"
     data-title="Math Castle"
     data-subtitle="Tower defence meets maths drills"
     data-genre="Edu Tower Defence"

@@ -1,0 +1,43 @@
+<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="pipeGrad" x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse">
+      <stop offset="0.259336" stop-color="#FFDB6E"/>
+      <stop offset="1" stop-color="#FFBC5E"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Dashed rail underneath, evoking the CI environment the pipeline runs on -->
+  <line x1="3" y1="33" x2="37" y2="33"
+        stroke="url(#pipeGrad)" stroke-width="0.9"
+        stroke-dasharray="1.8 2" opacity="0.35"/>
+
+  <!-- Stage 1: source (rect with content lines) -->
+  <rect x="2" y="14" width="9" height="12" rx="1.8" fill="url(#pipeGrad)"/>
+  <g stroke="#1a1a1a" stroke-width="0.9" stroke-linecap="round" opacity="0.5">
+    <line x1="3.6" y1="18" x2="9.4" y2="18"/>
+    <line x1="3.6" y1="20.5" x2="7.4" y2="20.5"/>
+    <line x1="3.6" y1="23" x2="8.4" y2="23"/>
+  </g>
+
+  <!-- Arrow 1 → -->
+  <line x1="11.5" y1="20" x2="13.5" y2="20"
+        stroke="url(#pipeGrad)" stroke-width="1.7" stroke-linecap="round"/>
+  <polygon points="13,17.5 13,22.5 15.8,20" fill="url(#pipeGrad)"/>
+
+  <!-- Stage 2: processing / automation (hexagon with inner dot) -->
+  <polygon points="20,13.5 24,15.75 24,24.25 20,26.5 16,24.25 16,15.75"
+           fill="url(#pipeGrad)"/>
+  <circle cx="20" cy="20" r="1.6" fill="#1a1a1a" opacity="0.55"/>
+
+  <!-- Arrow 2 → -->
+  <line x1="24.5" y1="20" x2="26.5" y2="20"
+        stroke="url(#pipeGrad)" stroke-width="1.7" stroke-linecap="round"/>
+  <polygon points="26,17.5 26,22.5 28.8,20" fill="url(#pipeGrad)"/>
+
+  <!-- Stage 3: deployment target (rect with check) -->
+  <rect x="29" y="14" width="9" height="12" rx="1.8" fill="url(#pipeGrad)"/>
+  <path d="M 30.6 20.3 L 32.4 22.3 L 36.2 16.8"
+        stroke="#1a1a1a" stroke-width="1.4"
+        stroke-linejoin="round" stroke-linecap="round"
+        fill="none" opacity="0.65"/>
+</svg>

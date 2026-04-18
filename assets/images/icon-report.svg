@@ -1,0 +1,41 @@
+<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="reportGrad" x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse">
+      <stop offset="0.259336" stop-color="#FFDB6E"/>
+      <stop offset="1" stop-color="#FFBC5E"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Top half: trend line sweeping up-right -->
+  <polyline points="6,14 14,11 22,13 32,5"
+            stroke="url(#reportGrad)" stroke-width="2"
+            stroke-linejoin="round" stroke-linecap="round"
+            fill="none"/>
+
+  <!-- Arrow head at the peak, opening down-left -->
+  <polyline points="28,6 32,5 30,9"
+            stroke="url(#reportGrad)" stroke-width="2"
+            stroke-linejoin="round" stroke-linecap="round"
+            fill="none"/>
+
+  <!-- Data points under the trend, excluding the peak -->
+  <g fill="url(#reportGrad)">
+    <circle cx="6"  cy="14" r="1.3"/>
+    <circle cx="14" cy="11" r="1.3"/>
+    <circle cx="22" cy="13" r="1.3"/>
+  </g>
+
+  <!-- Breathing room between arrow and bars: clear y=15-20 -->
+
+  <!-- Bottom half: four ascending bars -->
+  <g fill="url(#reportGrad)" opacity="0.88">
+    <rect x="5"  y="28" width="5" height="7"  rx="1.2"/>
+    <rect x="13" y="24" width="5" height="11" rx="1.2"/>
+    <rect x="21" y="26" width="5" height="9"  rx="1.2"/>
+    <rect x="29" y="21" width="5" height="14" rx="1.2"/>
+  </g>
+
+  <!-- Subtle baseline under the bars -->
+  <line x1="4" y1="35.5" x2="36" y2="35.5"
+        stroke="url(#reportGrad)" stroke-width="0.9" opacity="0.45"/>
+</svg>

@@ -194,22 +194,57 @@ const filterItems = document.querySelectorAll("[data-filter-item]");
 
 let filterFunc = function (selectedValue) {
 
+  const variant = document.documentElement.dataset.variant || "default";
+
   for (let i = 0; i < filterItems.length; i++) {
 
+    let matches;
     if (selectedValue === "all") {
-      filterItems[i].classList.add("active");
-    } else if (selectedValue === filterItems[i].dataset.category) {
-      filterItems[i].classList.add("active");
+      matches = true;
+    } else if (variant === "ai") {
+      // AI variant uses tokenised data-ai-category (space-separated),
+      // letting one project live in multiple buckets (e.g. "ai interactive").
+      const raw = filterItems[i].dataset.aiCategory || "";
+      matches = raw.split(/\s+/).filter(Boolean).includes(selectedValue);
     } else {
-      filterItems[i].classList.remove("active");
+      matches = selectedValue === filterItems[i].dataset.category;
     }
+
+    filterItems[i].classList.toggle("active", matches);
 
   }
 
 }
 
+// Normalize the initial filter-button active state to the current variant.
+// Each variant has its own set of filter buttons (default: All/AI/VR/Games,
+// AI: All/AI/Apps/Interactive) wrapped in <li> with data-variant-hide or
+// data-variant-only. Clear .active on any button hidden in this variant and
+// promote the visible "All" to active so only one button reads as selected.
+{
+  const variant = document.documentElement.dataset.variant || "default";
+  const visibleForVariant = (btn) => {
+    const li = btn.closest('.filter-item');
+    if (!li) return true;
+    const hide = (li.getAttribute('data-variant-hide') || '').split(/\s+/);
+    const only = (li.getAttribute('data-variant-only') || '').split(/\s+/).filter(Boolean);
+    if (hide.includes(variant)) return false;
+    if (only.length && !only.includes(variant)) return false;
+    return true;
+  };
+  Array.from(filterBtn).forEach(b => {
+    if (!visibleForVariant(b)) b.classList.remove('active');
+  });
+  const alreadyActive = Array.from(filterBtn).find(b => visibleForVariant(b) && b.classList.contains('active'));
+  if (!alreadyActive) {
+    const visibleAll = Array.from(filterBtn).find(b =>
+      visibleForVariant(b) && b.innerText.trim().toLowerCase() === 'all');
+    if (visibleAll) visibleAll.classList.add('active');
+  }
+}
+
 // add event in all filter button items for large screen
-let lastClickedBtn = filterBtn[0];
+let lastClickedBtn = Array.from(filterBtn).find(b => b.classList.contains('active')) || filterBtn[0];
 
 for (let i = 0; i < filterBtn.length; i++) {
 
@@ -772,6 +807,7 @@ const PLATFORM_META = {
   mac:     { html: `<ion-icon name="laptop-outline"></ion-icon>`,          cls: 'pill-mac',     label: 'macOS'      },
   console: { html: `<ion-icon name="game-controller-outline"></ion-icon>`, cls: 'pill-console', label: 'Console'    },
   pico:    { html: `<ion-icon name="glasses-outline"></ion-icon>`,          cls: 'pill-vr',      label: 'Pico'       },
+  web:     { html: `<ion-icon name="globe-outline"></ion-icon>`,            cls: 'pill-web',     label: 'Web'        },
 };
 
 let scrollY = 0;
@@ -930,6 +966,7 @@ function resizeMasonryItem(item){
 }
 
 function resizeAllMasonryItems(){ allItems().forEach(resizeMasonryItem); }
+window.resizeAllMasonryItems = resizeAllMasonryItems;
 
 /* ─ run when the page finishes, whenever you resize, and whenever an
      image *inside* a card finishes loading ─────────────────────────── */

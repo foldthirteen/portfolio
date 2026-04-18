@@ -1,9 +1,32 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-variant="default">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Ben Visser — CV</title>
+
+  <!-- Portfolio variant bootstrap — shared storage key with index.html. -->
+  <script>
+    (function () {
+      var p = new URLSearchParams(location.search);
+      var q = p.get('v');
+      var v = q || (function () { try { return localStorage.getItem('pv'); } catch (e) { return null; } })()
+                || (document.cookie.match(/(?:^|;\s*)pv=([^;]+)/) || [])[1]
+                || 'default';
+      if (['default', 'ai'].indexOf(v) < 0) v = 'default';
+      if (q) {
+        try { localStorage.setItem('pv', v); } catch (e) {}
+        document.cookie = 'pv=' + v + ';path=/;max-age=31536000;samesite=lax';
+        p.delete('v');
+        var qs = p.toString();
+        history.replaceState(null, '', location.pathname + (qs ? '?' + qs : '') + location.hash);
+      }
+      document.documentElement.dataset.variant = v;
+    })();
+  </script>
+
+  <link rel="stylesheet" href="./assets/css/variants.css">
+  <script defer src="./assets/js/variants.js"></script>
 
   <!-- Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-DHZDKWL3HM"></script>
@@ -254,7 +277,7 @@
     }
 
     /* ── SUMMARY ── */
-    .cv-summary { margin-bottom: 18px; }
+    .cv-summary { margin-bottom: 18px; display: flex; flex-direction: column; }
 
     .cv-summary__para {
       font-size: var(--fs-body);
@@ -369,7 +392,7 @@
   <header class="cv-header">
     <h1 class="cv-header__name">Ben Visser</h1>
     <div class="cv-header__right">
-      <span class="cv-header__title">Engineering &amp; Design</span>
+      <span class="cv-header__title" data-variant-text-ai="AI &amp; Software Engineering">Engineering &amp; Design</span>
       <p class="cv-header__contact">Auckland, New Zealand &nbsp;·&nbsp; 0226810558 &nbsp;·&nbsp; foldthirteen@gmail.com &nbsp;·&nbsp; <a href="https://foldthirteen.github.io/portfolio/" style="color:inherit;text-decoration:underline;">foldthirteen.github.io/portfolio</a></p>
     </div>
   </header>
@@ -538,27 +561,31 @@
       <section id="summary" class="cv-summary">
         <h2 class="cv-section-title">Summary</h2>
 
-        <p class="cv-summary__para" data-point="1">
+        <p class="cv-summary__para" data-point="1" data-variant-order-ai="2">
           <strong>Experienced software engineer</strong> with cross-platform development expertise working with both small and large teams.
         </p>
 
-        <p class="cv-summary__para" data-point="2">
+        <p class="cv-summary__para" data-point="2" data-variant-hide="ai">
           <strong>Ten years game development experience</strong>, bringing a deep passion for the gaming industry with over ten independently released titles.
         </p>
 
-        <p class="cv-summary__para" data-point="3">
+        <p class="cv-summary__para" data-point="3" data-variant-order-ai="3">
           <strong>Proficient in implementing and utilising a strategic technical approach</strong> that solves problems, skilled in taking a holistic approach to project specifications, and adept at developing matched systems within agile work environments.
         </p>
 
-        <p class="cv-summary__para" data-point="4">
+        <p class="cv-summary__para" data-point="4" data-variant-order-ai="1" data-variant-only="default">
           <strong>Backed with strong industry proficiency</strong> in 3D with a strong focus on gameplay engineering and a passion for AI-driven systems.
         </p>
 
-        <p class="cv-summary__para" data-point="5">
+        <p class="cv-summary__para" data-point="4-ai" data-variant-only="ai" data-variant-order-ai="1">
+          <strong>Agentic AI and production LLM systems</strong> &mdash; building RAG pipelines, tool-calling agents, and evaluation harnesses on self-hosted and hosted models, shipped into real products.
+        </p>
+
+        <p class="cv-summary__para" data-point="5" data-variant-order-ai="4">
           <strong>Well versed in usability heuristics</strong>, constructing intuitive designs that support the end user.
         </p>
 
-        <p class="cv-summary__para" data-point="6">
+        <p class="cv-summary__para" data-point="6" data-variant-order-ai="5">
           <strong>Experienced in VR and AR development</strong>, creating immersive augmented and virtual worlds. Emphasis on cross-platform solutions through XR technologies.
         </p>
       </section>
