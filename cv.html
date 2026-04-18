@@ -392,7 +392,7 @@
   <header class="cv-header">
     <h1 class="cv-header__name">Ben Visser</h1>
     <div class="cv-header__right">
-      <span class="cv-header__title" data-variant-text-ai="AI &amp; Software Engineering">Engineering &amp; Design</span>
+      <span class="cv-header__title" data-variant-text-ai="Agentic AI &amp; Software Engineering">Engineering &amp; Design</span>
       <p class="cv-header__contact">Auckland, New Zealand &nbsp;·&nbsp; 0226810558 &nbsp;·&nbsp; foldthirteen@gmail.com &nbsp;·&nbsp; <a href="https://foldthirteen.github.io/portfolio/" style="color:inherit;text-decoration:underline;">foldthirteen.github.io/portfolio</a></p>
     </div>
   </header>
@@ -419,7 +419,7 @@
             <span class="cv-role__dates">2025 &ndash; 2026</span>
           </div>
           <ul class="cv-role__bullets">
-            <li>Built AI-driven NPC systems for immersive VR training scenarios</li>
+            <li data-variant-text-ai="AI-driven NPC systems for VR training — local LLM inference, prompt and tool design, integrated into immersive scenarios">Built AI-driven NPC systems for immersive VR training scenarios</li>
             <li>Vue.js asset-browser widget: browse and preview Unity packages without opening the editor</li>
             <li>Editor tooling and automation to accelerate CCK content authoring</li>
           </ul>
@@ -540,6 +540,33 @@
 
       </section>
 
+      <!-- Selected AI & Agentic Projects (AI variant only) -->
+      <section id="ai-projects" class="cv-experience" data-variant-only="ai">
+        <h2 class="cv-section-title">Selected AI &amp; Agentic Projects</h2>
+
+        <div class="cv-roles">
+
+          <article class="cv-role"
+            data-role="Porter"
+            data-company="Personal project"
+            data-from="2026"
+            data-to="2026">
+            <div class="cv-role__header">
+              <span class="cv-role__title">Porter &mdash; <span class="cv-role__company">Local-first AI job-application agent</span></span>
+              <span class="cv-role__dates">2026</span>
+            </div>
+            <ul class="cv-role__bullets">
+              <li>Next.js + TypeScript front-end with a structured-output LLM pipeline (Ollama / Qwen) that parses job postings into requirement trees and scores fit with citations back into a private corpus</li>
+              <li>RAG over a personal corpus of resume, projects, and writing samples &mdash; runs locally so nothing about the job hunt leaves the machine</li>
+              <li>Playwright sidecar drives real ATS form-fill (Greenhouse, Lever, Ashby) and stops at the submit button &mdash; an agent that does the clicking, a human that does the submitting</li>
+              <li>Full eval harness with cached runs, stability scoring, and a reproducible demo mode deployed as a static site</li>
+            </ul>
+          </article>
+
+        </div><!-- /cv-roles -->
+
+      </section>
+
       <!-- Education -->
       <section id="education" class="cv-education">
         <h2 class="cv-section-title">Education</h2>
@@ -561,7 +588,7 @@
       <section id="summary" class="cv-summary">
         <h2 class="cv-section-title">Summary</h2>
 
-        <p class="cv-summary__para" data-point="1" data-variant-order-ai="2">
+        <p class="cv-summary__para" data-point="1" data-variant-order-ai="4">
           <strong>Experienced software engineer</strong> with cross-platform development expertise working with both small and large teams.
         </p>
 
@@ -569,7 +596,7 @@
           <strong>Ten years game development experience</strong>, bringing a deep passion for the gaming industry with over ten independently released titles.
         </p>
 
-        <p class="cv-summary__para" data-point="3" data-variant-order-ai="3">
+        <p class="cv-summary__para" data-point="3" data-variant-order-ai="5">
           <strong>Proficient in implementing and utilising a strategic technical approach</strong> that solves problems, skilled in taking a holistic approach to project specifications, and adept at developing matched systems within agile work environments.
         </p>
 
@@ -581,11 +608,19 @@
           <strong>Agentic AI and production LLM systems</strong> &mdash; building RAG pipelines, tool-calling agents, and evaluation harnesses on self-hosted and hosted models, shipped into real products.
         </p>
 
-        <p class="cv-summary__para" data-point="5" data-variant-order-ai="4">
+        <p class="cv-summary__para" data-point="7-ai" data-variant-only="ai" data-variant-order-ai="2">
+          <strong>Local-first and self-hosted inference</strong> &mdash; Ollama, structured-output pipelines, retrieval over private corpora, and Playwright-driven browser agents. Comfortable with the engineering around the model: chunking, embeddings, reranking, tool design, and deterministic eval harnesses.
+        </p>
+
+        <p class="cv-summary__para" data-point="8-ai" data-variant-only="ai" data-variant-order-ai="3">
+          <strong>Over a decade shipping production C# / TypeScript / Python</strong> across games, VR, and full-stack product work. AI is a continuation of that craft, not a pivot &mdash; the same discipline around iteration, evaluation, and shipping applied to agent systems.
+        </p>
+
+        <p class="cv-summary__para" data-point="5" data-variant-order-ai="6">
           <strong>Well versed in usability heuristics</strong>, constructing intuitive designs that support the end user.
         </p>
 
-        <p class="cv-summary__para" data-point="6" data-variant-order-ai="5">
+        <p class="cv-summary__para" data-point="6" data-variant-order-ai="7">
           <strong>Experienced in VR and AR development</strong>, creating immersive augmented and virtual worlds. Emphasis on cross-platform solutions through XR technologies.
         </p>
       </section>
