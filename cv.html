@@ -230,6 +230,26 @@
       line-height: 1.3;
     }
 
+    .cv-role__icon {
+      width: 16px;
+      height: 16px;
+      vertical-align: -3px;
+      margin-right: 6px;
+      color: var(--color-muted);
+      display: inline-block;
+      flex-shrink: 0;
+    }
+
+    .cv-role--icon .cv-role__bullets li {
+      padding-left: 0;
+    }
+
+    .cv-role--icon .cv-role__bullets li::before {
+      content: none;
+    }
+
+    .cv-role--icon { break-inside: avoid; }
+
     .cv-role__company {
       font-weight: 400;
       color: var(--color-muted);
@@ -392,8 +412,9 @@
   <header class="cv-header">
     <h1 class="cv-header__name">Ben Visser</h1>
     <div class="cv-header__right">
-      <span class="cv-header__title" data-variant-text-ai="Agentic AI &amp; Software Engineering">Engineering &amp; Design</span>
-      <p class="cv-header__contact">Auckland, New Zealand &nbsp;·&nbsp; 0226810558 &nbsp;·&nbsp; foldthirteen@gmail.com &nbsp;·&nbsp; <a href="https://foldthirteen.github.io/portfolio/" style="color:inherit;text-decoration:underline;">foldthirteen.github.io/portfolio</a></p>
+      <span class="cv-header__title" data-variant-text-ai="Senior Software Engineer · AI Systems">Engineering &amp; Design</span>
+      <p class="cv-header__contact" data-variant-hide="ai">Auckland, New Zealand &nbsp;·&nbsp; 0226810558 &nbsp;·&nbsp; foldthirteen@gmail.com &nbsp;·&nbsp; <a href="https://foldthirteen.github.io/portfolio/" data-variant-href="https://foldthirteen.github.io/portfolio/" style="color:inherit;text-decoration:underline;">foldthirteen.github.io/portfolio</a></p>
+      <p class="cv-header__contact" data-variant-only="ai">Auckland, New Zealand &nbsp;·&nbsp; 022 681 0558 &nbsp;·&nbsp; foldthirteen@gmail.com &nbsp;·&nbsp; <a href="https://foldthirteen.github.io/portfolio/" data-variant-href="https://foldthirteen.github.io/portfolio/" style="color:inherit;text-decoration:underline;">foldthirteen.github.io/portfolio</a></p>
     </div>
   </header>
 
@@ -404,7 +425,7 @@
     ═══════════════════════════════════════ -->
     <div class="cv-left">
 
-      <section id="experience" class="cv-experience">
+      <section id="experience" class="cv-experience" data-variant-hide="ai">
         <h2 class="cv-section-title">Professional Experience</h2>
 
         <div class="cv-roles">
@@ -540,26 +561,128 @@
 
       </section>
 
-      <!-- Selected AI & Agentic Projects (AI variant only) -->
-      <section id="ai-projects" class="cv-experience" data-variant-only="ai">
-        <h2 class="cv-section-title">Selected AI &amp; Agentic Projects</h2>
+      <!-- AI variant: Professional Experience -->
+      <section id="experience-ai" class="cv-experience" data-variant-only="ai">
+        <h2 class="cv-section-title">Professional Experience</h2>
 
         <div class="cv-roles">
 
           <article class="cv-role"
-            data-role="Porter"
-            data-company="Personal project"
-            data-from="2026"
+            data-role="Gameplay and AI Engineer"
+            data-company="SkillsVR"
+            data-from="2025"
             data-to="2026">
             <div class="cv-role__header">
-              <span class="cv-role__title">Porter &mdash; <span class="cv-role__company">Local-first AI job-application agent</span></span>
-              <span class="cv-role__dates">2026</span>
+              <span class="cv-role__title">Gameplay &amp; AI Engineer &mdash; <span class="cv-role__company">SkillsVR</span></span>
+              <span class="cv-role__dates">2025 &ndash; 2026</span>
             </div>
             <ul class="cv-role__bullets">
-              <li>Next.js + TypeScript front-end with a structured-output LLM pipeline (Ollama / Qwen) that parses job postings into requirement trees and scores fit with citations back into a private corpus</li>
-              <li>RAG over a personal corpus of resume, projects, and writing samples &mdash; runs locally so nothing about the job hunt leaves the machine</li>
-              <li>Playwright sidecar drives real ATS form-fill (Greenhouse, Lever, Ashby) and stops at the submit button &mdash; an agent that does the clicking, a human that does the submitting</li>
-              <li>Full eval harness with cached runs, stability scoring, and a reproducible demo mode deployed as a static site</li>
+              <li>Built AI-driven NPC systems for VR training, covering local LLM inference, prompt design, tool integration, and scenario behaviour</li>
+              <li>Developed a Vue-based web tool to browse and preview Unity packages without opening the editor, improving workflow for internal teams and content creators</li>
+            </ul>
+          </article>
+
+          <article class="cv-role"
+            data-role="Lead Application Engineer"
+            data-company="E&amp;I Services"
+            data-from="2022"
+            data-to="2025">
+            <div class="cv-role__header">
+              <span class="cv-role__title">Lead Application Engineer &mdash; <span class="cv-role__company">E&amp;I Services</span></span>
+              <span class="cv-role__dates">2022 &ndash; 2025</span>
+            </div>
+            <ul class="cv-role__bullets">
+              <li>Led development of a cross-platform calibration and documentation application used in the field by electricians</li>
+              <li>Engineered an offline-first data layer with background sync across desktop and mobile, keeping records reliable in low-connectivity environments</li>
+            </ul>
+          </article>
+
+          <article class="cv-role"
+            data-role="Lead Developer"
+            data-company="VRTogether"
+            data-from="2023"
+            data-to="2025">
+            <div class="cv-role__header">
+              <span class="cv-role__title">Lead Developer &mdash; <span class="cv-role__company">VRTogether</span></span>
+              <span class="cv-role__dates">2023 &ndash; 2025</span>
+            </div>
+            <ul class="cv-role__bullets">
+              <li>Led delivery of VR training and interactive products from prototype through production</li>
+              <li>Delivered a child-welfare training simulation for the University of Kentucky and prototyped real-time voice features for a social singing experience</li>
+            </ul>
+          </article>
+
+          <article class="cv-role"
+            data-role="Gameplay Engineer"
+            data-company="Hipster Whale"
+            data-from="2022"
+            data-to="2023">
+            <div class="cv-role__header">
+              <span class="cv-role__title">Gameplay Engineer &mdash; <span class="cv-role__company">Hipster Whale</span></span>
+              <span class="cv-role__dates">2022 &ndash; 2023</span>
+            </div>
+            <ul class="cv-role__bullets">
+              <li>Worked on gameplay systems and polish for an unreleased LEGO mobile title</li>
+              <li>Contributed live-ops events and content for Crossy Road Castle to support engagement and retention</li>
+            </ul>
+          </article>
+
+          <article class="cv-role"
+            data-role="Prototype Engineer and Technical Designer"
+            data-company="SkillsVR"
+            data-from="2020"
+            data-to="2022">
+            <div class="cv-role__header">
+              <span class="cv-role__title">Prototype Engineer &amp; Technical Designer &mdash; <span class="cv-role__company">SkillsVR</span></span>
+              <span class="cv-role__dates">2020 &ndash; 2022</span>
+            </div>
+            <ul class="cv-role__bullets">
+              <li>Rapidly prototyped VR mechanics and interaction flows, helping de-risk production and sharpen design direction</li>
+              <li>Built shared Unity packages and UI systems reused across training products for clients including Trade Me, Mainfreight, and MSD</li>
+            </ul>
+          </article>
+
+          <article class="cv-role"
+            data-role="Game Team Manager"
+            data-company="Joy Business Academy"
+            data-from="2017"
+            data-to="2020">
+            <div class="cv-role__header">
+              <span class="cv-role__title">Game Team Manager &mdash; <span class="cv-role__company">Joy Business Academy</span></span>
+              <span class="cv-role__dates">2017 &ndash; 2020</span>
+            </div>
+            <ul class="cv-role__bullets">
+              <li>Built and led the game development team as the business expanded from e-learning into games</li>
+              <li>Designed and shipped the Tycoon Series, three RTS titles built to teach business and financial literacy</li>
+            </ul>
+          </article>
+
+          <article class="cv-role"
+            data-role="Gameplay Engineer"
+            data-company="Scarlet City Studios"
+            data-from="2014"
+            data-to="2017">
+            <div class="cv-role__header">
+              <span class="cv-role__title">Gameplay Engineer &mdash; <span class="cv-role__company">Scarlet City Studios</span></span>
+              <span class="cv-role__dates">2014 &ndash; 2017</span>
+            </div>
+            <ul class="cv-role__bullets">
+              <li>Developed core gameplay systems for a cross-platform MMORPG spanning combat, quests, and economy loops</li>
+              <li>Helped build a CDN-backed content pipeline for hot-loaded assets and smaller client patches</li>
+            </ul>
+          </article>
+
+          <article class="cv-role"
+            data-role="UX Designer Internship"
+            data-company="Orion Health"
+            data-from="2012"
+            data-to="2013">
+            <div class="cv-role__header">
+              <span class="cv-role__title">UX Designer (Internship) &mdash; <span class="cv-role__company">Orion Health</span></span>
+              <span class="cv-role__dates">2012 &ndash; 2013</span>
+            </div>
+            <ul class="cv-role__bullets">
+              <li>User research and behavioural analysis informing internal and external style guides and UX patterns</li>
             </ul>
           </article>
 
@@ -584,8 +707,29 @@
     ═══════════════════════════════════════ -->
     <div class="cv-right">
 
+      <!-- AI variant: Summary -->
+      <section id="summary-ai" class="cv-summary" data-variant-only="ai">
+        <h2 class="cv-section-title">Summary</h2>
+
+        <p class="cv-summary__para">
+          <strong>Senior software engineer with 10+ years of industry experience</strong> shipping production software across games, VR training, cross-platform applications, and AI-enabled systems. Strong in C#, TypeScript, and Python, with a track record of taking products from rough concept to reliable delivery.
+        </p>
+
+        <p class="cv-summary__para">
+          <strong>Builds practical AI systems end-to-end</strong>: structured-output pipelines, retrieval over private corpora, tool-calling agents, local and hosted inference, browser automation, and evaluation harnesses. Interested in the engineering around AI as much as the model itself.
+        </p>
+
+        <p class="cv-summary__para">
+          <strong>Recent work spans</strong> AI-driven NPC systems for VR training at SkillsVR, Porter's local-first agentic job-application pipeline, and offline-first cross-platform field tooling for E&amp;I Services &mdash; production work across Unity, Vue / Next.js, MongoDB / Realm, and self-hosted Ollama stacks.
+        </p>
+
+        <p class="cv-summary__para">
+          <strong>Best in ambiguous environments</strong> where the brief is still messy: understanding the real problem, building the right system quickly, and iterating until it becomes stable, useful, and adopted.
+        </p>
+      </section>
+
       <!-- Summary -->
-      <section id="summary" class="cv-summary">
+      <section id="summary" class="cv-summary" data-variant-hide="ai">
         <h2 class="cv-section-title">Summary</h2>
 
         <p class="cv-summary__para" data-point="1" data-variant-order-ai="4">
@@ -625,9 +769,59 @@
         </p>
       </section>
 
+      <!-- AI variant: Selected AI Work (replaces Titles) -->
+      <section id="selected-ai-work" class="cv-experience" data-variant-only="ai">
+        <h2 class="cv-section-title">Selected AI Work</h2>
+
+        <div class="cv-roles">
+
+          <article class="cv-role cv-role--icon">
+            <div class="cv-role__header">
+              <span class="cv-role__title"><svg class="cv-role__icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M8 1.5 L9.4 6.6 L14.5 8 L9.4 9.4 L8 14.5 L6.6 9.4 L1.5 8 L6.6 6.6 Z"/></svg>Porter &mdash; <span class="cv-role__company">Local-first AI job agent</span></span>
+              <span class="cv-role__dates">2026</span>
+            </div>
+            <ul class="cv-role__bullets">
+              <li>Next.js + TypeScript front end with a structured-output Ollama pipeline, RAG over a private career corpus, and a Playwright sidecar that drives real ATS form-fill across Greenhouse, Lever, and Ashby end-to-end.</li>
+            </ul>
+          </article>
+
+          <article class="cv-role cv-role--icon">
+            <div class="cv-role__header">
+              <span class="cv-role__title"><svg class="cv-role__icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M2.5 4 H13.5 A1 1 0 0 1 14.5 5 V10 A1 1 0 0 1 13.5 11 H8 L4.5 13.8 V11 H2.5 A1 1 0 0 1 1.5 10 V5 A1 1 0 0 1 2.5 4 Z"/><circle cx="5.5" cy="7.5" r="0.65" fill="currentColor" stroke="none"/><circle cx="8" cy="7.5" r="0.65" fill="currentColor" stroke="none"/><circle cx="10.5" cy="7.5" r="0.65" fill="currentColor" stroke="none"/></svg>AI-Driven NPCs &mdash; <span class="cv-role__company">SkillsVR VR training</span></span>
+              <span class="cv-role__dates">2025 &ndash; 2026</span>
+            </div>
+            <ul class="cv-role__bullets">
+              <li>Local LLM inference and tool-calling integrated into Unity through a node-based dialogue system, letting designers script NPC behaviour and ElevenLabs TTS for warehousing and hospitality scenarios without touching code.</li>
+            </ul>
+          </article>
+
+          <article class="cv-role cv-role--icon">
+            <div class="cv-role__header">
+              <span class="cv-role__title"><svg class="cv-role__icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><rect x="1.5" y="2.5" width="13" height="3.4" rx="0.7"/><rect x="1.5" y="6.4" width="13" height="3.4" rx="0.7"/><rect x="1.5" y="10.3" width="13" height="3.4" rx="0.7"/><circle cx="3.4" cy="4.2" r="0.55" fill="currentColor" stroke="none"/><circle cx="3.4" cy="8.1" r="0.55" fill="currentColor" stroke="none"/><circle cx="3.4" cy="12" r="0.55" fill="currentColor" stroke="none"/></svg>OpenClaw &mdash; <span class="cv-role__company">Self-hosted LLM home-lab</span></span>
+              <span class="cv-role__dates">Ongoing</span>
+            </div>
+            <ul class="cv-role__bullets">
+              <li>Personal infrastructure for running open-weight models on consumer GPUs &mdash; model hosting, prompt and tool design, eval harnesses, and an agentic workflow stack that ships features without cloud dependency.</li>
+            </ul>
+          </article>
+
+          <article class="cv-role cv-role--icon">
+            <div class="cv-role__header">
+              <span class="cv-role__title"><svg class="cv-role__icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><circle cx="3" cy="3.5" r="1.6"/><circle cx="3" cy="12.5" r="1.6"/><circle cx="13" cy="8" r="1.6"/><line x1="4.4" y1="4.4" x2="11.6" y2="7.4"/><line x1="4.4" y1="11.6" x2="11.6" y2="8.6"/></svg>Furlong &mdash; <span class="cv-role__company">n8n news-digest workflow</span></span>
+              <span class="cv-role__dates">2024</span>
+            </div>
+            <ul class="cv-role__bullets">
+              <li>12-node n8n pipeline scraping curated NZ horse-racing sources, hashing and deduping against a Google Sheets index, and emailing a dark-themed daily digest at 6am NZT &mdash; self-hosted, zero cloud spend.</li>
+            </ul>
+          </article>
+
+        </div><!-- /cv-roles -->
+
+      </section>
+
       <!-- Titles -->
-      <section id="titles" class="cv-titles">
-        <h2 class="cv-section-title">Titles</h2>
+      <section id="titles" class="cv-titles" data-variant-hide="ai">
+        <h2 class="cv-section-title" data-variant-text-ai="Selected Titles">Titles</h2>
 
         <div class="cv-titles-list">
 
@@ -735,8 +929,8 @@
             </div>
           </div>
 
-          <div class="cv-titles-year"><span class="cv-titles-year__num">2018</span></div>
-          <div class="cv-titles-row">
+          <div class="cv-titles-year" data-variant-hide="ai"><span class="cv-titles-year__num">2018</span></div>
+          <div class="cv-titles-row" data-variant-hide="ai">
             <div class="cv-title-entry" data-title="Huia" data-studio="HI PO">
               <img class="cv-title-entry__thumb" src="assets/images/projects/projectthumb-huia-cv.jpg" alt="Huia">
               <div class="cv-title-entry__info">
@@ -746,8 +940,8 @@
             </div>
           </div>
 
-          <div class="cv-titles-year"><span class="cv-titles-year__num">2017</span></div>
-          <div class="cv-titles-row">
+          <div class="cv-titles-year" data-variant-hide="ai"><span class="cv-titles-year__num">2017</span></div>
+          <div class="cv-titles-row" data-variant-hide="ai">
             <div class="cv-title-entry" data-title="Pipeworld" data-studio="HI PO">
               <img class="cv-title-entry__thumb" src="assets/images/projects/projectthumb-pipeworld-cv.jpg" alt="Pipeworld">
               <div class="cv-title-entry__info">
@@ -764,8 +958,8 @@
             </div>
           </div>
 
-          <div class="cv-titles-year"><span class="cv-titles-year__num">2016</span></div>
-          <div class="cv-titles-row">
+          <div class="cv-titles-year" data-variant-hide="ai"><span class="cv-titles-year__num">2016</span></div>
+          <div class="cv-titles-row" data-variant-hide="ai">
             <div class="cv-title-entry" data-title="Tumbly Beasts" data-studio="THUNDERSTORM">
               <img class="cv-title-entry__thumb" src="assets/images/projects/projectthumb-tumbly1-cv.jpg" alt="Tumbly Beasts">
               <div class="cv-title-entry__info">
@@ -782,8 +976,8 @@
             </div>
           </div>
 
-          <div class="cv-titles-year"><span class="cv-titles-year__num">2015</span></div>
-          <div class="cv-titles-row">
+          <div class="cv-titles-year" data-variant-hide="ai"><span class="cv-titles-year__num">2015</span></div>
+          <div class="cv-titles-row" data-variant-hide="ai">
             <div class="cv-title-entry" data-title="Math Castle" data-studio="Thunderstorm">
               <img class="cv-title-entry__thumb" src="assets/images/projects/projectthumb-mathcastle-cv.jpg" alt="Math Castle">
               <div class="cv-title-entry__info">

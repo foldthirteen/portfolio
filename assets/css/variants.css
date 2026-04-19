@@ -57,3 +57,16 @@ html:not([data-variant="default"]) [data-variant-only~="default"] { display: non
   background: #FFB84D;
   color: #1a1a1a;
 }
+
+.variant-switcher__close {
+  margin-left: 2px;
+  padding: 4px 10px !important;
+  font-size: 16px;
+  line-height: 1;
+  color: rgba(255, 255, 255, 0.45) !important;
+}
+
+.variant-switcher__close:hover {
+  color: #fff !important;
+  background: rgba(255, 255, 255, 0.08);
+}

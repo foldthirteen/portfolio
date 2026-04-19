@@ -53,6 +53,16 @@
             <span class="field__hint">Shown at the top of the letter.</span>
             <input class="field__control" type="date" name="letterDate" data-letter-date>
           </label>
+
+          <label class="field">
+            <span class="field__label">Portfolio variant</span>
+            <span class="field__hint" data-variant-hint>Auto-detected from role details.</span>
+            <select class="field__control" name="variant" data-variant-select>
+              <option value="auto">Auto (best guess)</option>
+              <option value="default">Default</option>
+              <option value="ai">Agentic AI</option>
+            </select>
+          </label>
         </div>
 
         <label class="field">

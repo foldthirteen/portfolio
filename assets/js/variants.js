@@ -106,17 +106,28 @@
 
   /* ---- Admin switcher ------------------------------------------------ */
 
+  function isLocal() {
+    if (location.protocol === 'file:') return true;
+    var h = location.hostname;
+    return h === 'localhost' || h === '127.0.0.1' || h === '::1' || h === '';
+  }
+
   function isAdmin() {
     var p = new URLSearchParams(location.search);
     if (p.get('admin') === '1') {
       try { sessionStorage.setItem('pvAdmin', '1'); } catch (e) {}
       return true;
     }
+    if (isLocal()) return true;
     try { return sessionStorage.getItem('pvAdmin') === '1'; } catch (e) { return false; }
   }
 
   function mountSwitcher() {
     if (!isAdmin()) return;
+    try {
+      if (sessionStorage.getItem('pvSwitcherHidden') === '1') return;
+    } catch (e) {}
+
     var el = document.createElement('div');
     el.className = 'variant-switcher';
     el.setAttribute('role', 'group');
@@ -137,6 +148,17 @@
       btn.addEventListener('click', function () { setVariant(v); });
       el.appendChild(btn);
     });
+
+    var close = document.createElement('button');
+    close.type = 'button';
+    close.className = 'variant-switcher__close';
+    close.setAttribute('aria-label', 'Hide variant switcher');
+    close.textContent = '\u00D7';
+    close.addEventListener('click', function () {
+      try { sessionStorage.setItem('pvSwitcherHidden', '1'); } catch (e) {}
+      el.remove();
+    });
+    el.appendChild(close);
 
     document.body.appendChild(el);
   }

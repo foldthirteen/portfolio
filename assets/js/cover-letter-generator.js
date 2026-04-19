@@ -9,8 +9,28 @@ const STORAGE_KEYS = {
   roleDetails: "cover-letter-generator.role-details",
   roleHeading: "cover-letter-generator.role-heading",
   letterContent: "cover-letter-generator.letter-content",
-  letterDate: "cover-letter-generator.letter-date"
+  letterDate: "cover-letter-generator.letter-date",
+  variant: "cover-letter-generator.variant"
 };
+
+const VARIANT_OPTIONS = ["auto", "default", "ai"];
+const VARIANT_LABELS = { default: "Default", ai: "Agentic AI" };
+
+// Keyword triggers that flip auto-detection to the "ai" portfolio variant.
+// Matched with word boundaries, so "ai" won't hit "maintain" or "again".
+const AI_VARIANT_KEYWORDS = [
+  "ai", "a.i.", "artificial intelligence",
+  "machine learning", "ml",
+  "llm", "llms", "large language model",
+  "gpt", "claude", "anthropic", "openai",
+  "agent", "agents", "agentic",
+  "rag", "embedding", "embeddings", "vector database",
+  "prompt engineering", "prompting",
+  "chatbot", "copilot",
+  "generative", "genai", "gen-ai",
+  "automation", "automations", "workflow automation",
+  "no-code", "low-code", "n8n", "zapier", "make.com"
+];
 
 const PROFILE = {
   name: "Ben Visser",
@@ -50,6 +70,8 @@ const elements = {
   roleHeading: document.querySelector("[data-role-heading]"),
   letterDate: document.querySelector("[data-letter-date]"),
   letterContent: document.querySelector("[data-letter-content]"),
+  variantSelect: document.querySelector("[data-variant-select]"),
+  variantHint: document.querySelector("[data-variant-hint]"),
   filenamePreview: document.querySelector("[data-filename-preview]"),
   outputPath: document.querySelector("[data-output-path]"),
   statusMessage: document.querySelector("[data-status-message]"),
@@ -89,6 +111,7 @@ async function init() {
   hydrateDefaults();
   restoreDraft();
   syncRoleHeadingFromDetails(true);
+  updateVariantHint();
   updateDerivedOutputs();
   renderEmptyPreview();
   bindEvents();
@@ -104,6 +127,13 @@ function bindEvents() {
   elements.roleDetails.addEventListener("input", () => {
     persistField(STORAGE_KEYS.roleDetails, elements.roleDetails.value);
     syncRoleHeadingFromDetails(false);
+    updateVariantHint();
+    markPreviewStale();
+  });
+
+  elements.variantSelect.addEventListener("change", () => {
+    persistField(STORAGE_KEYS.variant, elements.variantSelect.value);
+    updateVariantHint();
     markPreviewStale();
   });
 
@@ -111,6 +141,7 @@ function bindEvents() {
     state.roleHeadingEdited = isRoleHeadingCustom();
     persistField(STORAGE_KEYS.roleHeading, elements.roleHeading.value);
     updateDerivedOutputs();
+    updateVariantHint();
     markPreviewStale();
   });
 
@@ -168,6 +199,8 @@ function restoreDraft() {
   elements.roleHeading.value = localStorage.getItem(STORAGE_KEYS.roleHeading) || "";
   elements.letterContent.value = localStorage.getItem(STORAGE_KEYS.letterContent) || "";
   elements.letterDate.value = localStorage.getItem(STORAGE_KEYS.letterDate) || elements.letterDate.value || getLocalIsoDate();
+  const savedVariant = localStorage.getItem(STORAGE_KEYS.variant);
+  elements.variantSelect.value = VARIANT_OPTIONS.indexOf(savedVariant) >= 0 ? savedVariant : "auto";
   state.roleHeadingEdited = isRoleHeadingCustom();
 }
 
@@ -402,11 +435,13 @@ function buildLetterDocument() {
   const roleHeading = getResolvedRoleHeading() || "Cover Letter";
   const fileName = buildFileName(elements.letterDate.value, roleHeading);
   const title = `${PROFILE.name} - Cover Letter - ${roleHeading}`;
+  const variant = getResolvedVariant();
   const html = buildCoverLetterHtml({
     title,
     roleHeading,
     dateLabel: formatLetterDate(elements.letterDate.value),
-    letterContent: elements.letterContent.value
+    letterContent: elements.letterContent.value,
+    websiteHref: buildWebsiteHref(variant)
   });
 
   return {
@@ -414,6 +449,51 @@ function buildLetterDocument() {
     html,
     title
   };
+}
+
+function buildWebsiteHref(variant) {
+  if (variant === "default") {
+    return PROFILE.websiteUrl;
+  }
+  const sep = PROFILE.websiteUrl.indexOf("?") >= 0 ? "&" : "?";
+  return `${PROFILE.websiteUrl}${sep}v=${variant}`;
+}
+
+function getResolvedVariant() {
+  const selection = elements.variantSelect.value;
+  if (selection === "default" || selection === "ai") {
+    return selection;
+  }
+  return detectVariant(elements.roleDetails.value, elements.roleHeading.value);
+}
+
+function detectVariant(roleDetails, roleHeading) {
+  const haystack = `${roleDetails || ""} ${roleHeading || ""}`;
+  if (!haystack.trim()) {
+    return "default";
+  }
+  for (const keyword of AI_VARIANT_KEYWORDS) {
+    const pattern = new RegExp(`\\b${escapeRegex(keyword)}\\b`, "i");
+    if (pattern.test(haystack)) {
+      return "ai";
+    }
+  }
+  return "default";
+}
+
+function escapeRegex(value) {
+  return String(value).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+function updateVariantHint() {
+  if (!elements.variantHint) return;
+  const selection = elements.variantSelect.value;
+  if (selection === "default" || selection === "ai") {
+    elements.variantHint.textContent = `Linking to ${VARIANT_LABELS[selection]} portfolio.`;
+    return;
+  }
+  const detected = detectVariant(elements.roleDetails.value, elements.roleHeading.value);
+  elements.variantHint.textContent = `Auto-detected: ${VARIANT_LABELS[detected]}.`;
 }
 
 async function writeGeneratedFile(fileName, html) {
@@ -573,7 +653,7 @@ function getLocalIsoDate() {
   return localTime.toISOString().slice(0, 10);
 }
 
-function buildCoverLetterHtml({ title, roleHeading, dateLabel, letterContent }) {
+function buildCoverLetterHtml({ title, roleHeading, dateLabel, letterContent, websiteHref }) {
   const letterParts = parseLetterContent(letterContent);
   const titleHtml = escapeHtml(title);
   const roleHeadingHtml = escapeHtml(roleHeading);
@@ -805,7 +885,7 @@ function buildCoverLetterHtml({ title, roleHeading, dateLabel, letterContent }) 
       <h1 class="cv-header__name">${escapeHtml(PROFILE.name)}</h1>
       <div class="cv-header__right">
         <span class="cv-header__title">${escapeHtml(PROFILE.title)}</span>
-        <p class="cv-header__contact">${escapeHtml(PROFILE.location)} &nbsp;&middot;&nbsp; ${escapeHtml(PROFILE.phone)} &nbsp;&middot;&nbsp; ${escapeHtml(PROFILE.email)} &nbsp;&middot;&nbsp; <a href="${escapeAttribute(PROFILE.websiteUrl)}">${escapeHtml(PROFILE.websiteLabel)}</a></p>
+        <p class="cv-header__contact">${escapeHtml(PROFILE.location)} &nbsp;&middot;&nbsp; ${escapeHtml(PROFILE.phone)} &nbsp;&middot;&nbsp; ${escapeHtml(PROFILE.email)} &nbsp;&middot;&nbsp; <a href="${escapeAttribute(websiteHref || PROFILE.websiteUrl)}">${escapeHtml(PROFILE.websiteLabel)}</a></p>
       </div>
     </header>
 
