@@ -1292,15 +1292,16 @@ Designed and led the development of three educational real-time strategy games�
 <b>A focused research system that lets a local Gemma 4 read Strait-of-Hormuz news, estimate whether Polymarket traffic-threshold markets resolve, and score its own calibration against a no-lookahead backtester. Paper-trading only — a simulation, not a trading bot.</b>
 <ul class='proj-bullets'>
   <li>End-to-end local: Ollama + Gemma 4 + SQLite + FastAPI + Next.js. No cloud, no API bills, no data leaving the machine.</li>
+  <li>One SQLite file is the single source of truth — 15 tables covering markets, prices, news and news-market links, PortWatch snapshots, backtest runs / trades / per-tick decisions / per-news reasoning, experiments, and a Gemma analysis cache keyed by news × condition × model × prompt hash so headlines never get re-scored. Raw sqlite3 with parameterized queries and Row factories; no ORM. CLIs write, the API and the chat tools read.</li>
   <li>Gemma turns Strait-relevant headlines into probability estimates; a no-lookahead backtester replays the decision (its context is physically sliced so the signal cannot see future prices or news) and scores calibration.</li>
-  <li>Grounded chat — the model calls SQLite tools (recent runs, calibration, news search) with every tool call visible in the UI and every answer traceable back to a real row.</li>
+  <li>Grounded chat — the model has nine read-only SQLite tools (recent runs, run detail, calibration, market + experiment listings, news search, Hormuz traffic). Every tool call is visible in the UI; every answer is traceable back to a real row; Gemma cannot write, so it can never corrupt state.</li>
   <li>Mandelbrot-aware sizing: fractional Kelly (¼), vol-scaled, hard-capped. Fat-tailed prediction errors taken seriously.</li>
 </ul>"
     data-gallery='["./assets/images/projects/project-shape-tour.webm","./assets/images/projects/project-shape-walkthrough.webm","./assets/images/projects/project-shape-replay.png","./assets/images/projects/project-shape-hormuz.png","./assets/images/projects/project-shape-home.png","./assets/images/projects/project-shape-experiments.png","./assets/images/projects/project-shape-run-detail.png","./assets/images/projects/project-shape-chat.png","./assets/images/projects/project-shape-autoresearch.png"]'>
   <a href="#">
     <figure class="project-img">
-      <img width="800" height="420" src="./assets/images/projects/projectthumb-shape.png"
-           alt="shape thumbnail"
+      <img width="800" height="800" src="./assets/images/projects/projectthumb-shape.png"
+           alt="shape poster"
            fetchpriority="high">
     </figure>
     <h3 class="project-title">shape</h3>
