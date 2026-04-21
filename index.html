@@ -1279,6 +1279,36 @@ Designed and led the development of three educational real-time strategy games�
 </li>
 
 <li class="project-item active"
+    id="shape"
+    data-filter-item data-category="ai" data-ai-category="ai"
+    data-variant-order-ai="2"
+    data-year="2026"
+    data-title="shape"
+    data-subtitle="Local-LLM prediction-market research"
+    data-genre="AI Research"
+    data-studio="Personal project"
+    data-platforms="mac,web"
+    data-text="
+<b>A focused research system that lets a local Gemma 4 read Strait-of-Hormuz news, estimate whether Polymarket traffic-threshold markets resolve, and score its own calibration against a no-lookahead backtester. Paper-trading only — a simulation, not a trading bot.</b>
+<ul class='proj-bullets'>
+  <li>End-to-end local: Ollama + Gemma 4 + SQLite + FastAPI + Next.js. No cloud, no API bills, no data leaving the machine.</li>
+  <li>Gemma turns Strait-relevant headlines into probability estimates; a no-lookahead backtester replays the decision (its context is physically sliced so the signal cannot see future prices or news) and scores calibration.</li>
+  <li>Grounded chat — the model calls SQLite tools (recent runs, calibration, news search) with every tool call visible in the UI and every answer traceable back to a real row.</li>
+  <li>Mandelbrot-aware sizing: fractional Kelly (¼), vol-scaled, hard-capped. Fat-tailed prediction errors taken seriously.</li>
+</ul>"
+    data-gallery='["./assets/images/projects/project-shape-tour.webm","./assets/images/projects/project-shape-walkthrough.webm","./assets/images/projects/project-shape-replay.png","./assets/images/projects/project-shape-hormuz.png","./assets/images/projects/project-shape-home.png","./assets/images/projects/project-shape-experiments.png","./assets/images/projects/project-shape-run-detail.png","./assets/images/projects/project-shape-chat.png","./assets/images/projects/project-shape-autoresearch.png"]'>
+  <a href="#">
+    <figure class="project-img">
+      <img width="800" height="420" src="./assets/images/projects/projectthumb-shape.png"
+           alt="shape thumbnail"
+           fetchpriority="high">
+    </figure>
+    <h3 class="project-title">shape</h3>
+    <p class="project-category">AI</p>
+  </a>
+</li>
+
+<li class="project-item active"
     id="crossy"
     data-filter-item data-category="games" data-ai-category="interactive"
     data-variant-order-ai="10"
