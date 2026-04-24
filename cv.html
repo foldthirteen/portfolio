@@ -37,15 +37,6 @@
     gtag('config', 'G-DHZDKWL3HM');
   </script>
 
-  <!-- Microsoft Clarity -->
-  <script type="text/javascript">
-    (function(c,l,a,r,i,t,y){
-      c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-      t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-      y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-    })(window, document, "clarity", "script", "w93s33m3f6");
-  </script>
-
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,600;1,400;1,600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -387,6 +378,16 @@
       * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
       article.cv-role { page-break-inside: avoid; }
       .cv-education { page-break-inside: avoid; }
+      /* AI variant: stop grid from stretching the left column to match an
+         overflowing right column, and trim right-column content to fit on one
+         page when printed. Screen view keeps the full set. */
+      [data-variant="ai"] .cv-body { align-items: start; }
+      [data-variant="ai"] .cv-education { margin-top: 20px; padding-top: 20px; }
+      [data-variant="ai"] #selected-ai-work .cv-role:nth-of-type(n+4) { display: none; }
+      [data-variant="ai"] #summary-ai .cv-summary__para:last-child { display: none; }
+      [data-variant="ai"] #skills-ai .cv-summary__para:last-child { display: none; }
+      [data-variant="ai"] .cv-roles { gap: 22px; }
+      [data-variant="ai"] .cv-summary__para { margin-bottom: 6px; }
     }
 
     /* ── NARROW SCREENS ── */
@@ -414,7 +415,7 @@
     <div class="cv-header__right">
       <span class="cv-header__title" data-variant-text-ai="Senior Software Engineer · AI Systems">Engineering &amp; Design</span>
       <p class="cv-header__contact" data-variant-hide="ai">Auckland, New Zealand &nbsp;·&nbsp; 0226810558 &nbsp;·&nbsp; foldthirteen@gmail.com &nbsp;·&nbsp; <a href="https://foldthirteen.github.io/portfolio/" data-variant-href="https://foldthirteen.github.io/portfolio/" style="color:inherit;text-decoration:underline;">foldthirteen.github.io/portfolio</a></p>
-      <p class="cv-header__contact" data-variant-only="ai">Auckland, New Zealand &nbsp;·&nbsp; 022 681 0558 &nbsp;·&nbsp; foldthirteen@gmail.com &nbsp;·&nbsp; <a href="https://foldthirteen.github.io/portfolio/" data-variant-href="https://foldthirteen.github.io/portfolio/" style="color:inherit;text-decoration:underline;">foldthirteen.github.io/portfolio</a></p>
+      <p class="cv-header__contact" data-variant-only="ai">Auckland, New Zealand &nbsp;·&nbsp; 022 681 0558 &nbsp;·&nbsp; foldthirteen@gmail.com &nbsp;·&nbsp; <a href="https://foldthirteen.github.io/portfolio/?v=ai" data-variant-href="https://foldthirteen.github.io/portfolio/?v=ai" style="color:inherit;text-decoration:underline;">foldthirteen.github.io/portfolio</a></p>
     </div>
   </header>
 
@@ -440,9 +441,9 @@
             <span class="cv-role__dates">2025 &ndash; 2026</span>
           </div>
           <ul class="cv-role__bullets">
-            <li data-variant-text-ai="AI-driven NPC systems for VR training — local LLM inference, prompt and tool design, integrated into immersive scenarios">Built AI-driven NPC systems for immersive VR training scenarios</li>
-            <li>Vue.js asset-browser widget: browse and preview Unity packages without opening the editor</li>
-            <li>Editor tooling and automation to accelerate CCK content authoring</li>
+            <li data-variant-text-ai="AI-driven NPCs shipped into 2 government-funded VR training apps (warehousing and hospitality) — local LLM inference, Unity tool-calling, per-field RAG, landing in the shared CCK">Built AI-driven NPC systems shipped into 2 government-funded VR training apps (warehousing and hospitality), landing in the shared Content Creation Kit</li>
+            <li>GenerateVR: Vue authoring UI, headless generation server, Unity scene assembly, and optional RAG over customer materials — wired into a single structured-output LLM pipeline</li>
+            <li>Vue.js asset-browser widget with live FBX preview — eliminating Unity-editor round-trips for CCK creators</li>
           </ul>
         </article>
 
@@ -456,9 +457,9 @@
             <span class="cv-role__dates">2022 &ndash; 2025</span>
           </div>
           <ul class="cv-role__bullets">
-            <li>Cross-platform app for electrician calibration and documentation workflows</li>
-            <li>Offline-first MongoDB datastore with seamless background sync</li>
-            <li>Over-the-air update pipeline with staging environment, no manual installs</li>
+            <li>COMSIM: multi-tenant calibration and documentation platform deployed across 12 NZ enterprise clients (Contact Energy, Mercury, OJI Fibre Solutions, Ecolab, Dairy Goat Co-operative, and others)</li>
+            <li>Offline-first MongoDB/Realm datastore with seamless background sync for low-connectivity field work</li>
+            <li>Over-the-air update pipeline with staging and rollback — zero manual installs for field teams</li>
             <li>B-PAC printer integration for automatic QR-code generation in the field</li>
           </ul>
         </article>
@@ -473,9 +474,9 @@
             <span class="cv-role__dates">2023 &ndash; 2025</span>
           </div>
           <ul class="cv-role__bullets">
-            <li>Led VR training and interactive experience development end-to-end</li>
-            <li>Reusable editor tools enabling branching narrative without code changes</li>
-            <li>VR healthcare sim for University of Kentucky; prototyped real-time voice for a singing game</li>
+            <li>Led end-to-end delivery of VR training and interactive products, including a child-welfare simulation for the University of Kentucky College of Social Work</li>
+            <li>Reusable branching-narrative editor tools enabling designers to author new storylines without engineering involvement</li>
+            <li>Prototyped real-time voice processing for VR Singing Club — a social-karaoke Meta Quest experience</li>
           </ul>
         </article>
 
@@ -489,9 +490,9 @@
             <span class="cv-role__dates">2022 &ndash; 2023</span>
           </div>
           <ul class="cv-role__bullets">
-            <li>Gameplay development and polish on a LEGO mobile title</li>
-            <li>Editor tooling and test harness for designer-driven feature validation</li>
-            <li>Crossy Road Castle: new events and live-ops content to drive retention</li>
+            <li>Crossy Road Castle live-ops events and content — Apple Arcade exclusive in a franchise with 250M+ installs</li>
+            <li>Gameplay development and designer-driven editor test harness for an unreleased LEGO mobile title — validated features without full builds</li>
+            <li>Tuned feel, handling, and feedback systems across live updates</li>
           </ul>
         </article>
 
@@ -520,9 +521,9 @@
             <span class="cv-role__dates">2017 &ndash; 2020</span>
           </div>
           <ul class="cv-role__bullets">
-            <li>Grew gaming department from zero to 12+ during pivot from e-learning to games</li>
-            <li>Production pipelines, government-funded project oversight, stakeholder liaison</li>
-            <li>Designed and shipped the Tycoon Series, three RTS titles teaching small business skills</li>
+            <li>Grew games team from 0 to 12+ as Joy Business Academy pivoted from e-learning into games</li>
+            <li>Delivered the Tycoon Series — three RTS titles (Restaurant, Tech, Construction Tycoon) teaching financial-literacy and small-business skills in NZ classrooms</li>
+            <li>Reached 61+ NZ schools via the National Schools Competition; $150K Ministry of Social Development funding; Construction Tycoon launched by NZ ministers with partners Microsoft, Xero, and Fletcher Construction</li>
           </ul>
         </article>
 
@@ -536,9 +537,9 @@
             <span class="cv-role__dates">2014 &ndash; 2017</span>
           </div>
           <ul class="cv-role__bullets">
-            <li>Core gameplay systems for a cross-platform MMORPG: combat, quests, economy</li>
-            <li>Shipped companion app with mini-games and interactive comic; handled live ops</li>
-            <li>CDN-backed content pipeline enabling hot-pull asset updates and smaller patches</li>
+            <li>Core gameplay systems — combat, quests, economy — for The Aetherlight, a cross-platform MMORPG shipping on PC, iOS, and Android</li>
+            <li>Shipped companion Unity app with mini-games and interactive comic; adopted by the Museum of the Bible as a children's digital guide</li>
+            <li>Co-authored CDN-backed content pipeline enabling hot-pull asset updates and smaller patches</li>
           </ul>
         </article>
 
@@ -577,8 +578,9 @@
               <span class="cv-role__dates">2025 &ndash; 2026</span>
             </div>
             <ul class="cv-role__bullets">
-              <li>Built AI-driven NPC systems for VR training, covering local LLM inference, prompt design, tool integration, and scenario behaviour</li>
-              <li>Developed a Vue-based web tool to browse and preview Unity packages without opening the editor, improving workflow for internal teams and content creators</li>
+              <li>Shipped AI-driven NPCs into 2 government-funded VR training apps (warehousing and hospitality) — local LLM inference, Unity tool-calling, per-field RAG, and ElevenLabs TTS, landing in the shared Content Creation Kit</li>
+              <li>Built GenerateVR — end-to-end structured-output LLM pipeline connecting a Vue authoring UI, headless generation server, Unity scene assembly, and optional RAG over customer materials</li>
+              <li>Developed Vue authoring tool with live FBX 3D preview, eliminating Unity-editor round-trips for CCK creators</li>
             </ul>
           </article>
 
@@ -592,8 +594,9 @@
               <span class="cv-role__dates">2022 &ndash; 2025</span>
             </div>
             <ul class="cv-role__bullets">
-              <li>Led development of a cross-platform calibration and documentation application used in the field by electricians</li>
-              <li>Engineered an offline-first data layer with background sync across desktop and mobile, keeping records reliable in low-connectivity environments</li>
+              <li>Led development of COMSIM — multi-tenant calibration and documentation platform deployed across 12 NZ enterprise clients (Contact Energy, Mercury, OJI Fibre Solutions, Ecolab, Dairy Goat Co-operative, and others)</li>
+              <li>Engineered offline-first MongoDB/Realm sync layer keeping records reliable across desktop and mobile in low-connectivity environments</li>
+              <li>Shipped OTA update pipeline with staging and rollback, plus B-PAC printer integration for auto-generated QR tags</li>
             </ul>
           </article>
 
@@ -607,8 +610,8 @@
               <span class="cv-role__dates">2023 &ndash; 2025</span>
             </div>
             <ul class="cv-role__bullets">
-              <li>Led delivery of VR training and interactive products from prototype through production</li>
-              <li>Delivered a child-welfare training simulation for the University of Kentucky and prototyped real-time voice features for a social singing experience</li>
+              <li>Led end-to-end delivery of VR training and interactive products, including a child-welfare simulation for the University of Kentucky College of Social Work</li>
+              <li>Prototyped real-time voice processing for VR Singing Club — a social-karaoke Meta Quest experience</li>
             </ul>
           </article>
 
@@ -622,8 +625,8 @@
               <span class="cv-role__dates">2022 &ndash; 2023</span>
             </div>
             <ul class="cv-role__bullets">
-              <li>Worked on gameplay systems and polish for an unreleased LEGO mobile title</li>
-              <li>Contributed live-ops events and content for Crossy Road Castle to support engagement and retention</li>
+              <li>Shipped live-ops events and content for Crossy Road Castle — Apple Arcade exclusive in a franchise with 250M+ installs</li>
+              <li>Built designer-driven editor test harness for an unreleased LEGO mobile title, validating features without full builds</li>
             </ul>
           </article>
 
@@ -652,8 +655,8 @@
               <span class="cv-role__dates">2017 &ndash; 2020</span>
             </div>
             <ul class="cv-role__bullets">
-              <li>Built and led the game development team as the business expanded from e-learning into games</li>
-              <li>Designed and shipped the Tycoon Series, three RTS titles built to teach business and financial literacy</li>
+              <li>Grew games team from 0 to 12+ as Joy Business Academy pivoted from e-learning into games</li>
+              <li>Delivered the Tycoon Series — three RTS titles (Restaurant, Tech, Construction Tycoon) reaching 61+ NZ schools via the National Schools Competition; $150K Ministry of Social Development funding; ministerial launch with partners Microsoft, Xero, and Fletcher Construction</li>
             </ul>
           </article>
 
@@ -667,8 +670,9 @@
               <span class="cv-role__dates">2014 &ndash; 2017</span>
             </div>
             <ul class="cv-role__bullets">
-              <li>Developed core gameplay systems for a cross-platform MMORPG spanning combat, quests, and economy loops</li>
-              <li>Helped build a CDN-backed content pipeline for hot-loaded assets and smaller client patches</li>
+              <li>Core gameplay systems — combat, quests, economy — for The Aetherlight, a cross-platform MMORPG shipping on PC, iOS, and Android</li>
+              <li>Shipped companion Unity app with mini-games and interactive comic; adopted by the Museum of the Bible as a children's digital guide</li>
+              <li>Co-authored CDN-backed content pipeline enabling hot-pull asset updates and smaller client patches</li>
             </ul>
           </article>
 
@@ -728,6 +732,27 @@
         </p>
       </section>
 
+      <!-- AI variant: Skills & Stack -->
+      <section id="skills-ai" class="cv-summary" data-variant-only="ai">
+        <h2 class="cv-section-title">Skills &amp; Stack</h2>
+
+        <p class="cv-summary__para">
+          <strong>Models &amp; inference</strong> &mdash; Ollama, llama.cpp, Claude, GPT-4, Llama 3, Qwen; local GPU inference on consumer hardware.
+        </p>
+
+        <p class="cv-summary__para">
+          <strong>Agent patterns</strong> &mdash; tool calling, structured output, RAG, Playwright browser agents, eval harnesses, MCP.
+        </p>
+
+        <p class="cv-summary__para">
+          <strong>Stack</strong> &mdash; TypeScript / Next.js, C# / Unity, Python, MongoDB / Realm, Vue, n8n.
+        </p>
+
+        <p class="cv-summary__para">
+          <strong>Adjacent</strong> &mdash; prompt design, chunking / embeddings / reranking, offline-first sync, cross-platform delivery.
+        </p>
+      </section>
+
       <!-- Summary -->
       <section id="summary" class="cv-summary" data-variant-hide="ai">
         <h2 class="cv-section-title">Summary</h2>
@@ -777,11 +802,31 @@
 
           <article class="cv-role cv-role--icon">
             <div class="cv-role__header">
-              <span class="cv-role__title"><svg class="cv-role__icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M8 1.5 L9.4 6.6 L14.5 8 L9.4 9.4 L8 14.5 L6.6 9.4 L1.5 8 L6.6 6.6 Z"/></svg>Porter &mdash; <span class="cv-role__company">Local-first AI job agent</span></span>
+              <span class="cv-role__title"><svg class="cv-role__icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M8 1.5 L9.4 6.6 L14.5 8 L9.4 9.4 L8 14.5 L6.6 9.4 L1.5 8 L6.6 6.6 Z"/></svg><a href="https://porter-625c.vercel.app/applications/demo-ai-engineer/" style="color:inherit;text-decoration:underline;">Porter</a> &mdash; <span class="cv-role__company">Local-first AI job agent</span></span>
               <span class="cv-role__dates">2026</span>
             </div>
             <ul class="cv-role__bullets">
-              <li>Next.js + TypeScript front end with a structured-output Ollama pipeline, RAG over a private career corpus, and a Playwright sidecar that drives real ATS form-fill across Greenhouse, Lever, and Ashby end-to-end.</li>
+              <li>Next.js + TypeScript with a structured-output Ollama pipeline, RAG over a private career corpus, and a Playwright sidecar that drives real ATS form-fill across Greenhouse, Lever, and Ashby. ~100 applications submitted to-date, each human-reviewed before send.</li>
+            </ul>
+          </article>
+
+          <article class="cv-role cv-role--icon">
+            <div class="cv-role__header">
+              <span class="cv-role__title"><svg class="cv-role__icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M1.5 13 Q4.5 13 6.2 9 Q8 4 9.8 9 Q11.5 13 14.5 13"/><line x1="1.5" y1="13" x2="14.5" y2="13"/></svg>shape &mdash; <span class="cv-role__company">Local-LLM prediction-market research</span></span>
+              <span class="cv-role__dates">2026</span>
+            </div>
+            <ul class="cv-role__bullets">
+              <li>End-to-end local stack (Ollama + Gemma 4 + SQLite + FastAPI + Next.js) that reads news, estimates Polymarket threshold outcomes, and scores its own calibration against a no-lookahead backtester. Grounded chat surfaces every SQLite tool call in the UI so every answer is traceable.</li>
+            </ul>
+          </article>
+
+          <article class="cv-role cv-role--icon">
+            <div class="cv-role__header">
+              <span class="cv-role__title"><svg class="cv-role__icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><rect x="2" y="4" width="9" height="9" rx="1"/><path d="M 13 3 L 13.6 4.4 L 15 5 L 13.6 5.6 L 13 7 L 12.4 5.6 L 11 5 L 12.4 4.4 Z" fill="currentColor" stroke="none"/></svg>GenerateVR &mdash; <span class="cv-role__company">SkillsVR · Content Creation Kit</span></span>
+              <span class="cv-role__dates">2025</span>
+            </div>
+            <ul class="cv-role__bullets">
+              <li>Built the ingest pipeline and headless generation server for SkillsVR's GenerateVR (launched Nov 2025). A Vue.js enterprise authoring tool with live FBX 3D preview submits structured JSON; a headless server procedurally assembles tailored VR training scenes. LLM authors scenario structure and dialogue via structured-output prompting, with an optional RAG step over customer-supplied source materials so output stays grounded in the organisation's own corpus.</li>
             </ul>
           </article>
 
@@ -791,7 +836,7 @@
               <span class="cv-role__dates">2025 &ndash; 2026</span>
             </div>
             <ul class="cv-role__bullets">
-              <li>Local LLM inference and tool-calling integrated into Unity through a node-based dialogue system, letting designers script NPC behaviour and ElevenLabs TTS for warehousing and hospitality scenarios without touching code.</li>
+              <li>Local LLM inference and tool-calling integrated into Unity via a node-based dialogue system, with per-field RAG documents retrieved at conversation time and conversational filler used to mask inference latency. Designers script warehousing and hospitality NPC behaviour and ElevenLabs TTS without touching code.</li>
             </ul>
           </article>
 
@@ -801,7 +846,7 @@
               <span class="cv-role__dates">Ongoing</span>
             </div>
             <ul class="cv-role__bullets">
-              <li>Personal infrastructure for running open-weight models on consumer GPUs &mdash; model hosting, prompt and tool design, eval harnesses, and an agentic workflow stack that ships features without cloud dependency.</li>
+              <li>Personal infrastructure for running open-weight models on consumer GPUs &mdash; model hosting, prompt and tool design, eval harnesses. In daily household use: a tool-calling chat agent that takes natural-language media requests and drives the full retrieval pipeline end-to-end.</li>
             </ul>
           </article>
 
@@ -811,7 +856,7 @@
               <span class="cv-role__dates">2024</span>
             </div>
             <ul class="cv-role__bullets">
-              <li>12-node n8n pipeline scraping curated NZ horse-racing sources, hashing and deduping against a Google Sheets index, and emailing a dark-themed daily digest at 6am NZT &mdash; self-hosted, zero cloud spend.</li>
+              <li>12-node n8n pipeline scraping curated NZ horse-racing sources, hashing and deduping against a Google Sheets index, and emailing a dark-themed daily digest at 6am NZT. Self-hosted, shipping daily since 2024, zero cloud spend.</li>
             </ul>
           </article>
 

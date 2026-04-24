@@ -70,3 +70,7 @@ html:not([data-variant="default"]) [data-variant-only~="default"] { display: non
   color: #fff !important;
   background: rgba(255, 255, 255, 0.08);
 }
+
+@media print {
+  .variant-switcher { display: none !important; }
+}

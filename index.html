@@ -39,11 +39,29 @@
 
   <!-- Microsoft Clarity -->
   <script type="text/javascript">
-    (function(c,l,a,r,i,t,y){
+    (function () {
+      var p = new URLSearchParams(location.search);
+      var clarity = p.get('clarity');
+      if (clarity === 'off' || clarity === 'on') {
+        try {
+          if (clarity === 'off') localStorage.setItem('clarityOptOut', '1');
+          else localStorage.removeItem('clarityOptOut');
+        } catch (e) {}
+        p.delete('clarity');
+        var qs = p.toString();
+        history.replaceState(null, '', location.pathname + (qs ? '?' + qs : '') + location.hash);
+      }
+
+      try {
+        if (localStorage.getItem('clarityOptOut') === '1') return;
+      } catch (e) {}
+
+      (function(c,l,a,r,i,t,y){
       c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
       t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
       y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-    })(window, document, "clarity", "script", "w93s33m3f6");
+      })(window, document, "clarity", "script", "w93s33m3f6");
+    })();
   </script>
 
   <!--
@@ -318,140 +336,445 @@
 
           <ul class="service-list">
 
-            <li class="service-item" data-variant-hide="ai">
-
+            <li class="service-item" data-variant-hide="ai" role="button" tabindex="0" aria-expanded="false"
+                data-standfirst="Agentic AI, hands-on &mdash; production features at SkillsVR and a home-lab of self-hosted LLMs that actually ship real work.">
+              <button class="service-toggle" aria-label="Expand" tabindex="-1"><span class="service-toggle-chevron">▾</span></button>
               <div class="service-icon-box">
                 <img src="./assets/images/icon-ai.svg" alt="AI icon" width="40">
               </div>
-
               <div class="service-content-box">
                 <h4 class="h4 service-item-title">AI Development</h4>
-
                 <p class="service-item-text">
                   <strong>Agentic AI, hands-on.</strong> AI-driven NPCs for VR training at SkillsVR. An OpenClaw home-lab of self-hosted LLMs running agentic workflows &mdash; model hosting, prompt and tool design, integration, and shipping features end-to-end.
                   <br>Years of tool-and-pipeline craft now building agent pipelines and automation that actually ships.
                 </p>
               </div>
-
+              <div class="service-detail">
+                <div class="svc-media-strip">
+                  <figure>
+                    <img src="./assets/images/projects/project-shape-home.png" alt="shape home view" loading="lazy">
+                    <figcaption>
+                      <strong class="svc-cap-title">shape &middot; home</strong>
+                      <span class="svc-cap-text">One SQLite file runs the whole stack &mdash; 15 tables tracking markets, prices, news, backtests, and per-tick model reasoning.</span>
+                    </figcaption>
+                  </figure>
+                  <figure>
+                    <img src="./assets/images/projects/project-shape-experiments.png" alt="shape grounded chat" loading="lazy">
+                    <figcaption>
+                      <strong class="svc-cap-title">shape &middot; grounded chat</strong>
+                      <span class="svc-cap-text">Nine read-only SQLite tools the model can call. Every tool call is visible; every answer traces back to a real row.</span>
+                    </figcaption>
+                  </figure>
+                  <figure>
+                    <img src="./assets/images/projects/project-porter-dashboard.png" alt="Porter macOS queue" loading="lazy">
+                    <figcaption>
+                      <strong class="svc-cap-title">Porter &middot; macOS queue</strong>
+                      <span class="svc-cap-text">A local-first jobs agent. A Playwright sidecar clicks through Greenhouse, Lever, and Workday forms &mdash; not just drafting, actually applying.</span>
+                    </figcaption>
+                  </figure>
+                  <figure class="contain">
+                    <img src="./assets/images/projects/project-generatevr-diagram.svg" alt="GenerateVR pipeline diagram" loading="lazy">
+                    <figcaption>
+                      <strong class="svc-cap-title">GenerateVR &middot; pipeline</strong>
+                      <span class="svc-cap-text">An LLM authors the scenario; an optional RAG step grounds it in the customer&rsquo;s own SOPs so output stays on-brand and compliant.</span>
+                    </figcaption>
+                  </figure>
+                </div>
+                <p class="svc-narrative">Real AI features live or die in the <em>scaffolding</em>. Retry policies for when a model fumbles mid-tool-call. Eval harnesses that catch regressions before a release does. Structured-output guards so a bad decode doesn&rsquo;t topple the UI downstream. A hundred tiny product decisions that turn a probabilistic blob into something a person actually trusts. That&rsquo;s the layer I love &mdash; the bit between the model and the user, where product-thinking happens.</p>
+                <p class="svc-narrative">Local models when privacy or latency calls for it; frontier models when they don&rsquo;t. The choice becomes engineering rather than hype. What I chase is the feature that&rsquo;s <em>still up the next morning</em> &mdash; still making the same promise, still answering the same question, still holding up to the Friday-afternoon edge case nobody planned for.</p>
+                <span class="svc-section-label">See it in action</span>
+                <ul class="svc-chips">
+                  <li><a href="#" data-scroll="porter">Porter <span class="svc-chip-tag">AI Agent</span></a></li>
+                  <li><a href="#" data-scroll="shape">shape <span class="svc-chip-tag">AI Research</span></a></li>
+                  <li><a href="#" data-scroll="generatevr">GenerateVR <span class="svc-chip-tag">AI Product</span></a></li>
+                </ul>
+              </div>
             </li>
 
-            <li class="service-item" data-variant-hide="ai">
-
+            <li class="service-item" data-variant-hide="ai" role="button" tabindex="0" aria-expanded="false"
+                data-standfirst="Offline-first, cross-platform software built to hold up on warehouse floors, training headsets, and museum tours.">
+              <button class="service-toggle" aria-label="Expand" tabindex="-1"><span class="service-toggle-chevron">▾</span></button>
               <div class="service-icon-box">
                 <img src="./assets/images/icon-app.svg" alt="mobile app icon" width="40">
               </div>
-
               <div class="service-content-box">
-                <h4 class="h4 service-item-title">Desktop & Mobile Apps</h4>
-
-                 <p class="service-item-text">
-  Years building and maintaining cross-platform apps — from multi-tenant offline first applications, companion mobile applications, and the behind-the-scenes automations that run every day. Lots of experience building, shipping, and maintaining the full stack.
+                <h4 class="h4 service-item-title">Desktop &amp; Mobile Apps</h4>
+                <p class="service-item-text">
+                  Years building and maintaining cross-platform apps — from multi-tenant offline-first applications, companion mobile apps, and the behind-the-scenes automations that run every day. Lots of experience building, shipping, and maintaining the full stack.
                 </p>
               </div>
-
+              <div class="service-detail">
+                <div class="svc-media-strip">
+                  <figure>
+                    <img src="./assets/images/projects/project-porter-dashboard.png" alt="Porter macOS" loading="lazy">
+                    <figcaption>
+                      <strong class="svc-cap-title">Porter &middot; macOS</strong>
+                      <span class="svc-cap-text">Native menu-bar agent with RAG over your own resume and writing samples. Runs locally &mdash; nothing about the job hunt leaves the machine.</span>
+                    </figcaption>
+                  </figure>
+                  <figure>
+                    <img src="./assets/images/projects/project-hospitality-ss1.jpg" alt="Hospitality Passport on Quest" loading="lazy">
+                    <figcaption>
+                      <strong class="svc-cap-title">Hospitality Passport &middot; Quest</strong>
+                      <span class="svc-cap-text">Front-of-house training built around interactive props and NPC decision points, deployed across managed Quest fleets.</span>
+                    </figcaption>
+                  </figure>
+                  <figure>
+                    <img src="./assets/images/projects/project-millertraining-1.jpg" alt="Child Welfare VR" loading="lazy">
+                    <figcaption>
+                      <strong class="svc-cap-title">Child Welfare VR &middot; Quest</strong>
+                      <span class="svc-cap-text">A furnished home in VR. Social-work trainees walk room by room, flagging safety and protection factors before each decision.</span>
+                    </figcaption>
+                  </figure>
+                  <figure>
+                    <img src="./assets/images/projects/project-motb1.jpg" alt="Museum of the Bible companion" loading="lazy">
+                    <figcaption>
+                      <strong class="svc-cap-title">Museum of the Bible &middot; AR-adjacent</strong>
+                      <span class="svc-cap-text">A mobile companion for kids &mdash; MBOT the robot guide leads story-missions and collects helper bots between exhibits.</span>
+                    </figcaption>
+                  </figure>
+                </div>
+                <p class="svc-narrative">Cross-platform apps earn trust slowly. The right offline behaviour when signal drops. A sync that recovers cleanly when it returns. A multi-tenant boundary you only notice when someone pushes it hard. These are the unglamorous parts that decide whether a product is still in daily use three years after launch &mdash; and they&rsquo;re the parts I like owning.</p>
+                <p class="svc-narrative">I&rsquo;ve spent years in that corner of the craft: architecture, implementation, polish, and <em>the patient maintenance work that never makes a changelog</em>. A jobs-agent in a dock, training passports on managed headset fleets, a children&rsquo;s companion wandering a museum &mdash; different surfaces, the same quiet bar for resilience.</p>
+                <span class="svc-section-label">See it in action</span>
+                <ul class="svc-chips">
+                  <li><a href="#" data-scroll="porter">Porter <span class="svc-chip-tag">macOS / Web</span></a></li>
+                  <li><a href="#" data-scroll="warehousing-passport">Warehousing Passport <span class="svc-chip-tag">Cross-platform</span></a></li>
+                  <li><a href="#" data-scroll="hospitality-passport">Hospitality Passport <span class="svc-chip-tag">Cross-platform</span></a></li>
+                  <li><a href="#" data-scroll="museum-of-the-bible">Museum of the Bible <span class="svc-chip-tag">AR-adjacent</span></a></li>
+                </ul>
+              </div>
             </li>
 
-            <li class="service-item" data-variant-only="ai" data-variant-order-ai="1">
-
+            <li class="service-item" data-variant-only="ai" data-variant-order-ai="1" role="button" tabindex="0" aria-expanded="false"
+                data-standfirst="Production AI features end-to-end &mdash; tool use, evals, self-hosted models, and the scaffolding between the model and the user.">
+              <button class="service-toggle" aria-label="Expand" tabindex="-1"><span class="service-toggle-chevron">▾</span></button>
               <div class="service-icon-box">
                 <img src="./assets/images/icon-ai.svg" alt="AI icon" width="40">
               </div>
-
               <div class="service-content-box">
                 <h4 class="h4 service-item-title">AI Development</h4>
-
                 <p class="service-item-text">
                   <strong>Agentic systems that do real work.</strong>
                   <br>I build practical AI features end-to-end: tool use, structured prompts, evaluation loops, self-hosted models, and workflows that connect models to real products. From AI-driven behaviours in training software to internal assistants and automation, I care about systems that are useful, stable, and shippable.
                 </p>
               </div>
-
+              <div class="service-detail">
+                <div class="svc-media-strip">
+                  <figure>
+                    <img src="./assets/images/projects/project-shape-autoresearch.png" alt="shape auto-research" loading="lazy">
+                    <figcaption>
+                      <strong class="svc-cap-title">shape &middot; auto-research</strong>
+                      <span class="svc-cap-text">Gemma turns Strait-relevant headlines into probability estimates; a no-lookahead backtester replays the decision and scores its calibration.</span>
+                    </figcaption>
+                  </figure>
+                  <figure>
+                    <img src="./assets/images/projects/project-shape-experiments.png" alt="shape experiments" loading="lazy">
+                    <figcaption>
+                      <strong class="svc-cap-title">shape &middot; experiments</strong>
+                      <span class="svc-cap-text">Fractional-Kelly sizing (&frac14;), vol-scaled, hard-capped. Fat-tailed prediction errors taken seriously.</span>
+                    </figcaption>
+                  </figure>
+                  <figure>
+                    <img src="./assets/images/projects/project-porter-fit.png" alt="Porter tailoring" loading="lazy">
+                    <figcaption>
+                      <strong class="svc-cap-title">Porter &middot; tailoring</strong>
+                      <span class="svc-cap-text">Next.js + Ollama/Qwen parses postings into requirement trees, then scores fit with citations back into your own corpus.</span>
+                    </figcaption>
+                  </figure>
+                  <figure class="contain">
+                    <img src="./assets/images/projects/project-generatevr-diagram.svg" alt="GenerateVR pipeline" loading="lazy">
+                    <figcaption>
+                      <strong class="svc-cap-title">GenerateVR &middot; pipeline</strong>
+                      <span class="svc-cap-text">Structured-output prompts author scenario, dialogue, and interactable wiring; optional RAG over customer SOPs keeps it grounded.</span>
+                    </figcaption>
+                  </figure>
+                </div>
+                <p class="svc-narrative">What I care about sits between the model and the user. Retry policies for when a tool call fumbles. Structured-output guards so one bad decode doesn&rsquo;t topple the UI. Eval harnesses that catch regressions before a release does. A hundred small product decisions that make an AI feature feel like <em>a tool a person trusts</em> rather than a toy that occasionally surprises them.</p>
+                <p class="svc-narrative">Local models where privacy or latency call for it; frontier models where they don&rsquo;t. The choice becomes engineering rather than hype. The work I want is the work <em>still running the next morning</em> &mdash; still passing the same evals, still answering the same questions with the same reasoning a human can check.</p>
+                <span class="svc-section-label">See it in action</span>
+                <ul class="svc-chips">
+                  <li><a href="#" data-scroll="porter">Porter <span class="svc-chip-tag">Local-first Agent</span></a></li>
+                  <li><a href="#" data-scroll="shape">shape <span class="svc-chip-tag">Local-LLM Research</span></a></li>
+                  <li><a href="#" data-scroll="generatevr">GenerateVR <span class="svc-chip-tag">AI Product</span></a></li>
+                </ul>
+              </div>
             </li>
 
-            <li class="service-item" data-variant-only="ai" data-variant-order-ai="2">
-
+            <li class="service-item" data-variant-only="ai" data-variant-order-ai="2" role="button" tabindex="0" aria-expanded="false"
+                data-standfirst="Desktop and mobile apps that leave the office &mdash; offline-first, multi-tenant, built to run far from the datacentre.">
+              <button class="service-toggle" aria-label="Expand" tabindex="-1"><span class="service-toggle-chevron">▾</span></button>
               <div class="service-icon-box">
                 <img src="./assets/images/icon-app.svg" alt="mobile app icon" width="40">
               </div>
-
               <div class="service-content-box">
                 <h4 class="h4 service-item-title">Desktop &amp; Mobile Apps</h4>
-
                 <p class="service-item-text">
                   <strong>Production software, not just prototypes.</strong>
                   <br>Years building and maintaining cross-platform applications across desktop and mobile &mdash; including offline-first systems, multi-tenant apps, companion tools, and the infrastructure behind them. Comfortable owning architecture, implementation, polish, and the messy parts that keep products running.
                 </p>
               </div>
-
+              <div class="service-detail">
+                <div class="svc-media-strip">
+                  <figure>
+                    <img src="./assets/images/projects/project-porter-dashboard.png" alt="Porter macOS" loading="lazy">
+                    <figcaption>
+                      <strong class="svc-cap-title">Porter &middot; macOS</strong>
+                      <span class="svc-cap-text">Full eval harness with cached runs, stability scoring, and a reproducible demo mode for interview walkthroughs.</span>
+                    </figcaption>
+                  </figure>
+                  <figure>
+                    <img src="./assets/images/projects/project-hospitality-ss2.jpg" alt="Hospitality Passport dialogue" loading="lazy">
+                    <figcaption>
+                      <strong class="svc-cap-title">Hospitality Passport &middot; dialogue</strong>
+                      <span class="svc-cap-text">ElevenLabs TTS pipeline designed so writers can iterate NPC lines and barks without code changes.</span>
+                    </figcaption>
+                  </figure>
+                  <figure>
+                    <img src="./assets/images/projects/project-millertraining-2.jpg" alt="Child Welfare VR branching interview" loading="lazy">
+                    <figcaption>
+                      <strong class="svc-cap-title">Child Welfare VR &middot; branching</strong>
+                      <span class="svc-cap-text">A pointer-driven interview presents realistic response choices in-world. Each decision reshapes the scenario&rsquo;s direction.</span>
+                    </figcaption>
+                  </figure>
+                  <figure>
+                    <img src="./assets/images/projects/project-motb1.jpg" alt="Museum of the Bible routing" loading="lazy">
+                    <figcaption>
+                      <strong class="svc-cap-title">Museum of the Bible &middot; routing</strong>
+                      <span class="svc-cap-text">Kid&rsquo;s itinerary synced to an adult&rsquo;s &mdash; age, timing, and interests reshape the museum route on the fly.</span>
+                    </figcaption>
+                  </figure>
+                </div>
+                <p class="svc-narrative">I build for the devices that <em>leave the office</em>. A headset strapped into a hospitality trainee&rsquo;s kit. An iPad a field engineer unlocks one-handed on a windy substation. A laptop that never quite sits on a desk. Offline-first data shapes everything about those apps &mdash; capture, sync, conflict resolution, and the UI states you only notice when you&rsquo;re somewhere with two bars of signal.</p>
+                <p class="svc-narrative">The apps above are all still running: different form factors, same quiet bar for resilience. That patient maintenance work &mdash; the kind that lets a product be reliable three years after launch &mdash; is the part of app craft I actually enjoy.</p>
+                <span class="svc-section-label">See it in action</span>
+                <ul class="svc-chips">
+                  <li><a href="#" data-scroll="porter">Porter <span class="svc-chip-tag">macOS / Web</span></a></li>
+                  <li><a href="#" data-scroll="warehousing-passport">Warehousing Passport <span class="svc-chip-tag">Cross-platform</span></a></li>
+                  <li><a href="#" data-scroll="hospitality-passport">Hospitality Passport <span class="svc-chip-tag">Cross-platform</span></a></li>
+                  <li><a href="#" data-scroll="museum-of-the-bible">Museum of the Bible <span class="svc-chip-tag">AR-adjacent</span></a></li>
+                </ul>
+              </div>
             </li>
 
-            <li class="service-item" data-variant-only="ai" data-variant-order-ai="3">
-
+            <li class="service-item" data-variant-only="ai" data-variant-order-ai="3" role="button" tabindex="0" aria-expanded="false"
+                data-standfirst="The plumbing that makes AI reliable &mdash; repeatable pipelines, evals, telemetry, and tools that make shipping cheap.">
+              <button class="service-toggle" aria-label="Expand" tabindex="-1"><span class="service-toggle-chevron">▾</span></button>
               <div class="service-icon-box">
                 <img src="./assets/images/icon-pipeline.svg" alt="pipeline icon" width="40">
               </div>
-
               <div class="service-content-box">
                 <h4 class="h4 service-item-title">Pipelines &amp; Automation</h4>
-
                 <p class="service-item-text">
                   <strong>The plumbing that makes AI reliable.</strong>
                   <br>Good AI products need more than prompts. I build the surrounding systems: repeatable pipelines, eval harnesses, telemetry, deployment flows, caching, and operational tooling that make AI features easier to ship, observe, and improve over time.
                 </p>
               </div>
-
+              <div class="service-detail">
+                <div class="svc-media-strip">
+                  <figure class="contain">
+                    <img src="./assets/images/projects/project-furlong-workflow.png" alt="Furlong n8n workflow" loading="lazy">
+                    <figcaption>
+                      <strong class="svc-cap-title">Furlong &middot; n8n graph</strong>
+                      <span class="svc-cap-text">Self-hosted 12-node pipeline: scrape curated NZ racing sources, dedupe against a rolling SHA-1 index, render and send the morning email.</span>
+                    </figcaption>
+                  </figure>
+                  <figure>
+                    <img src="./assets/images/projects/project-furlong-email.png" alt="Furlong 6am digest" loading="lazy">
+                    <figcaption>
+                      <strong class="svc-cap-title">Furlong &middot; 6am digest</strong>
+                      <span class="svc-cap-text">Rendered by a custom Code node. SMTP fires at 6am NZT, every day, for years, with no cloud spend and no one chasing it.</span>
+                    </figcaption>
+                  </figure>
+                  <figure>
+                    <img src="./assets/images/projects/project-furlong-code.png" alt="Furlong code node" loading="lazy">
+                    <figcaption>
+                      <strong class="svc-cap-title">Furlong &middot; code node</strong>
+                      <span class="svc-cap-text">The normalisation stage &mdash; HTML extraction, content scrubbing, and SHA-1 hashing before the dedupe index check.</span>
+                    </figcaption>
+                  </figure>
+                  <figure>
+                    <img src="./assets/images/projects/project-porter-form.png" alt="Porter agent pipeline" loading="lazy">
+                    <figcaption>
+                      <strong class="svc-cap-title">Porter &middot; agent pipeline</strong>
+                      <span class="svc-cap-text">Structured-output Ollama pipeline: posting &rarr; requirement tree &rarr; fit score &rarr; tailored cover letter, closed-loop and local.</span>
+                    </figcaption>
+                  </figure>
+                </div>
+                <p class="svc-narrative">Shipping AI features takes a lot more than prompting. Repeatable pipelines. Eval harnesses that <em>notice when a model gets worse</em>. Caches that keep costs sane. Structured-output guards so downstream code doesn&rsquo;t fall over on a bad decode. Telemetry that tells you what users actually got. I&rsquo;m the person who enjoys the plumbing &mdash; the part without which a demo never graduates into a product.</p>
+                <p class="svc-narrative">A favourite example is Furlong. A <em>self-hosted twelve-node n8n workflow</em> that scrapes curated NZ horse-racing sources, dedupes them against a rolling SHA-1 hash index, and lands a daily digest in a shared inbox at 6am. Years of uninterrupted runs, zero cloud spend, nobody chasing it. Small, reliable, explainable &mdash; the shape I aim for whenever I build automation.</p>
+                <span class="svc-section-label">See it in action</span>
+                <ul class="svc-chips">
+                  <li><a href="#" data-scroll="furlong">Furlong <span class="svc-chip-tag">n8n Automation</span></a></li>
+                  <li><a href="#" data-scroll="porter">Porter <span class="svc-chip-tag">Agent Pipeline</span></a></li>
+                  <li><a href="#" data-scroll="shape">shape <span class="svc-chip-tag">Local-LLM Infra</span></a></li>
+                </ul>
+              </div>
             </li>
 
-            <li class="service-item" data-variant-only="ai" data-variant-order-ai="4">
-
+            <li class="service-item" data-variant-only="ai" data-variant-order-ai="4" role="button" tabindex="0" aria-expanded="false"
+                data-standfirst="Systems that surface what matters &mdash; instrumented products, scheduled digests, and dashboards that answer &lsquo;what happened today?&rsquo;">
+              <button class="service-toggle" aria-label="Expand" tabindex="-1"><span class="service-toggle-chevron">▾</span></button>
               <div class="service-icon-box">
                 <img src="./assets/images/icon-report.svg" alt="monitoring icon" width="40">
               </div>
-
               <div class="service-content-box">
                 <h4 class="h4 service-item-title">Reporting &amp; Monitoring</h4>
-
                 <p class="service-item-text">
                   <strong>Systems that surface what matters.</strong>
                   <br>Automated reporting, performance dashboards, scheduled summaries, and lightweight monitoring that keep teams informed without manual effort. I like building software that not only runs, but also explains how it&rsquo;s running.
                 </p>
               </div>
-
+              <div class="service-detail">
+                <div class="svc-media-strip">
+                  <figure>
+                    <img src="./assets/images/projects/project-comsim1.png" alt="Comsim field view" loading="lazy">
+                    <figcaption>
+                      <strong class="svc-cap-title">Comsim &middot; field view</strong>
+                      <span class="svc-cap-text">The offline-first view electrical engineers use on-site. Syncs to the cloud the moment signal comes back.</span>
+                    </figcaption>
+                  </figure>
+                  <figure>
+                    <img src="./assets/images/projects/project-comsim2.png" alt="Comsim capture" loading="lazy">
+                    <figcaption>
+                      <strong class="svc-cap-title">Comsim &middot; one-screen capture</strong>
+                      <span class="svc-cap-text">Notes, photos, and calibration data on one surface, designed to stay usable while wearing work gloves.</span>
+                    </figcaption>
+                  </figure>
+                  <figure>
+                    <img src="./assets/images/projects/project-comsim3.png" alt="Comsim telemetry" loading="lazy">
+                    <figcaption>
+                      <strong class="svc-cap-title">Comsim &middot; telemetry</strong>
+                      <span class="svc-cap-text">Instrumentation behind twelve enterprise deployments: which screens drag, which steps fail, which days slow the crew.</span>
+                    </figcaption>
+                  </figure>
+                  <figure>
+                    <img src="./assets/images/projects/project-furlong-email.png" alt="Furlong daily digest" loading="lazy">
+                    <figcaption>
+                      <strong class="svc-cap-title">Furlong &middot; daily digest</strong>
+                      <span class="svc-cap-text">Scheduled reporting in its simplest form &mdash; one 6am email that answers &lsquo;anything I need to know?&rsquo; without anyone chasing it.</span>
+                    </figcaption>
+                  </figure>
+                </div>
+                <p class="svc-narrative">Most products don&rsquo;t have a visibility problem in theory. They have one in practice, because nobody built the instrumentation layer. I like being the person who does. On Comsim that meant usage analytics, error reporting, user-flow traces, and bottleneck hunting &mdash; the team stopped <em>guessing</em> which screens dragged or where field engineers got stuck, because the telemetry told them.</p>
+                <p class="svc-narrative">Pair that instinct with scheduled digests and lightweight dashboards and the work starts explaining itself. The Furlong pipeline is the simplest version of the shape: one email, every morning, answering &lsquo;<em>anything I need to know?</em>&rsquo; without anyone asking.</p>
+                <span class="svc-section-label">See it in action</span>
+                <ul class="svc-chips">
+                  <li><a href="#" data-scroll="comsim">Comsim <span class="svc-chip-tag">Analytics · Error Tracking</span></a></li>
+                  <li><a href="#" data-scroll="furlong">Furlong <span class="svc-chip-tag">Scheduled Digest</span></a></li>
+                </ul>
+              </div>
             </li>
 
-            <li class="service-item" data-variant-hide="ai">
-
+            <li class="service-item" data-variant-hide="ai" role="button" tabindex="0" aria-expanded="false"
+                data-standfirst="End-to-end VR &mdash; interaction design, multiplayer, and platform-specific polish across Quest, Pico, and PC-VR.">
+              <button class="service-toggle" aria-label="Expand" tabindex="-1"><span class="service-toggle-chevron">▾</span></button>
               <div class="service-icon-box">
-                <img src="./assets/images/icon-cube.svg
-                " alt="vr icon" width="40">
+                <img src="./assets/images/icon-cube.svg" alt="vr icon" width="40">
               </div>
-
               <div class="service-content-box">
                 <h4 class="h4 service-item-title">VR Development</h4>
-
                 <p class="service-item-text">
                   <strong>End-to-end VR simulations and games.</strong> Prototyping, intuitive interaction design, multiplayer support and smooth performance on Quest, Pico, and PC-VR.
                   <br>Versed in Open-XR, the PICO SDK and platform-specific optimization for immersive, cross-device deployment.
                 </p>
               </div>
-
+              <div class="service-detail">
+                <div class="svc-media-strip">
+                  <figure>
+                    <img src="./assets/images/projects/project-sing1.png" alt="VR Singing Club" loading="lazy">
+                    <figcaption>
+                      <strong class="svc-cap-title">VR Singing Club &middot; Quest</strong>
+                      <span class="svc-cap-text">Social karaoke with a node-based dialogue system &mdash; designers wire NPC behaviour and TTS without touching code.</span>
+                    </figcaption>
+                  </figure>
+                  <figure>
+                    <img src="./assets/images/projects/project-heights1.png" alt="Working at Heights" loading="lazy">
+                    <figcaption>
+                      <strong class="svc-cap-title">Working at Heights</strong>
+                      <span class="svc-cap-text">Immersive height-safety training with competency mapping aligned to NZQA standards. Non-repetitive scenario flow.</span>
+                    </figcaption>
+                  </figure>
+                  <figure>
+                    <img src="./assets/images/projects/project-aether3.webp" alt="The Aetherlight MMORPG" loading="lazy">
+                    <figcaption>
+                      <strong class="svc-cap-title">The Aetherlight &middot; MMORPG</strong>
+                      <span class="svc-cap-text">Cross-platform combat with team-synergy mechanics and combo chains &mdash; shipped across mobile, PC, and VR.</span>
+                    </figcaption>
+                  </figure>
+                  <figure>
+                    <img src="./assets/images/projects/project-hospitality-ss1.jpg" alt="Hospitality Passport" loading="lazy">
+                    <figcaption>
+                      <strong class="svc-cap-title">Hospitality Passport &middot; Quest</strong>
+                      <span class="svc-cap-text">In-world tablet UI, visual guidance, and outcome tracking for scalable, repeatable training content.</span>
+                    </figcaption>
+                  </figure>
+                </div>
+                <p class="svc-narrative">The goal in VR is a moment nobody talks about enough &mdash; the three or four seconds when the headset stops being a headset and the room is <em>just the room</em>. Everything ladders up to that: frame budgets on Quest, hand feel you can tune by a millisecond, audio spatialisation that tells you where someone is standing without them saying a word, the quiet locomotion choice that doesn&rsquo;t make anyone queasy.</p>
+                <p class="svc-narrative">I&rsquo;ve worked across the whole pipeline &mdash; interaction design, multiplayer networking, performance, and the platform quirks that decide whether that moment lands. From immersive safety training to social karaoke to a cross-platform MMORPG, the craft is the same: <em>remove anything that reminds the person they&rsquo;ve got a plastic box on their face</em>.</p>
+                <span class="svc-section-label">See it in action</span>
+                <ul class="svc-chips">
+                  <li><a href="#" data-scroll="vr-singing-club">VR Singing Club <span class="svc-chip-tag">VR Social</span></a></li>
+                  <li><a href="#" data-scroll="heights">Working at Heights <span class="svc-chip-tag">VR Training</span></a></li>
+                  <li><a href="#" data-scroll="aetherlight">The Aetherlight <span class="svc-chip-tag">MMORPG</span></a></li>
+                </ul>
+              </div>
             </li>
 
-            <li class="service-item" data-variant-hide="ai">
-
+            <li class="service-item" data-variant-hide="ai" role="button" tabindex="0" aria-expanded="false"
+                data-standfirst="Full-cycle games &mdash; Apple Arcade launches, indie roguelikes, physics-driven runners. Tight solo builds and large-team features.">
+              <button class="service-toggle" aria-label="Expand" tabindex="-1"><span class="service-toggle-chevron">▾</span></button>
               <div class="service-icon-box">
                 <img src="./assets/images/icon-dev.svg" alt="Web development icon" width="40">
               </div>
-
               <div class="service-content-box">
                 <h4 class="h4 service-item-title">Game Development</h4>
-
                 <p class="service-item-text">
                   Full-cycle game development—from playable prototypes to polished, multi-platform releases—delivering engaging mechanics, striking visuals, and seamless performance.
-                  <br>A ton of independent releases, a eon of experience working as part of a larger team.
+                  <br>A ton of independent releases, an aeon of experience working as part of a larger team.
                 </p>
               </div>
-
+              <div class="service-detail">
+                <div class="svc-media-strip">
+                  <figure>
+                    <img src="./assets/images/projects/project-dungemstitle.gif" alt="Dungems reverse-dungeon" loading="lazy">
+                    <figcaption>
+                      <strong class="svc-cap-title">Dungems &middot; reverse-dungeon</strong>
+                      <span class="svc-cap-text">Lay traps, carve tunnels, train monsters &mdash; then watch AI heroes try to beat your design.</span>
+                    </figcaption>
+                  </figure>
+                  <figure>
+                    <img src="./assets/images/projects/project-crossy2.png" alt="Crossy Road Castle" loading="lazy">
+                    <figcaption>
+                      <strong class="svc-cap-title">Crossy Road Castle &middot; Apple Arcade</strong>
+                      <span class="svc-cap-text">Tower-climber with seamless 4-player couch and online co-op across iOS and Android. Launched on Apple Arcade.</span>
+                    </figcaption>
+                  </figure>
+                  <figure>
+                    <img src="./assets/images/projects/HUIA-ss1.png" alt="Huia narrative" loading="lazy">
+                    <figcaption>
+                      <strong class="svc-cap-title">Huia &middot; narrative</strong>
+                      <span class="svc-cap-text">Hand-painted Aotearoa bush and journal entries weaving M&#257;ori folklore and ecology &mdash; piecing together the huia&rsquo;s lost song.</span>
+                    </figcaption>
+                  </figure>
+                  <figure>
+                    <img src="./assets/images/projects/project-tumbly2.png" alt="Tumbly Beasts" loading="lazy">
+                    <figcaption>
+                      <strong class="svc-cap-title">Tumbly Beasts &middot; physics runner</strong>
+                      <span class="svc-cap-text">Procedurally generated endless-runner levels with Unity Ads, Facebook sharing, and an iMessage sticker pack.</span>
+                    </figcaption>
+                  </figure>
+                </div>
+                <p class="svc-narrative">What I keep coming back to is the <em>feel</em>. The half-second of hang time that makes a jump land weighty. The thirty frames of anticipation before a monster lunges. The physics that make a crowd of little creatures read as alive instead of as objects. Readable mechanics, striking visuals, performance that holds up on whatever the player is actually holding.</p>
+                <p class="svc-narrative">I&rsquo;ve shipped on Apple Arcade, inside independent studios, and across iOS, Android, PC, and console. What still feels worth chasing is the bit the player never explicitly notices &mdash; but can tell, instantly, when it&rsquo;s missing.</p>
+                <span class="svc-section-label">See it in action</span>
+                <ul class="svc-chips">
+                  <li><a href="#" data-scroll="crossy">Crossy Road Castle <span class="svc-chip-tag">Apple Arcade</span></a></li>
+                  <li><a href="#" data-scroll="dungems">Dungems <span class="svc-chip-tag">Roguelike</span></a></li>
+                  <li><a href="#" data-scroll="huia">Huia <span class="svc-chip-tag">Narrative</span></a></li>
+                  <li><a href="#" data-scroll="tumbly">Tumbly Beasts <span class="svc-chip-tag">Endless Runner</span></a></li>
+                </ul>
+              </div>
             </li>
 
           </ul>
@@ -721,7 +1044,7 @@
 
         <header class="resume-header">
           <h2 class="h2 article-title">Resume</h2>
-          <a href="cv.html" target="_blank" class="cv-btn" data-variant-href="cv.html">View CV <em class="arrow">↗</em></a>
+          <a href="cv-gamedev.html" target="_blank" class="cv-btn" data-variant-href="cv-ai.html">View CV <em class="arrow">↗</em></a>
         </header>
 
         <section class="timeline">
@@ -874,10 +1197,9 @@ Collaborated closely with stakeholders to understand real-world use cases, gathe
               <div class="timeline-body">
               <p class="timeline-text">
                 Led gaming department growth during company's transition from e-learning to gaming. <br>
-                Expanded gaming team from inception to 12+ members, developing job descriptions, contracts, and collaborating with immigration and recruitment agencies. <br>
-Fostered a creative, deadline-driven environment for team members to thrive.
-Established production pipelines, supervised government-funded projects, and served as the primary liaison between stakeholders and the development team.<br>
-Designed and led the development of three educational real-time strategy games—'Tycoon Series'—to teach young adults about small business management in an engaging way.
+                Expanded gaming team from 0 to 12+ members, developing job descriptions, contracts, and collaborating with immigration and recruitment agencies. <br>
+Fostered a creative, deadline-driven environment and established production pipelines, supervised government-funded projects, and served as the primary liaison between stakeholders and the development team.<br>
+Delivered the Tycoon Series — three RTS titles (Restaurant, Tech, Construction Tycoon) teaching financial-literacy and small-business skills in NZ classrooms. Reached 61+ NZ schools via the National Schools Competition; $150K Ministry of Social Development funding; Construction Tycoon launched by NZ ministers with partners Microsoft, Xero, and Fletcher Construction.
               </p>
               </div>
 
@@ -1309,6 +1631,41 @@ Designed and led the development of three educational real-time strategy games�
   </a>
 </li>
 
+<!-- 2025 ─────────────────────────────────────────────────────────── -->
+
+<li class="project-item active"
+    id="generatevr"
+    data-filter-item data-category="ai" data-ai-category="ai"
+    data-variant-order-ai="2"
+    data-year="2025"
+    data-title="GenerateVR"
+    data-subtitle="Procedural VR training from enterprise content"
+    data-genre="AI Product"
+    data-studio="SkillsVR"
+    data-platforms="quest,pc,ios,android"
+    data-link="https://skillsvr.com/"
+    data-text="
+<b>A pipeline that turns enterprise training content into tailored, playable VR scenarios — procedurally generated with an LLM, grounded in the customer's own source materials.</b>
+<ul class='proj-bullets'>
+  <li>Vue.js authoring surface on the enterprise website: customers wire up SkillsVR Unity packages and preview FBX assets in 3D inside the browser, then assemble the scenario as a structured JSON payload.</li>
+  <li>A headless generation server ingests the JSON and drives procedural scene building end-to-end — no Unity editor in the loop, no coding required on the customer side.</li>
+  <li>An LLM authors scenario structure, dialogue, and interactable wiring via structured-output prompting. An optional RAG step lets customers supply their own SOPs and compliance material so output stays grounded in their own corpus.</li>
+  <li>Shipped as part of SkillsVR's Content Creation Kit, launched November 2025. I built the ingest pipeline, the headless generation server, and the LLM authoring path.</li>
+</ul>"
+    data-gallery='["./assets/images/projects/project-generatevr-diagram.svg","./assets/images/projects/project-warehousing-ss3.jpg","./assets/images/projects/project-warehousing-ss1.jpg","./assets/images/projects/project-hospitality-ss1.jpg","./assets/images/projects/project-hospitality-ss2.jpg"]'>
+  <a href="#">
+    <figure class="project-img">
+      <img width="800" height="420" src="./assets/images/projects/projectthumb-generatevr.jpg"
+           alt="GenerateVR thumbnail"
+           fetchpriority="high">
+    </figure>
+    <h3 class="project-title">GenerateVR</h3>
+    <p class="project-category">AI</p>
+  </a>
+</li>
+
+<!-- 2024 ─────────────────────────────────────────────────────────── -->
+
 <li class="project-item active"
     id="crossy"
     data-filter-item data-category="games" data-ai-category="interactive"
@@ -1629,7 +1986,7 @@ Designed and led the development of three educational real-time strategy games�
     data-platforms="ios,android,desktop"
     data-year="2023"
     data-text=
-    "<b>Cross-platform desktop and mobile app for electrical engineers — cuts paperwork and speeds up field workflows.</b>
+    "<b>Multi-tenant calibration and documentation platform for electrical engineers — deployed across 12 NZ enterprise clients including Contact Energy, Mercury, OJI Fibre Solutions, Ecolab, and Dairy Goat Co-operative.</b>
 <ul class='proj-bullets'>
   <li>Works offline and syncs to the cloud when connected — data is always available.</li>
   <li>Capture notes, photos, and calibration data on one screen, designed for use in gloves.</li>
@@ -1659,11 +2016,12 @@ Designed and led the development of three educational real-time strategy games�
     data-studio="JBA Digital"
     data-platforms="ios,android,pc"
     data-year="2019"
-    data-text="<b>City-scale RTS that teaches budgeting, staffing, and cash-flow in civil construction.</b>
+    data-text="<b>City-scale RTS that teaches budgeting, staffing, and cash-flow in civil construction — launched by NZ ministers with partners Microsoft, Xero, and Fletcher Construction; $150K Ministry of Social Development funding.</b>
 <ul class='proj-bullets'>
   <li>Lay roads, pour concrete, and juggle contracts while weather delays eat into your margins.</li>
   <li>Exports real-format cost sheets to connect gameplay to classroom accounting.</li>
   <li>Large-scale AI simulation keeps hundreds of workers running smoothly on modest hardware.</li>
+  <li>Third release in the Tycoon Series, which reached 61+ NZ schools via the National Schools Competition.</li>
 </ul>"
     data-gallery='["./assets/images/projects/project-construction-gameplay.mp4","./assets/images/projects/project-construction1.jpg","./assets/images/projects/project-construction2.jpg","./assets/images/projects/project-construction3.jpg","./assets/images/projects/project-construction4.jpg"]'
     >
@@ -1804,7 +2162,7 @@ Designed and led the development of three educational real-time strategy games�
 <br><br>
 The system used a 12-node pipeline covering scheduling, batched source processing, HTTP fetch, HTML extraction, content normalisation, and SHA-1 hashing. New stories were identified by checking each hash against a Google Sheets index, ensuring only unseen content made it into the digest.
 <br><br>
-A custom Code node rendered the final dark-themed HTML email, with SMTP handling 6am NZT delivery. Self-hosted with no cloud spend, it was designed to run quietly with minimal upkeep and remains live today."
+A custom Code node rendered the final HTML email, with SMTP handling 6am NZT delivery. Self-hosted with no cloud spend, it was designed to run quietly with minimal upkeep and remains live today."
     data-gallery='["./assets/images/projects/project-furlong-workflow.png",{"src":"./assets/images/projects/project-furlong-email.png","fit":"full"},"./assets/images/projects/project-furlong-code.png"]'>
   <a href="#">
     <figure class="project-img">
@@ -1999,6 +2357,17 @@ A custom Code node rendered the final dark-themed HTML email, with SMTP handling
   </main>
 
 
+
+<!-- Service-card modal — populated by JS from each .service-item's hidden payload -->
+<div class="modal-container" id="serviceModal" aria-hidden="true">
+  <div class="overlay" id="serviceOverlay"></div>
+  <section class="service-modal" role="dialog" aria-modal="true" aria-labelledby="svcModalTitle">
+    <button class="modal-close-btn" id="svcModalClose" aria-label="Close">
+      <ion-icon name="close-outline"></ion-icon>
+    </button>
+    <div class="svc-scroll" id="svcScroll"></div>
+  </section>
+</div>
 
 <div class="modal-container" id="projectModal" aria-hidden="true">
 

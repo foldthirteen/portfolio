@@ -134,6 +134,7 @@ function buildHeroSwiper(slideSrcArray){
   heroSwiper = new Swiper('#heroSwiper', {
     loop:        sorted.length > 3,
     speed:       600,
+    autoHeight:  true,
     grabCursor:  true,
     keyboard:    { enabled:true },
     navigation:  { nextEl: '#heroSwiper-next', prevEl: '#heroSwiper-prev' },
@@ -588,15 +589,13 @@ for (let i = 0; i < navigationLinks.length; i++) {
     // (IntersectionObserver can't see hidden sections until they become visible)
     if (this.innerHTML.trim().toLowerCase() === 'portfolio') {
       document.querySelectorAll('.project-item').forEach(prefetchCardVideos);
-      // Recalculate masonry now that the section is visible — getBoundingClientRect
-      // returns 0 for hidden elements so the DOM-ready call couldn't size correctly.
-      // Two rAFs: first lets the browser paint the visible section, second measures.
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-          resizeAllMasonryItems();
-          grid.classList.add('masonry-ready');
-        });
-      });
+      // Portfolio just became display:block. resizeAllMasonryItems forces a
+      // synchronous layout via getBoundingClientRect, so we size cards and
+      // reveal in the same task — the next paint already shows a sized grid.
+      // Previously two chained rAFs gated the reveal, and on Safari a fast
+      // flick-scroll could race that window and catch the opacity:0 grid.
+      resizeAllMasonryItems();
+      grid.classList.add('masonry-ready');
     }
 
     // When navigating to Resume for the first time this session, set up the
@@ -636,7 +635,8 @@ for (let i = 0; i < navigationLinks.length; i++) {
 const portfolioBtn = [...document.querySelectorAll('[data-nav-link]')]
                      .find(b => b.textContent.trim().toLowerCase() === 'portfolio');
 
-// Event delegation covers both original and cloned project items
+// Event delegation covers original and cloned ticker items.
+// Service-modal chip clicks are handled by the service-card IIFE below.
 document.addEventListener('click', e => {
   const link = e.target.closest('.clients-item a[data-scroll]');
   if (!link) return;
@@ -1197,4 +1197,317 @@ initCardShine();
       if (!e.target.closest('.timeline-body')) toggle();
     });
   });
+}());
+
+
+// ── Service cards — hover glow, IO breathing, click-to-modal ──────────────
+// Each .service-item holds a <template class="service-payload"> with the
+// rich modal content (hero visual, narrative, media strip, project chips).
+// Clicking (or keyboarding) the card morph-opens the service modal with
+// that content. IntersectionObserver adds a gentle "breathing" highlight
+// on touch devices when a card scrolls into view so users know they're
+// interactive.
+(function () {
+  const items = document.querySelectorAll('.service-item[role="button"]');
+  if (!items.length) return;
+
+  const modal    = document.getElementById('serviceModal');
+  const overlay  = document.getElementById('serviceOverlay');
+  const closeBtn = document.getElementById('svcModalClose');
+  const scrollEl = document.getElementById('svcScroll');
+  const modalBox = modal.querySelector('.service-modal');
+  if (!modal || !scrollEl || !modalBox) return;
+
+  let savedScrollY = 0;
+  let currentItem  = null;
+
+  items.forEach(item => {
+    item.setAttribute('aria-haspopup', 'dialog');
+    if (!item.querySelector('.service-kicker')) {
+      const kicker = document.createElement('span');
+      kicker.className = 'service-kicker';
+      kicker.innerHTML = 'Explore <ion-icon name="arrow-forward-outline"></ion-icon>';
+      item.appendChild(kicker);
+    }
+  });
+
+  // Load a video's real src from data-src only when the modal opens.
+  // Keeps the page from fetching every hero clip on load.
+  function hydrateVideos(root) {
+    root.querySelectorAll('video[data-src]').forEach(v => {
+      v.src = v.dataset.src;
+      v.removeAttribute('data-src');
+      v.play().catch(() => {});
+    });
+  }
+
+  function ensureModalTitle(root, fallbackTitle) {
+    const heading = root.querySelector('#svcModalTitle')
+      || root.querySelector('h1, h2, h3, h4, h5, h6');
+
+    if (heading) {
+      heading.id = 'svcModalTitle';
+      return;
+    }
+
+    if (!fallbackTitle) return;
+
+    const title = document.createElement('h3');
+    title.id = 'svcModalTitle';
+    title.textContent = fallbackTitle;
+    (root.firstElementChild || root).prepend(title);
+  }
+
+  function buildPayloadFromDetail(item) {
+    const detail = item.querySelector('.service-detail');
+    if (!detail) return null;
+
+    const body = document.createElement('div');
+    body.className = 'svc-body';
+
+    const head = document.createElement('div');
+    head.className = 'svc-head';
+
+    const icon = item.querySelector('.service-icon-box img');
+    if (icon) {
+      const iconClone = icon.cloneNode(true);
+      iconClone.removeAttribute('loading');
+      head.appendChild(iconClone);
+    }
+
+    const title = document.createElement('h3');
+    title.id = 'svcModalTitle';
+    title.textContent = item.querySelector('.service-item-title')?.textContent.trim() || 'Selected work';
+    head.appendChild(title);
+    body.appendChild(head);
+
+    // Standfirst — prefer an explicit data-standfirst override on the <li>,
+    // fall back to .service-item-text for backwards compatibility.
+    const standfirst = item.dataset.standfirst?.trim()
+      || item.querySelector('.service-item-text')?.innerHTML.trim();
+    if (standfirst) {
+      const lead = document.createElement('p');
+      lead.className = 'svc-lead';
+      lead.innerHTML = standfirst;
+      body.appendChild(lead);
+    }
+
+    body.appendChild(detail.cloneNode(true));   // media strip, narrative, chips
+    return body;
+  }
+
+  function populateFrom(item) {
+    if (carouselTimer) { clearInterval(carouselTimer); carouselTimer = null; }
+    scrollEl.innerHTML = '';
+
+    const tpl = item.querySelector('.service-payload');
+    if (tpl) {
+      scrollEl.appendChild(tpl.content.cloneNode(true));
+    } else {
+      const fallback = buildPayloadFromDetail(item);
+      if (!fallback) return false;
+      scrollEl.appendChild(fallback);
+    }
+
+    ensureModalTitle(
+      scrollEl,
+      item.querySelector('.service-item-title')?.textContent.trim() || 'Selected work'
+    );
+    hydrateVideos(scrollEl);
+    scrollEl.querySelectorAll('video[autoplay]').forEach(v => v.play().catch(() => {}));
+    initCarousel(scrollEl);
+    scrollEl.scrollTop = 0;
+    return true;
+  }
+
+  // FLIP-morph: modal expands from the card's screen rect.
+  function openModal(item) {
+    if (!populateFrom(item)) return;
+
+    currentItem  = item;
+    savedScrollY = window.scrollY;
+    item.setAttribute('aria-expanded', 'true');
+
+    const cardRect = item.getBoundingClientRect();
+
+    // Make container visible, hide modal box so we can measure natural size
+    modalBox.style.transition = 'none';
+    modalBox.style.opacity    = '0';
+    modal.classList.add('active');
+    overlay.classList.add('active');
+    modal.setAttribute('aria-hidden', 'false');
+
+    const mr = modalBox.getBoundingClientRect();
+    const dx = (cardRect.left + cardRect.width  / 2) - (mr.left + mr.width  / 2);
+    const dy = (cardRect.top  + cardRect.height / 2) - (mr.top  + mr.height / 2);
+    const sx = Math.max(cardRect.width  / mr.width,  0.2);
+    const sy = Math.max(cardRect.height / mr.height, 0.2);
+
+    modalBox.style.transformOrigin = 'center';
+    modalBox.style.transform       = `translate(${dx}px,${dy}px) scale(${sx},${sy})`;
+    modalBox.style.borderRadius    = '14px';
+
+    void modalBox.getBoundingClientRect();  // reflow lock
+
+    modalBox.style.transition   = 'transform 300ms cubic-bezier(0.2,0,0,1), opacity 180ms ease, border-radius 300ms ease';
+    modalBox.style.transform    = '';
+    modalBox.style.opacity      = '';
+    modalBox.style.borderRadius = '';
+
+    document.documentElement.style.overflow = 'hidden';
+    document.body.style.overflowY           = 'scroll';
+
+    // Focus the close button for accessibility
+    requestAnimationFrame(() => closeBtn.focus({ preventScroll: true }));
+  }
+
+  let closing = false;
+  function closeModal() {
+    if (closing || !modal.classList.contains('active')) return;
+    closing = true;
+
+    // Fade + subtle shrink
+    modalBox.style.transition = 'transform 200ms cubic-bezier(0.4,0,1,1), opacity 180ms ease';
+    modalBox.style.transform  = 'scale(0.96)';
+    modalBox.style.opacity    = '0';
+    overlay.classList.remove('active');
+
+    const finish = () => {
+      if (carouselTimer) { clearInterval(carouselTimer); carouselTimer = null; }
+      modalBox.style.transition = '';
+      modalBox.style.transform  = '';
+      modalBox.style.opacity    = '';
+
+      modal.classList.remove('active');
+      modal.setAttribute('aria-hidden', 'true');
+
+      scrollEl.querySelectorAll('video').forEach(v => {
+        try { v.pause(); v.removeAttribute('src'); v.load(); } catch (e) {}
+      });
+      scrollEl.innerHTML = '';
+
+      document.documentElement.style.overflow = '';
+      document.body.style.overflowY           = '';
+
+      if (currentItem) {
+        currentItem.setAttribute('aria-expanded', 'false');
+        currentItem.focus({ preventScroll: true });
+        currentItem = null;
+      }
+      closing = false;
+    };
+
+    const onEnd = e => {
+      if (e.propertyName !== 'opacity') return;
+      modalBox.removeEventListener('transitionend', onEnd);
+      finish();
+    };
+    modalBox.addEventListener('transitionend', onEnd);
+    // safety net if transitionend doesn't fire
+    setTimeout(() => { if (closing) finish(); }, 260);
+  }
+
+  items.forEach(item => {
+    item.addEventListener('click', e => {
+      // Don't swallow chip clicks inside a nested payload — but payloads live
+      // in <template>s, so they can't actually be clicked. The card itself is
+      // always the target.
+      if (e.target.closest('.service-payload')) return;
+      openModal(item);
+    });
+
+    item.addEventListener('keydown', e => {
+      if ((e.key === 'Enter' || e.key === ' ') && e.target === item) {
+        e.preventDefault();
+        openModal(item);
+      }
+    });
+  });
+
+  closeBtn.addEventListener('click', closeModal);
+  overlay.addEventListener('click', closeModal);
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && modal.classList.contains('active')) closeModal();
+  });
+
+  // Chip click: close service modal, switch to Portfolio, open project detail modal.
+  scrollEl.addEventListener('click', e => {
+    const chip = e.target.closest('.svc-chips a[data-scroll]');
+    if (!chip) return;
+    e.preventDefault();
+    const targetId = chip.dataset.scroll;
+    closeModal();
+    setTimeout(() => {
+      portfolioBtn?.click();           // switch to portfolio tab
+      const projItem = document.getElementById(targetId);
+      if (!projItem) return;
+      // Project may be filtered off-screen; ensure active so FLIP measures OK
+      const wasHidden = !projItem.classList.contains('active');
+      if (wasHidden) projItem.classList.add('active');
+      requestAnimationFrame(() => {
+        projItem.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        setTimeout(() => {
+          projItem.click();            // opens project detail modal
+          if (wasHidden) setTimeout(() => projItem.classList.remove('active'), 3000);
+        }, 280);
+      });
+    }, 280);   // after close-anim finishes
+  });
+
+  // Build an auto-advancing carousel from .svc-media-strip figures.
+  // Called after populateFrom() clones a template into svcScroll.
+  let carouselTimer = null;
+  function initCarousel(root) {
+    const strip = root.querySelector('.svc-media-strip');
+    if (!strip) return;
+    const slides = Array.from(strip.querySelectorAll('figure'));
+    if (slides.length < 2) return;
+
+    const track = document.createElement('div');
+    track.className = 'svc-carousel-track';
+    slides.forEach(f => track.appendChild(f));
+
+    const dotRow = document.createElement('div');
+    dotRow.className = 'svc-dots';
+    const dotEls = slides.map((_, i) => {
+      const d = document.createElement('button');
+      d.className = 'svc-dot' + (i === 0 ? ' active' : '');
+      d.setAttribute('aria-label', `Image ${i + 1}`);
+      d.addEventListener('click', () => goTo(i));
+      dotRow.appendChild(d);
+      return d;
+    });
+
+    strip.innerHTML = '';
+    strip.appendChild(track);
+    strip.appendChild(dotRow);
+    strip.classList.add('svc-carousel');
+
+    let current = 0;
+    function goTo(n) {
+      current = (n + slides.length) % slides.length;
+      track.style.transform = `translateX(-${current * 100}%)`;
+      dotEls.forEach((d, i) => d.classList.toggle('active', i === current));
+    }
+
+    function startAuto() {
+      if (carouselTimer) clearInterval(carouselTimer);
+      carouselTimer = setInterval(() => goTo(current + 1), 3800);
+    }
+    startAuto();
+    strip.addEventListener('mouseenter', () => clearInterval(carouselTimer));
+    strip.addEventListener('mouseleave', startAuto);
+    strip.addEventListener('touchstart', () => clearInterval(carouselTimer), { passive: true });
+  }
+
+  // Mobile / touch: breathing in-view highlight so cards feel alive.
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        entry.target.classList.toggle('in-view', entry.isIntersecting);
+      });
+    }, { threshold: 0.6 });
+    items.forEach(item => io.observe(item));
+  }
 }());

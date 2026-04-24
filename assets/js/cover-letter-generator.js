@@ -10,7 +10,8 @@ const STORAGE_KEYS = {
   roleHeading: "cover-letter-generator.role-heading",
   letterContent: "cover-letter-generator.letter-content",
   letterDate: "cover-letter-generator.letter-date",
-  variant: "cover-letter-generator.variant"
+  variant: "cover-letter-generator.variant",
+  letterTemplate: "cover-letter-generator.letter-template"
 };
 
 const VARIANT_OPTIONS = ["auto", "default", "ai"];
@@ -72,6 +73,7 @@ const elements = {
   letterContent: document.querySelector("[data-letter-content]"),
   variantSelect: document.querySelector("[data-variant-select]"),
   variantHint: document.querySelector("[data-variant-hint]"),
+  templateSelect: document.querySelector("[data-template-select]"),
   filenamePreview: document.querySelector("[data-filename-preview]"),
   outputPath: document.querySelector("[data-output-path]"),
   statusMessage: document.querySelector("[data-status-message]"),
@@ -137,6 +139,13 @@ function bindEvents() {
     markPreviewStale();
   });
 
+  if (elements.templateSelect) {
+    elements.templateSelect.addEventListener("change", () => {
+      persistField(STORAGE_KEYS.letterTemplate, elements.templateSelect.value);
+      markPreviewStale();
+    });
+  }
+
   elements.roleHeading.addEventListener("input", () => {
     state.roleHeadingEdited = isRoleHeadingCustom();
     persistField(STORAGE_KEYS.roleHeading, elements.roleHeading.value);
@@ -201,6 +210,10 @@ function restoreDraft() {
   elements.letterDate.value = localStorage.getItem(STORAGE_KEYS.letterDate) || elements.letterDate.value || getLocalIsoDate();
   const savedVariant = localStorage.getItem(STORAGE_KEYS.variant);
   elements.variantSelect.value = VARIANT_OPTIONS.indexOf(savedVariant) >= 0 ? savedVariant : "auto";
+  const savedTemplate = localStorage.getItem(STORAGE_KEYS.letterTemplate);
+  if (elements.templateSelect && savedTemplate) {
+    elements.templateSelect.value = savedTemplate;
+  }
   state.roleHeadingEdited = isRoleHeadingCustom();
 }
 
@@ -436,7 +449,9 @@ function buildLetterDocument() {
   const fileName = buildFileName(elements.letterDate.value, roleHeading);
   const title = `${PROFILE.name} - Cover Letter - ${roleHeading}`;
   const variant = getResolvedVariant();
-  const html = buildCoverLetterHtml({
+  const templateStyle = elements.templateSelect ? elements.templateSelect.value : "standard";
+  const builderFn = templateStyle === "simple" ? buildSimpleCoverLetterHtml : buildCoverLetterHtml;
+  const html = builderFn({
     title,
     roleHeading,
     dateLabel: formatLetterDate(elements.letterDate.value),
@@ -909,6 +924,290 @@ function buildCoverLetterHtml({ title, roleHeading, dateLabel, letterContent, we
 </body>
 </html>`;
 }
+
+function buildSimpleCoverLetterHtml({ title, roleHeading, dateLabel, letterContent, websiteHref }) {
+  const letterParts = parseLetterContent(letterContent);
+  const titleHtml = escapeHtml(title);
+  const roleHeadingHtml = escapeHtml(roleHeading);
+  const dateHtml = escapeHtml(dateLabel);
+  const salutationHtml = `<p class="cl-salutation">${escapeHtml(letterParts.salutation).replace(/\n/g, "<br>")}</p>`;
+  const bodyParagraphs = letterParts.bodyParagraphs.map((para) => renderSimpleParagraph(para)).join("\n        ");
+  const signoffHtml = `<p>${escapeHtml(letterParts.farewell)}</p>`;
+  const signoffNameHtml = `<p class="cl-sign__name">${escapeHtml(letterParts.name)}</p>`;
+
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>${titleHtml}</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ff: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+      --c-text:  #111111;
+      --c-muted: #666666;
+      --c-rule:  #bbbbbb;
+    }
+
+    html { font-size: 16px; }
+
+    body {
+      font-family: var(--ff);
+      background: #e8e8e8;
+      color: var(--c-text);
+      font-size: 10pt;
+      line-height: 1.45;
+      padding: 48px 16px;
+      margin: 0;
+    }
+
+    .cv-toolbar {
+      position: fixed;
+      inset: 0 0 auto 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      height: 44px;
+      padding: 0 20px;
+      background: #ffffff;
+      border-bottom: 1px solid var(--c-rule);
+    }
+
+    .cv-toolbar__label {
+      font-size: 9pt;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--c-muted);
+    }
+
+    .cv-toolbar__btn {
+      font-family: var(--ff);
+      font-size: 9pt;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--c-text);
+      border: 1px solid var(--c-text);
+      border-radius: 3px;
+      background: none;
+      padding: 5px 12px;
+      cursor: pointer;
+    }
+
+    .cv-toolbar__btn:hover { background: var(--c-text); color: #ffffff; }
+
+    .cv-page {
+      background: #ffffff;
+      max-width: 794px;
+      min-height: 257mm;
+      margin: 0 auto;
+      padding: 40px 44px;
+      box-shadow: 0 2px 20px rgba(0, 0, 0, 0.12);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .cv-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 16px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--c-rule);
+    }
+
+    .cv-header__name {
+      font-size: 22pt;
+      font-weight: 700;
+      letter-spacing: -0.015em;
+      line-height: 1.05;
+    }
+
+    .cv-header__right {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 3px;
+    }
+
+    .cv-header__role {
+      font-size: 9pt;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--c-text);
+      text-align: right;
+    }
+
+    .cv-header__contact {
+      font-size: 9pt;
+      color: var(--c-muted);
+      letter-spacing: 0.01em;
+      text-align: right;
+    }
+
+    .cv-header__contact a { color: inherit; text-decoration: underline; }
+
+    .cl-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding-top: 20px;
+    }
+
+    .cl-meta__date {
+      font-size: 9pt;
+      color: var(--c-muted);
+      letter-spacing: 0.04em;
+      margin-bottom: 6px;
+    }
+
+    .cl-meta__role {
+      font-size: 9pt;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--c-text);
+      border-bottom: 1px solid var(--c-rule);
+      padding-bottom: 4px;
+      margin-bottom: 16px;
+    }
+
+    .cl-body {
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+    }
+
+    .cl-salutation, .cl-para, .cl-list-intro {
+      font-size: 10pt;
+      color: var(--c-text);
+      line-height: 1.55;
+    }
+
+    .cl-bullets {
+      list-style: disc;
+      padding-left: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .cl-bullets li {
+      font-size: 10pt;
+      color: var(--c-text);
+      line-height: 1.5;
+    }
+
+    .cl-bullets strong { font-weight: 700; }
+
+    .cl-sign {
+      margin-top: auto;
+      padding-top: 18px;
+      font-size: 10pt;
+      color: var(--c-muted);
+      line-height: 1.8;
+    }
+
+    .cl-sign__name {
+      font-weight: 700;
+      color: var(--c-text);
+      margin-top: 2px;
+    }
+
+    @media print {
+      .cv-toolbar { display: none; }
+      html, body { height: 100%; margin: 0; padding: 0; background: none; }
+      .cv-page { min-height: 270mm; max-width: none; margin: 0; padding: 0; box-shadow: none; }
+      @page { size: A4; margin: 12mm 15mm; }
+      * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    }
+
+    @media (max-width: 640px) {
+      body { padding: 8px; }
+      .cv-page { min-height: 0; padding: 20px; }
+      .cv-header { flex-direction: column; align-items: flex-start; }
+      .cv-header__right { align-items: flex-start; }
+      .cv-header__role, .cv-header__contact { text-align: left; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="cv-toolbar">
+    <span class="cv-toolbar__label">${titleHtml}</span>
+    <button class="cv-toolbar__btn" type="button" onclick="window.print()">Print / Save as PDF</button>
+  </nav>
+
+  <div class="cv-page">
+    <header class="cv-header">
+      <h1 class="cv-header__name">${escapeHtml(PROFILE.name)}</h1>
+      <div class="cv-header__right">
+        <span class="cv-header__role">${escapeHtml(PROFILE.title)}</span>
+        <p class="cv-header__contact">${escapeHtml(PROFILE.location)} &nbsp;&middot;&nbsp; ${escapeHtml(PROFILE.phone)} &nbsp;&middot;&nbsp; ${escapeHtml(PROFILE.email)} &nbsp;&middot;&nbsp; <a href="${escapeAttribute(websiteHref || PROFILE.websiteUrl)}">${escapeHtml(PROFILE.websiteLabel)}</a></p>
+      </div>
+    </header>
+
+    <div class="cl-content">
+      <div class="cl-meta">
+        <p class="cl-meta__date">${dateHtml}</p>
+        <p class="cl-meta__role">${roleHeadingHtml}</p>
+      </div>
+
+      <div class="cl-body">
+        ${salutationHtml}
+        ${bodyParagraphs}
+      </div>
+
+      <div class="cl-sign">
+        ${signoffHtml}
+        ${signoffNameHtml}
+      </div>
+    </div>
+  </div>
+</body>
+</html>`;
+}
+
+function renderSimpleParagraph(text) {
+  const lines = text.split("\n").map((l) => l.trim()).filter(Boolean);
+  const hasBullets = lines.some((l) => l.startsWith("\u2022") || l.startsWith("-"));
+
+  if (!hasBullets) {
+    return `<p class="cl-para">${escapeHtml(text).replace(/\n/g, "<br>")}</p>`;
+  }
+
+  const parts = [];
+  const bulletLines = [];
+
+  for (const line of lines) {
+    if (line.startsWith("\u2022") || line.startsWith("-")) {
+      bulletLines.push(line.replace(/^[\u2022\-]\s*/, ""));
+    } else if (bulletLines.length === 0) {
+      parts.push(`<p class="cl-list-intro">${escapeHtml(line)}</p>`);
+    }
+  }
+
+  if (bulletLines.length) {
+    const items = bulletLines.map((line) => {
+      const colonIdx = line.indexOf(":");
+      if (colonIdx > 0 && colonIdx < 60) {
+        const label = escapeHtml(line.slice(0, colonIdx));
+        const rest = escapeHtml(line.slice(colonIdx + 1).trim());
+        return `<li><strong>${label}:</strong> ${rest}</li>`;
+      }
+      return `<li>${escapeHtml(line)}</li>`;
+    }).join("\n          ");
+    parts.push(`<ul class="cl-bullets">\n          ${items}\n        </ul>`);
+  }
+
+  return parts.join("\n        ");
+}
+
 
 function parseLetterContent(rawText) {
   const paragraphs = normalizeText(rawText)

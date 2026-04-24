@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ben Visser — CV — Game Developer</title>
+
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-DHZDKWL3HM"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-DHZDKWL3HM');
+  </script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ff: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+      --c-text:   #111111;
+      --c-muted:  #666666;
+      --c-rule:   #bbbbbb;
+      --page-width: 210mm;
+      --page-min-height: 297mm;
+      --page-pad-y: 14mm;
+      --page-pad-x: 14mm;
+    }
+
+    html { font-size: 16px; }
+
+    body {
+      font-family: var(--ff);
+      background: #e8e8e8;
+      color: var(--c-text);
+      font-size: 10pt;
+      line-height: 1.45;
+      padding: 48px 16px;
+      margin: 0;
+    }
+
+    /* ── TOOLBAR (screen only) ── */
+    .cv-toolbar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      height: 44px;
+      background: #ffffff;
+      border-bottom: 1px solid var(--c-rule);
+    }
+
+    .cv-toolbar__label {
+      font-size: 9pt;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--c-muted);
+    }
+
+    .cv-toolbar__btn {
+      font-family: var(--ff);
+      font-size: 9pt;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--c-text);
+      background: none;
+      border: 1px solid var(--c-text);
+      border-radius: 3px;
+      padding: 5px 12px;
+      cursor: pointer;
+    }
+
+    .cv-toolbar__btn:hover { background: var(--c-text); color: #ffffff; }
+
+    /* ── PAGE ── */
+    .cv-page {
+      background: #ffffff;
+      width: min(var(--page-width), calc(100vw - 32px));
+      min-height: var(--page-min-height);
+      margin: 0 auto;
+      padding: var(--page-pad-y) var(--page-pad-x);
+      box-shadow: 0 2px 20px rgba(0,0,0,0.12);
+    }
+
+    /* ── HEADER ── */
+    .cv-header {
+      margin-bottom: 6px;
+    }
+
+    .cv-header__name {
+      font-size: 22pt;
+      font-weight: 700;
+      letter-spacing: -0.015em;
+      line-height: 1.05;
+    }
+
+    .cv-header__role {
+      font-size: 9.5pt;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      font-weight: 600;
+      color: var(--c-text);
+      margin-top: 6px;
+    }
+
+    .cv-header__contact {
+      font-size: 9pt;
+      color: var(--c-muted);
+      margin-top: 6px;
+      letter-spacing: 0.01em;
+    }
+
+    .cv-header__contact a { color: inherit; text-decoration: underline; }
+
+    /* ── SECTIONS ── */
+    .cv-section {
+      margin-top: 22px;
+    }
+
+    .cv-section-title {
+      font-size: 9pt;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      font-weight: 700;
+      border-bottom: 1px solid var(--c-rule);
+      padding-bottom: 4px;
+      margin-bottom: 10px;
+      break-after: avoid;
+      page-break-after: avoid;
+    }
+
+    .cv-summary p {
+      font-size: 10pt;
+      line-height: 1.5;
+    }
+
+    /* ── EXPERIENCE ── */
+    .cv-role { margin-bottom: 14px; break-inside: avoid; page-break-inside: avoid; }
+    .cv-role:last-child { margin-bottom: 0; }
+
+    .cv-role__header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 12px;
+      margin-bottom: 4px;
+    }
+
+    .cv-role__title {
+      font-size: 10.5pt;
+      font-weight: 700;
+    }
+
+    .cv-role__dates {
+      font-size: 9.5pt;
+      color: var(--c-muted);
+      font-weight: 400;
+      white-space: nowrap;
+    }
+
+    .cv-role__bullets {
+      list-style: disc;
+      padding-left: 18px;
+    }
+
+    .cv-role__bullets li {
+      font-size: 10pt;
+      color: var(--c-text);
+      margin-bottom: 3px;
+      line-height: 1.45;
+    }
+
+    .cv-role__bullets strong { font-weight: 700; }
+
+    /* ── SKILLS ── */
+    .cv-skills {
+      display: grid;
+      grid-template-columns: 120px 1fr;
+      column-gap: 14px;
+      row-gap: 4px;
+      font-size: 10pt;
+      break-inside: avoid;
+      page-break-inside: avoid;
+    }
+
+    .cv-skills__label { font-weight: 700; }
+    .cv-skills__value { color: var(--c-text); }
+
+    /* ── TITLE LIST ── */
+    .cv-titles { list-style: disc; padding-left: 18px; break-inside: avoid; page-break-inside: avoid; }
+    .cv-titles li {
+      font-size: 10pt;
+      margin-bottom: 3px;
+      line-height: 1.45;
+    }
+
+    /* ── EDUCATION ── */
+    .cv-edu__degree { font-size: 10.5pt; font-weight: 700; }
+    .cv-edu__detail { font-size: 10pt; color: var(--c-text); margin-top: 2px; }
+
+    /* ── PRINT ── */
+    @media print {
+      .cv-toolbar { display: none; }
+      html, body { margin: 0; padding: 0; background: none; }
+      .cv-page {
+        width: var(--page-width);
+        min-height: var(--page-min-height);
+        margin: 0;
+        padding: var(--page-pad-y) var(--page-pad-x);
+        box-shadow: none;
+      }
+      @page { size: A4; margin: 0; }
+      * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    }
+
+    @media (max-width: 640px) {
+      body { padding: 8px; }
+      .cv-page { width: 100%; min-height: 0; padding: 20px; }
+      .cv-skills { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="cv-toolbar">
+    <span class="cv-toolbar__label">Ben Visser &mdash; CV &mdash; Game Developer</span>
+    <button class="cv-toolbar__btn" onclick="window.print()">Print / Save as PDF</button>
+  </nav>
+
+  <div class="cv-page">
+
+    <header class="cv-header">
+      <h1 class="cv-header__name">Ben Visser</h1>
+      <p class="cv-header__role">Senior Gameplay Engineer</p>
+      <p class="cv-header__contact">Auckland, New Zealand &nbsp;&middot;&nbsp; 022 681 0558 &nbsp;&middot;&nbsp; foldthirteen@gmail.com &nbsp;&middot;&nbsp; <a href="https://foldthirteen.github.io/portfolio/">foldthirteen.github.io/portfolio</a></p>
+    </header>
+
+    <section class="cv-section cv-summary">
+      <h2 class="cv-section-title">Summary</h2>
+      <p>Senior gameplay engineer with <strong>10+ years</strong> shipping across mobile, <strong>Apple Arcade</strong>, cross-platform MMORPG, and VR &mdash; now building AI-driven NPCs for live VR training at SkillsVR via local LLM inference, Unity tool-calling, and structured output.</p>
+    </section>
+
+    <section class="cv-section">
+      <h2 class="cv-section-title">Experience</h2>
+
+      <article class="cv-role">
+        <div class="cv-role__header">
+          <span class="cv-role__title">Gameplay &amp; AI Engineer &mdash; <strong>SkillsVR</strong></span>
+          <span class="cv-role__dates">2025 &ndash; 2026</span>
+        </div>
+        <ul class="cv-role__bullets">
+          <li>Shipped AI-driven NPCs across <strong>two</strong> government-funded VR training applications (<strong>warehousing</strong> and <strong>hospitality</strong>) &mdash; local LLM inference and Unity tool-calling, landing in the shared <strong>Content Creation Kit</strong> that underpins every SkillsVR product.</li>
+          <li>Built <strong>GenerateVR</strong> &mdash; end-to-end pipeline wiring a Vue authoring UI, a headless generation server, Unity scene assembly, and optional RAG over customer materials into a single structured-output LLM workflow.</li>
+          <li>Built Vue-based asset-browser widget with live FBX preview, cutting Unity-editor round-trips out of the content-authoring loop for internal designers and CCK creators.</li>
+        </ul>
+      </article>
+
+      <article class="cv-role">
+        <div class="cv-role__header">
+          <span class="cv-role__title">Lead Developer &mdash; <strong>VRTogether</strong></span>
+          <span class="cv-role__dates">2023 &ndash; 2025</span>
+        </div>
+        <ul class="cv-role__bullets">
+          <li>Led end-to-end delivery of VR training and interactive products, including a child-welfare simulation for the <strong>University of Kentucky</strong> College of Social Work.</li>
+          <li>Shipped reusable branching-narrative editor tools so designers could author new storylines without engineering involvement.</li>
+          <li>Prototyped real-time voice processing for <strong>VR Singing Club</strong>, a social-karaoke <strong>Meta Quest</strong> experience.</li>
+        </ul>
+      </article>
+
+      <article class="cv-role">
+        <div class="cv-role__header">
+          <span class="cv-role__title">Gameplay Engineer &mdash; <strong>Hipster Whale</strong></span>
+          <span class="cv-role__dates">2022 &ndash; 2023</span>
+        </div>
+        <ul class="cv-role__bullets">
+          <li>Shipped live-ops events and content for <strong>Crossy Road Castle</strong> &mdash; <strong>Apple Arcade</strong> exclusive in a franchise with <strong>250M+</strong> installs.</li>
+          <li>Built gameplay systems and a designer-driven editor test harness for an unreleased <strong>LEGO</strong> mobile title &mdash; validated features without full builds.</li>
+        </ul>
+      </article>
+
+      <article class="cv-role">
+        <div class="cv-role__header">
+          <span class="cv-role__title">Prototyping &amp; Technical Design &mdash; <strong>SkillsVR</strong></span>
+          <span class="cv-role__dates">2020 &ndash; 2022</span>
+        </div>
+        <ul class="cv-role__bullets">
+          <li>Prototyped VR mechanics under time pressure to de-risk commercial and government training contracts.</li>
+          <li>Built shared Unity packages and UI Styles reused across VR training titles for <strong>Trade Me</strong>, <strong>Mainfreight</strong>, and <strong>MSD</strong>.</li>
+        </ul>
+      </article>
+
+      <article class="cv-role">
+        <div class="cv-role__header">
+          <span class="cv-role__title">Game Team Manager &mdash; <strong>Joy Business Academy</strong></span>
+          <span class="cv-role__dates">2017 &ndash; 2020</span>
+        </div>
+        <ul class="cv-role__bullets">
+          <li>Grew games team from <strong>0 to 12+</strong> as Joy Business Academy pivoted from e-learning into games &mdash; hired, onboarded, and set production standards.</li>
+          <li>Delivered the <strong>Tycoon Series</strong> &mdash; three RTS titles (<strong>Restaurant</strong>, <strong>Tech</strong>, and <strong>Construction Tycoon</strong>) teaching financial-literacy and small-business skills in NZ classrooms.</li>
+          <li>Reached <strong>61+ NZ schools</strong> via the National Schools Competition; backed by <strong>$150K</strong> Ministry of Social Development funding; Construction Tycoon launched by NZ ministers with partners <strong>Microsoft</strong>, <strong>Xero</strong>, and <strong>Fletcher Construction</strong>.</li>
+        </ul>
+      </article>
+
+      <article class="cv-role">
+        <div class="cv-role__header">
+          <span class="cv-role__title">Gameplay Engineer &mdash; <strong>Scarlet City Studios</strong></span>
+          <span class="cv-role__dates">2014 &ndash; 2017</span>
+        </div>
+        <ul class="cv-role__bullets">
+          <li>Built core gameplay systems &mdash; combat, quests, economy &mdash; for <strong>The Aetherlight</strong>, a cross-platform MMORPG shipping on PC, iOS, and Android.</li>
+          <li>Shipped companion Unity app with mini-games and interactive comic; handled live ops; adopted by the <strong>Museum of the Bible</strong> as a children's digital guide.</li>
+          <li>Co-authored a CDN-backed content pipeline enabling hot-pull asset updates and smaller client patches.</li>
+        </ul>
+      </article>
+
+    </section>
+
+    <section class="cv-section">
+      <h2 class="cv-section-title">Skills</h2>
+      <div class="cv-skills">
+        <div class="cv-skills__label">Engines</div>
+        <div class="cv-skills__value">Unity (C#), node-based dialogue systems, Photon / PUN multiplayer</div>
+
+        <div class="cv-skills__label">Languages</div>
+        <div class="cv-skills__value">C#, TypeScript, Python, C++</div>
+
+        <div class="cv-skills__label">Platforms</div>
+        <div class="cv-skills__value">iOS / Android, Apple Arcade, PC, VR (Quest, PICO, Index)</div>
+
+        <div class="cv-skills__label">Tooling &amp; AI</div>
+        <div class="cv-skills__value">Local LLM inference (Ollama), tool-calling, RAG, Vue / Next.js, MongoDB / Realm, n8n</div>
+      </div>
+    </section>
+
+    <section class="cv-section">
+      <h2 class="cv-section-title">Selected Titles</h2>
+      <ul class="cv-titles">
+        <li><strong>Crossy Road Castle</strong> &mdash; Hipster Whale, <strong>Apple Arcade</strong> (2024)</li>
+        <li><strong>VR Singing Club</strong> &mdash; SkillsVR, <strong>Meta Quest</strong> social karaoke (2025)</li>
+        <li><strong>The Aetherlight</strong> &mdash; Scarlet City, cross-platform MMORPG (2016)</li>
+        <li><strong>Child Welfare VR</strong> &mdash; VRTogether, <strong>University of Kentucky</strong> (2023)</li>
+        <li><strong>Warehousing VR</strong> / <strong>Hospitality VR</strong> &mdash; SkillsVR government training (2025)</li>
+        <li><strong>Museum of the Bible</strong> &mdash; Scarlet City, <strong>Smithsonian</strong> deploy (2017)</li>
+      </ul>
+    </section>
+
+    <section class="cv-section">
+      <h2 class="cv-section-title">Education</h2>
+      <p class="cv-edu__degree">Bachelor of Computing and Mathematical Science</p>
+      <p class="cv-edu__detail">University of Waikato, 2014 &nbsp;&middot;&nbsp; <strong>First Class Honours</strong> &nbsp;&middot;&nbsp; Chair of Class Representatives</p>
+    </section>
+
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ben Visser — CV — AI Engineer</title>
+
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-DHZDKWL3HM"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-DHZDKWL3HM');
+  </script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ff: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+      --c-text:   #111111;
+      --c-muted:  #666666;
+      --c-rule:   #bbbbbb;
+    }
+
+    html { font-size: 16px; }
+
+    body {
+      font-family: var(--ff);
+      background: #e8e8e8;
+      color: var(--c-text);
+      font-size: 10pt;
+      line-height: 1.45;
+      padding: 48px 16px;
+      margin: 0;
+    }
+
+    /* ── TOOLBAR (screen only) ── */
+    .cv-toolbar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      height: 44px;
+      background: #ffffff;
+      border-bottom: 1px solid var(--c-rule);
+    }
+
+    .cv-toolbar__label {
+      font-size: 9pt;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--c-muted);
+    }
+
+    .cv-toolbar__btn {
+      font-family: var(--ff);
+      font-size: 9pt;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--c-text);
+      background: none;
+      border: 1px solid var(--c-text);
+      border-radius: 3px;
+      padding: 5px 12px;
+      cursor: pointer;
+    }
+
+    .cv-toolbar__btn:hover { background: var(--c-text); color: #ffffff; }
+
+    /* ── PAGE ── */
+    .cv-page {
+      background: #ffffff;
+      max-width: 794px;
+      margin: 0 auto;
+      padding: 40px 44px;
+      box-shadow: 0 2px 20px rgba(0,0,0,0.12);
+    }
+
+    /* ── HEADER ── */
+    .cv-header { margin-bottom: 6px; }
+
+    .cv-header__name {
+      font-size: 22pt;
+      font-weight: 700;
+      letter-spacing: -0.015em;
+      line-height: 1.05;
+    }
+
+    .cv-header__role {
+      font-size: 9.5pt;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      font-weight: 600;
+      color: var(--c-text);
+      margin-top: 6px;
+    }
+
+    .cv-header__contact {
+      font-size: 9pt;
+      color: var(--c-muted);
+      margin-top: 6px;
+      letter-spacing: 0.01em;
+    }
+
+    .cv-header__contact a { color: inherit; text-decoration: underline; }
+
+    /* ── SECTIONS ── */
+    .cv-section { margin-top: 20px; }
+
+    .cv-section-title {
+      font-size: 9pt;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      font-weight: 700;
+      border-bottom: 1px solid var(--c-rule);
+      padding-bottom: 4px;
+      margin-bottom: 10px;
+      break-after: avoid;
+      page-break-after: avoid;
+    }
+
+    .cv-summary p {
+      font-size: 10pt;
+      line-height: 1.5;
+    }
+
+    /* ── EXPERIENCE ── */
+    .cv-role { margin-bottom: 12px; break-inside: avoid; page-break-inside: avoid; }
+    .cv-role:last-child { margin-bottom: 0; }
+
+    .cv-role__header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 12px;
+      margin-bottom: 4px;
+    }
+
+    .cv-role__title { font-size: 10.5pt; font-weight: 700; }
+
+    .cv-role__dates {
+      font-size: 9.5pt;
+      color: var(--c-muted);
+      font-weight: 400;
+      white-space: nowrap;
+    }
+
+    .cv-role__bullets { list-style: disc; padding-left: 18px; }
+
+    .cv-role__bullets li {
+      font-size: 10pt;
+      color: var(--c-text);
+      margin-bottom: 3px;
+      line-height: 1.45;
+    }
+
+    .cv-role__bullets strong { font-weight: 700; }
+
+    /* ── SKILLS ── */
+    .cv-skills {
+      display: grid;
+      grid-template-columns: 130px 1fr;
+      column-gap: 14px;
+      row-gap: 4px;
+      font-size: 10pt;
+      break-inside: avoid;
+      page-break-inside: avoid;
+    }
+
+    .cv-skills__label { font-weight: 700; }
+    .cv-skills__value { color: var(--c-text); }
+    .cv-skills__value strong { font-weight: 700; }
+
+    /* ── AI PROJECTS ── */
+    .cv-project { margin-bottom: 10px; break-inside: avoid; page-break-inside: avoid; }
+    .cv-project:last-child { margin-bottom: 0; }
+
+    .cv-project__header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 12px;
+      margin-bottom: 2px;
+    }
+
+    .cv-project__title { font-size: 10.5pt; font-weight: 700; }
+
+    .cv-project__dates {
+      font-size: 9.5pt;
+      color: var(--c-muted);
+      font-weight: 400;
+      white-space: nowrap;
+    }
+
+    .cv-project__desc {
+      font-size: 10pt;
+      color: var(--c-text);
+      line-height: 1.45;
+    }
+
+    /* ── EDUCATION ── */
+    .cv-edu__degree { font-size: 10.5pt; font-weight: 700; }
+    .cv-edu__detail { font-size: 10pt; color: var(--c-text); margin-top: 2px; }
+
+    /* ── PRINT ── */
+    @media print {
+      .cv-toolbar { display: none; }
+      body { background: none; padding: 0; font-size: 9.75pt; }
+      .cv-page { box-shadow: none; max-width: none; padding: 0; margin: 0; }
+      @page { size: A4; margin: 14mm; }
+      * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    }
+
+    @media (max-width: 640px) {
+      body { padding: 8px; }
+      .cv-page { padding: 20px; }
+      .cv-skills { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="cv-toolbar">
+    <span class="cv-toolbar__label">Ben Visser &mdash; CV &mdash; AI Engineer</span>
+    <button class="cv-toolbar__btn" onclick="window.print()">Print / Save as PDF</button>
+  </nav>
+
+  <div class="cv-page">
+
+    <header class="cv-header">
+      <h1 class="cv-header__name">Ben Visser</h1>
+      <p class="cv-header__role">Senior Software Engineer &middot; AI Systems</p>
+      <p class="cv-header__contact">Auckland, New Zealand &nbsp;&middot;&nbsp; 022 681 0558 &nbsp;&middot;&nbsp; foldthirteen@gmail.com &nbsp;&middot;&nbsp; <a href="https://foldthirteen.github.io/portfolio/?v=ai">foldthirteen.github.io/portfolio</a></p>
+    </header>
+
+    <section class="cv-section cv-summary">
+      <h2 class="cv-section-title">Summary</h2>
+      <p>Senior software engineer with <strong>10+ years</strong> shipping production software across games, VR training, cross-platform field tooling, and AI systems. Builds practical AI end-to-end &mdash; structured-output pipelines, RAG over private corpora, tool-calling agents, local and hosted inference, browser automation, eval harnesses. Currently shipping AI-driven NPCs into government-funded VR training at <strong>SkillsVR</strong>. Strong in <strong>C#</strong>, <strong>TypeScript</strong>, and <strong>Python</strong>.</p>
+    </section>
+
+    <section class="cv-section">
+      <h2 class="cv-section-title">Experience</h2>
+
+      <article class="cv-role">
+        <div class="cv-role__header">
+          <span class="cv-role__title">Gameplay &amp; AI Engineer &mdash; <strong>SkillsVR</strong></span>
+          <span class="cv-role__dates">2025 &ndash; 2026</span>
+        </div>
+        <ul class="cv-role__bullets">
+          <li>Shipped AI-driven NPCs into <strong>two</strong> government-funded VR training applications (<strong>warehousing</strong> and <strong>hospitality</strong>) &mdash; local LLM inference, Unity tool-calling, per-field RAG, and <strong>ElevenLabs</strong> TTS, landing in the shared <strong>Content Creation Kit</strong> reused across every SkillsVR product.</li>
+          <li>Built <strong>GenerateVR</strong> &mdash; end-to-end structured-output LLM pipeline connecting a Vue authoring UI, a headless generation server, Unity scene assembly, and optional RAG over customer source materials.</li>
+          <li>Shipped Vue authoring tool with live FBX 3D preview, eliminating Unity-editor round-trips from the content-creation loop.</li>
+        </ul>
+      </article>
+
+      <article class="cv-role">
+        <div class="cv-role__header">
+          <span class="cv-role__title">Lead Application Engineer &mdash; <strong>E&amp;I Services</strong></span>
+          <span class="cv-role__dates">2022 &ndash; 2025</span>
+        </div>
+        <ul class="cv-role__bullets">
+          <li>Led development of <strong>COMSIM</strong> &mdash; a multi-tenant calibration and documentation platform deployed across <strong>12</strong> NZ enterprise clients (<strong>Contact Energy</strong>, <strong>Mercury</strong>, <strong>OJI Fibre Solutions</strong>, <strong>Ecolab</strong>, <strong>Dairy Goat Co-operative</strong>, and others) spanning energy, food, and manufacturing.</li>
+          <li>Engineered offline-first <strong>MongoDB / Realm</strong> sync layer keeping records reliable across desktop and mobile in low-connectivity environments.</li>
+          <li>Shipped OTA update pipeline with staging and rollback, plus <strong>B-PAC</strong> printer integration for auto-generated QR tags &mdash; eliminating manual installs and field workarounds.</li>
+        </ul>
+      </article>
+
+      <article class="cv-role">
+        <div class="cv-role__header">
+          <span class="cv-role__title">Lead Developer &mdash; <strong>VRTogether</strong></span>
+          <span class="cv-role__dates">2023 &ndash; 2025</span>
+        </div>
+        <ul class="cv-role__bullets">
+          <li>Led VR training and interactive product delivery end-to-end, including a child-welfare simulation for the <strong>University of Kentucky</strong> College of Social Work.</li>
+          <li>Prototyped real-time voice processing for <strong>VR Singing Club</strong>, a social-karaoke <strong>Meta Quest</strong> experience.</li>
+        </ul>
+      </article>
+
+      <article class="cv-role">
+        <div class="cv-role__header">
+          <span class="cv-role__title">Gameplay Engineer &mdash; <strong>Hipster Whale</strong></span>
+          <span class="cv-role__dates">2022 &ndash; 2023</span>
+        </div>
+        <ul class="cv-role__bullets">
+          <li>Shipped live-ops events and content for <strong>Crossy Road Castle</strong> &mdash; <strong>Apple Arcade</strong> exclusive in a franchise with <strong>250M+</strong> installs.</li>
+          <li>Built designer-driven editor test harness for an unreleased <strong>LEGO</strong> mobile title, validating features without full builds.</li>
+        </ul>
+      </article>
+
+      <article class="cv-role">
+        <div class="cv-role__header">
+          <span class="cv-role__title">Gameplay Engineer &mdash; <strong>Scarlet City Studios</strong></span>
+          <span class="cv-role__dates">2014 &ndash; 2017</span>
+        </div>
+        <ul class="cv-role__bullets">
+          <li>Built core gameplay systems &mdash; combat, quests, economy &mdash; for <strong>The Aetherlight</strong>, a cross-platform MMORPG shipping on PC, iOS, and Android.</li>
+          <li>Co-authored CDN-backed content pipeline enabling hot-pull asset updates and smaller client patches.</li>
+        </ul>
+      </article>
+
+    </section>
+
+    <section class="cv-section">
+      <h2 class="cv-section-title">Skills &amp; Stack</h2>
+      <div class="cv-skills">
+        <div class="cv-skills__label">Models &amp; inference</div>
+        <div class="cv-skills__value"><strong>Ollama</strong>, llama.cpp, <strong>Claude</strong>, <strong>GPT-4</strong>, Llama 3, Qwen; local GPU inference on consumer hardware</div>
+
+        <div class="cv-skills__label">Agent patterns</div>
+        <div class="cv-skills__value">Tool-calling, structured output, RAG, <strong>Playwright</strong> browser agents, eval harnesses, MCP</div>
+
+        <div class="cv-skills__label">Stack</div>
+        <div class="cv-skills__value">TypeScript / Next.js, C# / Unity, Python, MongoDB / Realm, Vue, n8n</div>
+
+        <div class="cv-skills__label">Adjacent</div>
+        <div class="cv-skills__value">Prompt design, chunking / embeddings / reranking, offline-first sync, cross-platform delivery</div>
+      </div>
+    </section>
+
+    <section class="cv-section">
+      <h2 class="cv-section-title">Selected AI Projects</h2>
+
+      <article class="cv-project">
+        <div class="cv-project__header">
+          <span class="cv-project__title"><strong>Porter</strong> &mdash; Local-first AI job agent</span>
+          <span class="cv-project__dates">2026</span>
+        </div>
+        <p class="cv-project__desc">Next.js + TypeScript with a structured-output <strong>Ollama</strong> pipeline, RAG over a private career corpus, and a <strong>Playwright</strong> sidecar driving real ATS form-fill across <strong>Greenhouse</strong>, <strong>Lever</strong>, and <strong>Ashby</strong>. <strong>~100</strong> applications submitted to-date, each human-reviewed before send.</p>
+      </article>
+
+      <article class="cv-project">
+        <div class="cv-project__header">
+          <span class="cv-project__title"><strong>shape</strong> &mdash; Local-LLM prediction-market research</span>
+          <span class="cv-project__dates">2026</span>
+        </div>
+        <p class="cv-project__desc">End-to-end local stack (Ollama + Gemma 4 + SQLite + FastAPI + Next.js) reading news, estimating <strong>Polymarket</strong> threshold outcomes, and scoring its own calibration against a no-lookahead backtester. Grounded chat surfaces every SQLite tool call in the UI so every answer is traceable.</p>
+      </article>
+
+      <article class="cv-project">
+        <div class="cv-project__header">
+          <span class="cv-project__title"><strong>GenerateVR</strong> &mdash; SkillsVR Content Creation Kit</span>
+          <span class="cv-project__dates">2025</span>
+        </div>
+        <p class="cv-project__desc">Vue authoring tool with live FBX 3D preview submits structured JSON to a headless server that procedurally assembles tailored VR training scenes. LLM authors scenario structure and dialogue via structured-output prompting, with optional RAG over customer-supplied source materials.</p>
+      </article>
+
+      <article class="cv-project">
+        <div class="cv-project__header">
+          <span class="cv-project__title"><strong>AI-Driven NPCs</strong> &mdash; SkillsVR VR training</span>
+          <span class="cv-project__dates">2025 &ndash; 2026</span>
+        </div>
+        <p class="cv-project__desc">Local LLM inference and tool-calling integrated into Unity via a node-based dialogue system, with per-field RAG and conversational filler masking inference latency. Shipped into <strong>2</strong> government-funded VR training products and landed in the shared Content Creation Kit.</p>
+      </article>
+
+      <article class="cv-project">
+        <div class="cv-project__header">
+          <span class="cv-project__title"><strong>Furlong</strong> &mdash; n8n news-digest workflow</span>
+          <span class="cv-project__dates">2024 &ndash; ongoing</span>
+        </div>
+        <p class="cv-project__desc"><strong>12-node</strong> n8n pipeline scraping curated NZ horse-racing sources, hashing and deduping against a Google Sheets index, emailing a daily digest at 6am NZT. Self-hosted, <strong>2+ years</strong> daily delivery with only 2 brief power-outage interruptions, zero cloud spend.</p>
+      </article>
+
+    </section>
+
+    <section class="cv-section">
+      <h2 class="cv-section-title">Education</h2>
+      <p class="cv-edu__degree">Bachelor of Computing and Mathematical Science</p>
+      <p class="cv-edu__detail">University of Waikato, 2014 &nbsp;&middot;&nbsp; <strong>First Class Honours</strong> &nbsp;&middot;&nbsp; Chair of Class Representatives</p>
+    </section>
+
+  </div>
+
+</body>
+</html>
