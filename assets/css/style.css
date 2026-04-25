@@ -1586,46 +1586,101 @@ main {
 }
 .svc-narrative + .svc-narrative { margin-top: -0.2rem; }
 
-/* Signature ornament: vegas-gold hairline with a small squiggle + pip glyph
-   floating above it. Sits between the carousel and the narrative below —
-   reads as punctuation between "what you're looking at" and "here's what
-   this work is really about". */
-.svc-media-strip + .svc-narrative {
+/* Breathing room between the carousel and the narrative that follows it.
+   Replaces the ornament's padding-top; relies on white space alone. */
+.svc-media-strip + .svc-narrative { margin-top: 1.6rem; }
+
+/* Layered background composition behind every service-card modal:
+     1) a soft vegas-gold radial bloom (atmosphere, on .svc-body itself)
+     2) a flow-field of streamlines + connection nodes (::before)
+     3) a faint silhouette of the card's own icon (::after, content-bearing)
+   All three are decorative: pointer-events off, no DOM, no ARIA. The icon
+   URL is injected as --svc-ghost when the modal is populated in JS. */
+.svc-body {
   position: relative;
-  margin-top: 2.1rem;
-  padding-top: 1.9rem;
+  isolation: isolate;
+  /* Contain the bleed of the absolute pseudo-elements so they don't trigger
+     a horizontal scrollbar on the parent .svc-scroll. */
+  overflow: hidden;
+  background-image:
+    radial-gradient(ellipse 80% 60% at 50% 6%,
+      hsla(45, 54%, 58%, 0.12),
+      hsla(45, 54%, 58%, 0) 72%);
 }
-.svc-media-strip + .svc-narrative::before {
+
+/* Layer 1 — flow field. A single shared composition stretched to cover the
+   modal body. Tinted vegas-gold via mask-image; subtle but visible against
+   the eerie-black-2 modal. Drifts slowly (240s) when motion ok. */
+.svc-body::before {
   content: "";
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 1px;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    hsla(45, 50%, 45%, 0.12) 22%,
-    hsla(45, 100%, 60%, 0.55) 50%,
-    hsla(45, 50%, 45%, 0.12) 78%,
-    transparent 100%
-  );
+  inset: -8% -6%;
+  z-index: -2;
+  background-color: hsl(45, 54%, 58%);
+  opacity: 0.11;
+  -webkit-mask-image: url("../images/svc-flow.svg");
+          mask-image: url("../images/svc-flow.svg");
+  -webkit-mask-mode: alpha;
+          mask-mode: alpha;
+  -webkit-mask-repeat: no-repeat;
+          mask-repeat: no-repeat;
+  -webkit-mask-size: cover;
+          mask-size: cover;
+  -webkit-mask-position: center;
+          mask-position: center;
   pointer-events: none;
+  will-change: transform;
 }
-.svc-media-strip + .svc-narrative::after {
+
+/* Layer 2 — section-icon ghost. Tiled silhouette of the card's own icon at
+   very low opacity. Continues to drift on its own slower cadence so the two
+   layers never lock visually. Per-card via --svc-ghost. */
+.svc-body::after {
   content: "";
   position: absolute;
-  top: -9px;
-  left: 50%;
-  width: 44px;
-  height: 18px;
-  transform: translateX(-50%);
-  background-color: var(--eerie-black-2);
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 34 14' fill='none'><path d='M2 7 Q 7 1 12 7 T 22 7' stroke='%23CEB15A' stroke-width='1.2' stroke-linecap='round'/><circle cx='28' cy='7' r='1.9' fill='%23CEB15A'/></svg>");
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: 30px auto;
+  inset: -6% -4%;
+  z-index: -1;
+  background-color: hsl(45, 54%, 58%);
+  opacity: 0.045;
+  -webkit-mask-image: var(--svc-ghost, none);
+          mask-image: var(--svc-ghost, none);
+  -webkit-mask-mode: alpha;
+          mask-mode: alpha;
+  -webkit-mask-repeat: repeat;
+          mask-repeat: repeat;
+  -webkit-mask-size: 230px auto;
+          mask-size: 230px auto;
+  -webkit-mask-position: center top;
+          mask-position: center top;
   pointer-events: none;
+}
+
+@media (max-width: 560px) {
+  /* Tighter bloom and bigger icon tiles on narrow viewports. */
+  .svc-body::before { opacity: 0.10; }
+  .svc-body::after {
+    -webkit-mask-size: 280px auto;
+            mask-size: 280px auto;
+    opacity: 0.038;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .svc-body::before { animation: svc-flow-drift 240s ease-in-out infinite; }
+  .svc-body::after  { animation: svc-ghost-drift  64s linear infinite; }
+}
+
+/* Closed-loop drift on the flow layer (no-repeat, so we cannot tile-cycle
+   like the ghost). Translate + tiny scale + sub-degree rotate; start and
+   end identical so the seam is invisible. */
+@keyframes svc-flow-drift {
+  0%   { transform: translate3d(0, 0, 0)         scale(1)     rotate(0deg); }
+  50%  { transform: translate3d(-2%, -1.5%, 0)   scale(1.015) rotate(0.4deg); }
+  100% { transform: translate3d(0, 0, 0)         scale(1)     rotate(0deg); }
+}
+@keyframes svc-ghost-drift {
+  from { mask-position:         0 0; -webkit-mask-position:         0 0; }
+  to   { mask-position: 230px 230px; -webkit-mask-position: 230px 230px; }
 }
 
 /* Media carousel — JS converts .svc-media-strip to a single-slide carousel */
@@ -2458,6 +2513,14 @@ main {
 
 #heroSwiper-prev:hover,
 #heroSwiper-next:hover { opacity: 1; color: var(--orange-yellow-crayola); }
+
+/* Mobile: drop the side arrows — swipe + pagination dots cover navigation,
+   and the slide reclaims ~76px of width that the arrows were eating. */
+@media (max-width: 580px) {
+  .hero-carousel-wrap { gap: 0; }
+  #heroSwiper-prev,
+  #heroSwiper-next { display: none; }
+}
 
 /* hero swiper */
 #heroSwiper {

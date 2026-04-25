@@ -1270,6 +1270,7 @@ initCardShine();
 
     const icon = item.querySelector('.service-icon-box img');
     if (icon) {
+      if (icon.src) body.style.setProperty('--svc-ghost', `url("${icon.src}")`);
       const iconClone = icon.cloneNode(true);
       iconClone.removeAttribute('loading');
       head.appendChild(iconClone);
@@ -1487,6 +1488,7 @@ initCardShine();
     let current = 0;
     function goTo(n) {
       current = (n + slides.length) % slides.length;
+      track.style.transition = '';
       track.style.transform = `translateX(-${current * 100}%)`;
       dotEls.forEach((d, i) => d.classList.toggle('active', i === current));
     }
@@ -1499,6 +1501,60 @@ initCardShine();
     strip.addEventListener('mouseenter', () => clearInterval(carouselTimer));
     strip.addEventListener('mouseleave', startAuto);
     strip.addEventListener('touchstart', () => clearInterval(carouselTimer), { passive: true });
+
+    // Finger-swipe support: lock to horizontal drag once the user moves
+    // farther across than down, then snap to neighbour or rebound.
+    const SWIPE_THRESHOLD = 40;
+    let startX = 0, startY = 0, lastX = 0;
+    let dragging = false, locked = false, baseOffsetPx = 0;
+
+    track.addEventListener('touchstart', (e) => {
+      if (e.touches.length !== 1) return;
+      const t = e.touches[0];
+      startX = lastX = t.clientX;
+      startY = t.clientY;
+      dragging = true;
+      locked = false;
+    }, { passive: true });
+
+    track.addEventListener('touchmove', (e) => {
+      if (!dragging) return;
+      const t = e.touches[0];
+      lastX = t.clientX;
+      const dx = lastX - startX;
+      const dy = t.clientY - startY;
+
+      if (!locked) {
+        if (Math.abs(dx) > 10 && Math.abs(dx) > Math.abs(dy)) {
+          locked = true;
+          baseOffsetPx = -current * track.offsetWidth;
+          track.style.transition = 'none';
+        } else if (Math.abs(dy) > 10) {
+          // user is scrolling vertically — let the modal scroll
+          dragging = false;
+          return;
+        } else {
+          return;
+        }
+      }
+
+      e.preventDefault();
+      track.style.transform = `translateX(${baseOffsetPx + dx}px)`;
+    }, { passive: false });
+
+    function endDrag() {
+      if (!dragging) return;
+      const wasLocked = locked;
+      dragging = false;
+      locked = false;
+      if (!wasLocked) return;
+      const dx = lastX - startX;
+      if (dx > SWIPE_THRESHOLD)        goTo(current - 1);
+      else if (dx < -SWIPE_THRESHOLD)  goTo(current + 1);
+      else                             goTo(current);   // rebound
+    }
+    track.addEventListener('touchend', endDrag);
+    track.addEventListener('touchcancel', endDrag);
   }
 
   // Mobile / touch: breathing in-view highlight so cards feel alive.
