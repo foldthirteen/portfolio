@@ -1,6 +1,10 @@
 "use strict";
 
 const OUTPUT_DIR_NAME = "covers";
+const BATCHES_DIR_NAME = "batches";
+const HTML_DIR_NAME = "html";
+const PDF_DIR_NAME = "pdf";
+const OUTREACH_LEDGER_FILE = "outreach-ledger.json";
 const DB_NAME = "coverLetterGenerator";
 const DB_VERSION = 1;
 const DB_STORE = "handles";
@@ -11,7 +15,10 @@ const STORAGE_KEYS = {
   letterContent: "cover-letter-generator.letter-content",
   letterDate: "cover-letter-generator.letter-date",
   variant: "cover-letter-generator.variant",
-  letterTemplate: "cover-letter-generator.letter-template"
+  letterTemplate: "cover-letter-generator.letter-template",
+  outreachId: "cover-letter-generator.outreach-id",
+  jobDescriptor: "cover-letter-generator.job-descriptor",
+  lastOutreachId: "cover-letter-generator.last-outreach-id"
 };
 
 const VARIANT_OPTIONS = ["auto", "default", "ai"];
@@ -69,10 +76,13 @@ const elements = {
   form: document.querySelector("[data-generator-form]"),
   roleDetails: document.querySelector("[data-role-details]"),
   roleHeading: document.querySelector("[data-role-heading]"),
+  jobDescriptor: document.querySelector("[data-job-descriptor]"),
   letterDate: document.querySelector("[data-letter-date]"),
   letterContent: document.querySelector("[data-letter-content]"),
   variantSelect: document.querySelector("[data-variant-select]"),
   variantHint: document.querySelector("[data-variant-hint]"),
+  outreachId: document.querySelector("[data-outreach-id]"),
+  outreachLink: document.querySelector("[data-outreach-link]"),
   templateSelect: document.querySelector("[data-template-select]"),
   filenamePreview: document.querySelector("[data-filename-preview]"),
   outputPath: document.querySelector("[data-output-path]"),
@@ -80,6 +90,7 @@ const elements = {
   previewTitle: document.querySelector("[data-preview-title]"),
   previewFrame: document.querySelector("[data-preview-frame]"),
   generateButton: document.querySelector('[data-action="generate"]'),
+  newOutreachButton: document.querySelector('[data-action="new-outreach-id"]'),
   viewButton: document.querySelector('[data-action="view"]'),
   downloadButton: document.querySelector('[data-action="download"]'),
   printButtons: document.querySelectorAll('[data-action="print"]')
@@ -87,6 +98,7 @@ const elements = {
 
 const state = {
   baseHandle: null,
+  coversHandle: null,
   outputHandle: null,
   outputPathLabel: "",
   generatedHtml: "",
@@ -95,7 +107,8 @@ const state = {
   currentBlobUrl: "",
   previewReady: false,
   previewStale: false,
-  roleHeadingEdited: false
+  roleHeadingEdited: false,
+  jobDescriptorEdited: false
 };
 
 init().catch((error) => {
@@ -129,6 +142,7 @@ function bindEvents() {
   elements.roleDetails.addEventListener("input", () => {
     persistField(STORAGE_KEYS.roleDetails, elements.roleDetails.value);
     syncRoleHeadingFromDetails(false);
+    syncJobDescriptor(false);
     updateVariantHint();
     markPreviewStale();
   });
@@ -136,6 +150,27 @@ function bindEvents() {
   elements.variantSelect.addEventListener("change", () => {
     persistField(STORAGE_KEYS.variant, elements.variantSelect.value);
     updateVariantHint();
+    updateDerivedOutputs();
+    markPreviewStale();
+  });
+
+  elements.outreachId.addEventListener("input", () => {
+    elements.outreachId.value = sanitizeOutreachId(elements.outreachId.value);
+    persistField(STORAGE_KEYS.outreachId, elements.outreachId.value);
+    updateDerivedOutputs();
+    markPreviewStale();
+  });
+
+  elements.jobDescriptor.addEventListener("input", () => {
+    elements.jobDescriptor.value = sanitizeJobDescriptor(elements.jobDescriptor.value);
+    state.jobDescriptorEdited = Boolean(elements.jobDescriptor.value);
+    persistField(STORAGE_KEYS.jobDescriptor, elements.jobDescriptor.value);
+    updateDerivedOutputs();
+    markPreviewStale();
+  });
+
+  elements.newOutreachButton.addEventListener("click", async () => {
+    await allocateAndSetNextOutreachId();
     markPreviewStale();
   });
 
@@ -149,6 +184,7 @@ function bindEvents() {
   elements.roleHeading.addEventListener("input", () => {
     state.roleHeadingEdited = isRoleHeadingCustom();
     persistField(STORAGE_KEYS.roleHeading, elements.roleHeading.value);
+    syncJobDescriptor(false);
     updateDerivedOutputs();
     updateVariantHint();
     markPreviewStale();
@@ -158,6 +194,7 @@ function bindEvents() {
     if (!elements.roleHeading.value.trim()) {
       state.roleHeadingEdited = false;
       syncRoleHeadingFromDetails(true);
+      syncJobDescriptor(false);
       persistField(STORAGE_KEYS.roleHeading, elements.roleHeading.value);
     }
   });
@@ -206,8 +243,10 @@ function hydrateDefaults() {
 function restoreDraft() {
   elements.roleDetails.value = localStorage.getItem(STORAGE_KEYS.roleDetails) || "";
   elements.roleHeading.value = localStorage.getItem(STORAGE_KEYS.roleHeading) || "";
+  elements.jobDescriptor.value = sanitizeJobDescriptor(localStorage.getItem(STORAGE_KEYS.jobDescriptor) || "");
   elements.letterContent.value = localStorage.getItem(STORAGE_KEYS.letterContent) || "";
   elements.letterDate.value = localStorage.getItem(STORAGE_KEYS.letterDate) || elements.letterDate.value || getLocalIsoDate();
+  elements.outreachId.value = sanitizeOutreachId(localStorage.getItem(STORAGE_KEYS.outreachId) || "");
   const savedVariant = localStorage.getItem(STORAGE_KEYS.variant);
   elements.variantSelect.value = VARIANT_OPTIONS.indexOf(savedVariant) >= 0 ? savedVariant : "auto";
   const savedTemplate = localStorage.getItem(STORAGE_KEYS.letterTemplate);
@@ -215,6 +254,7 @@ function restoreDraft() {
     elements.templateSelect.value = savedTemplate;
   }
   state.roleHeadingEdited = isRoleHeadingCustom();
+  state.jobDescriptorEdited = Boolean(elements.jobDescriptor.value);
 }
 
 function persistField(key, value) {
@@ -255,11 +295,17 @@ function updateDerivedOutputs() {
       elements.outputPath.textContent = "Preview only. In Chrome, choose your portfolio folder or covers/ to save automatically.";
     }
   }
+
+  const outreachId = sanitizeOutreachId(elements.outreachId.value);
+  const jobDescriptor = getPreviewJobDescriptor();
+  elements.outreachLink.textContent = outreachId
+    ? buildWebsiteHref(getResolvedVariant(), outreachId, jobDescriptor)
+    : "Generated on first save.";
 }
 
 function renderConnectionState(mode = "default") {
   if (!supportsFileSystemAccess()) {
-    elements.connectionStatus.textContent = "Safari can preview and download here, but Chrome is needed for one-click saves into covers/.";
+    elements.connectionStatus.textContent = "Safari can preview and download here, but Chrome is needed for one-click saves into covers/batches.";
     elements.connectButton.disabled = true;
     elements.connectButton.textContent = "Use Chrome For Auto-Save";
     return;
@@ -276,13 +322,13 @@ function renderConnectionState(mode = "default") {
   }
 
   if (mode === "needs-reauthorization") {
-    elements.connectionStatus.textContent = "A saved folder was found, but Chrome needs permission again before it can write into covers/.";
+    elements.connectionStatus.textContent = "A saved folder was found, but Chrome needs permission again before it can write into covers/batches.";
     elements.connectButton.disabled = false;
     elements.connectButton.textContent = "Reconnect Output Folder";
     return;
   }
 
-  elements.connectionStatus.textContent = "In Chrome, choose your portfolio folder or the covers folder for one-click saves.";
+  elements.connectionStatus.textContent = "In Chrome, choose your portfolio folder or the covers folder for one-click batch saves.";
   elements.connectButton.disabled = false;
   elements.connectButton.textContent = "Choose Output Folder";
 }
@@ -312,6 +358,7 @@ async function restoreSavedFolder() {
   const permissionState = await savedHandle.queryPermission({ mode: "readwrite" });
   if (permissionState !== "granted") {
     state.baseHandle = null;
+    state.coversHandle = null;
     state.outputHandle = null;
     state.outputPathLabel = "";
     renderConnectionState("needs-reauthorization");
@@ -321,6 +368,7 @@ async function restoreSavedFolder() {
   try {
     const resolved = await resolveOutputDirectory(savedHandle, true);
     state.baseHandle = savedHandle;
+    state.coversHandle = resolved.coversHandle;
     state.outputHandle = resolved.outputHandle;
     state.outputPathLabel = resolved.outputPathLabel;
     renderConnectionState("connected");
@@ -347,6 +395,7 @@ async function connectOutputFolder() {
 
     const resolved = await resolveOutputDirectory(handle, true);
     state.baseHandle = handle;
+    state.coversHandle = resolved.coversHandle;
     state.outputHandle = resolved.outputHandle;
     state.outputPathLabel = resolved.outputPathLabel;
     renderConnectionState("connected");
@@ -380,17 +429,20 @@ async function ensurePermission(handle) {
 }
 
 async function resolveOutputDirectory(baseHandle, createIfMissing) {
-  if (baseHandle.name === OUTPUT_DIR_NAME) {
-    return {
-      outputHandle: baseHandle,
-      outputPathLabel: OUTPUT_DIR_NAME
-    };
-  }
+  const coversHandle = baseHandle.name === OUTPUT_DIR_NAME
+    ? baseHandle
+    : await baseHandle.getDirectoryHandle(OUTPUT_DIR_NAME, { create: createIfMissing });
+  const batchDate = elements.letterDate.value || getLocalIsoDate();
+  const batchesHandle = await coversHandle.getDirectoryHandle(BATCHES_DIR_NAME, { create: createIfMissing });
+  const batchHandle = await batchesHandle.getDirectoryHandle(batchDate, { create: createIfMissing });
+  const outputHandle = await batchHandle.getDirectoryHandle(HTML_DIR_NAME, { create: createIfMissing });
+  await batchHandle.getDirectoryHandle(PDF_DIR_NAME, { create: createIfMissing });
 
-  const outputHandle = await baseHandle.getDirectoryHandle(OUTPUT_DIR_NAME, { create: createIfMissing });
+  const prefix = baseHandle.name === OUTPUT_DIR_NAME ? OUTPUT_DIR_NAME : `${baseHandle.name}/${OUTPUT_DIR_NAME}`;
   return {
+    coversHandle,
     outputHandle,
-    outputPathLabel: `${baseHandle.name}/${OUTPUT_DIR_NAME}`
+    outputPathLabel: `${prefix}/${BATCHES_DIR_NAME}/${batchDate}/${HTML_DIR_NAME}`
   };
 }
 
@@ -411,6 +463,7 @@ async function generateLetter() {
     return;
   }
 
+  await ensureOutreachId();
   const documentData = buildLetterDocument();
   state.generatedHtml = documentData.html;
   state.generatedFileName = documentData.fileName;
@@ -426,19 +479,25 @@ async function generateLetter() {
 
   if (state.outputHandle) {
     try {
+      const resolved = await resolveOutputDirectory(state.baseHandle, true);
+      state.coversHandle = resolved.coversHandle;
+      state.outputHandle = resolved.outputHandle;
+      state.outputPathLabel = resolved.outputPathLabel;
       await writeGeneratedFile(documentData.fileName, documentData.html);
+      await writeOutreachLedgerEntry(documentData);
       setStatus(`Saved ${documentData.fileName} to ${state.outputPathLabel}.`, "success");
     } catch (error) {
       console.error(error);
       if (error && error.name === "NotAllowedError") {
         state.baseHandle = null;
+        state.coversHandle = null;
         state.outputHandle = null;
         renderConnectionState("needs-reauthorization");
       }
       setStatus("The preview was generated, but saving to the folder failed. You can still download the HTML.", "error");
     }
   } else {
-    setStatus("Preview ready. In Chrome, choose your portfolio folder or covers/ for one-click saves, or use Download HTML.", "success");
+    setStatus("Preview ready. In Chrome, choose your portfolio folder or covers/ for one-click batch saves, or use Download HTML.", "success");
   }
 
   updateActionState();
@@ -449,6 +508,9 @@ function buildLetterDocument() {
   const fileName = buildFileName(elements.letterDate.value, roleHeading);
   const title = `${PROFILE.name} - Cover Letter - ${roleHeading}`;
   const variant = getResolvedVariant();
+  const outreachId = getCurrentOutreachId();
+  const jobDescriptor = getResolvedJobDescriptor();
+  const websiteHref = buildWebsiteHref(variant, outreachId, jobDescriptor);
   const templateStyle = elements.templateSelect ? elements.templateSelect.value : "standard";
   const builderFn = templateStyle === "simple" ? buildSimpleCoverLetterHtml : buildCoverLetterHtml;
   const html = builderFn({
@@ -456,22 +518,36 @@ function buildLetterDocument() {
     roleHeading,
     dateLabel: formatLetterDate(elements.letterDate.value),
     letterContent: elements.letterContent.value,
-    websiteHref: buildWebsiteHref(variant)
+    websiteHref
   });
 
   return {
     fileName,
     html,
-    title
+    title,
+    roleHeading,
+    variant,
+    outreachId,
+    jobDescriptor,
+    websiteHref,
+    date: elements.letterDate.value || getLocalIsoDate(),
+    sourceHtmlPath: `covers/${BATCHES_DIR_NAME}/${elements.letterDate.value || getLocalIsoDate()}/${HTML_DIR_NAME}/${fileName}`
   };
 }
 
-function buildWebsiteHref(variant) {
-  if (variant === "default") {
-    return PROFILE.websiteUrl;
+function buildWebsiteHref(variant, outreachId = "", jobDescriptor = "") {
+  let href = PROFILE.websiteUrl;
+  if (variant !== "default") {
+    const sep = href.indexOf("?") >= 0 ? "&" : "?";
+    href = `${href}${sep}v=${variant}`;
   }
-  const sep = PROFILE.websiteUrl.indexOf("?") >= 0 ? "&" : "?";
-  return `${PROFILE.websiteUrl}${sep}v=${variant}`;
+  const cleanId = sanitizeOutreachId(outreachId);
+  const cleanDescriptor = sanitizeJobDescriptor(jobDescriptor);
+  const params = new URLSearchParams();
+  if (cleanId) params.set("o", cleanId);
+  if (cleanDescriptor) params.set("jd", cleanDescriptor);
+  const hash = params.toString();
+  return hash ? `${href}#${hash}` : href;
 }
 
 function getResolvedVariant() {
@@ -480,6 +556,129 @@ function getResolvedVariant() {
     return selection;
   }
   return detectVariant(elements.roleDetails.value, elements.roleHeading.value);
+}
+
+async function ensureOutreachId() {
+  const existing = sanitizeOutreachId(elements.outreachId.value);
+  if (existing) {
+    setOutreachId(existing);
+    return existing;
+  }
+
+  return allocateAndSetNextOutreachId();
+}
+
+function getCurrentOutreachId() {
+  return sanitizeOutreachId(elements.outreachId.value);
+}
+
+async function allocateAndSetNextOutreachId() {
+  try {
+    const generated = getNextOutreachId(await getKnownOutreachIds());
+    setOutreachId(generated);
+    setStatus(`Assigned outreach ID ${generated}.`, "info");
+    return generated;
+  } catch (error) {
+    console.error(error);
+    setStatus("Could not allocate a new outreach ID.", "error");
+    return "";
+  }
+}
+
+function setOutreachId(value) {
+  const clean = sanitizeOutreachId(value);
+  elements.outreachId.value = clean;
+  persistField(STORAGE_KEYS.outreachId, clean);
+  if (isThreeCharBase36(clean)) {
+    persistField(STORAGE_KEYS.lastOutreachId, clean);
+  }
+  updateDerivedOutputs();
+}
+
+function syncJobDescriptor(force) {
+  const current = sanitizeJobDescriptor(elements.jobDescriptor.value);
+  if (!force && state.jobDescriptorEdited && current) return;
+
+  const generated = deriveJobDescriptor(getResolvedRoleHeading());
+  elements.jobDescriptor.value = generated;
+  persistField(STORAGE_KEYS.jobDescriptor, generated);
+  state.jobDescriptorEdited = false;
+}
+
+function getResolvedJobDescriptor() {
+  const current = sanitizeJobDescriptor(elements.jobDescriptor.value);
+  if (current) return current;
+
+  const generated = deriveJobDescriptor(getResolvedRoleHeading());
+  if (generated) {
+    elements.jobDescriptor.value = generated;
+    persistField(STORAGE_KEYS.jobDescriptor, generated);
+  }
+  return generated;
+}
+
+function getPreviewJobDescriptor() {
+  return sanitizeJobDescriptor(elements.jobDescriptor.value)
+    || deriveJobDescriptor(elements.roleHeading.value.trim() || deriveRoleHeading(elements.roleDetails.value));
+}
+
+function deriveJobDescriptor(roleHeading) {
+  return sanitizeJobDescriptor(roleHeading)
+    .split("-")
+    .filter(Boolean)
+    .slice(0, 4)
+    .join("-");
+}
+
+async function getKnownOutreachIds() {
+  const ids = [
+    localStorage.getItem(STORAGE_KEYS.lastOutreachId),
+    elements.outreachId.value
+  ];
+
+  const ledger = await readOutreachLedger();
+  ledger.forEach((item) => {
+    if (item && item.outreach_id) ids.push(item.outreach_id);
+  });
+
+  return ids.map(sanitizeOutreachId).filter(isThreeCharBase36);
+}
+
+function getNextOutreachId(ids) {
+  const used = ids
+    .filter(isThreeCharBase36)
+    .map((id) => parseInt(id, 36));
+  const next = (used.length ? Math.max(...used) + 1 : 1);
+
+  if (next >= 36 ** 3) {
+    throw new Error("Outreach ID space exhausted.");
+  }
+
+  return next.toString(36).padStart(3, "0");
+}
+
+function isThreeCharBase36(value) {
+  return /^[0-9a-z]{3}$/.test(String(value || ""));
+}
+
+function sanitizeOutreachId(value) {
+  return String(value || "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "")
+    .slice(0, 3);
+}
+
+function sanitizeJobDescriptor(value) {
+  return String(value || "")
+    .toLowerCase()
+    .normalize("NFKD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/&/g, " and ")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .replace(/-{2,}/g, "-")
+    .slice(0, 60)
+    .replace(/-+$/g, "");
 }
 
 function detectVariant(roleDetails, roleHeading) {
@@ -515,6 +714,55 @@ async function writeGeneratedFile(fileName, html) {
   const fileHandle = await state.outputHandle.getFileHandle(fileName, { create: true });
   const writable = await fileHandle.createWritable();
   await writable.write(html);
+  await writable.close();
+}
+
+async function readOutreachLedger() {
+  if (!state.coversHandle) return [];
+  const fileHandle = await state.coversHandle.getFileHandle(OUTREACH_LEDGER_FILE, { create: true });
+
+  try {
+    const file = await fileHandle.getFile();
+    const text = await file.text();
+    const ledger = text.trim() ? JSON.parse(text) : [];
+    return Array.isArray(ledger) ? ledger : [];
+  } catch (error) {
+    return [];
+  }
+}
+
+async function writeOutreachLedgerEntry(documentData) {
+  if (!state.coversHandle || !documentData.outreachId) return;
+
+  const fileHandle = await state.coversHandle.getFileHandle(OUTREACH_LEDGER_FILE, { create: true });
+  const ledger = await readOutreachLedger();
+  const pdfSlug = documentData.jobDescriptor || slugify(documentData.roleHeading) || "cover-letter";
+  const existingIndex = ledger.findIndex((item) => item && item.outreach_id === documentData.outreachId);
+  const existingEntry = existingIndex >= 0 ? ledger[existingIndex] : {};
+
+  const entry = {
+    outreach_id: documentData.outreachId,
+    date: documentData.date,
+    role_heading: documentData.roleHeading,
+    job_descriptor: documentData.jobDescriptor,
+    variant: documentData.variant,
+    cv_file: existingEntry.cv_file || "",
+    cover_letter_file: `covers/${BATCHES_DIR_NAME}/${documentData.date}/${PDF_DIR_NAME}/${documentData.outreachId}-${pdfSlug}-cover-letter.pdf`,
+    source_html: documentData.sourceHtmlPath,
+    portfolio_link: documentData.websiteHref,
+    status: existingEntry.status || "draft",
+    notes: existingEntry.notes || "",
+    updated_at: new Date().toISOString()
+  };
+
+  if (existingIndex >= 0) {
+    ledger[existingIndex] = { ...ledger[existingIndex], ...entry };
+  } else {
+    ledger.push(entry);
+  }
+
+  const writable = await fileHandle.createWritable();
+  await writable.write(JSON.stringify(ledger, null, 2) + "\n");
   await writable.close();
 }
 

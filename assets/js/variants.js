@@ -12,7 +12,7 @@
  *         next to each other after cloning.
  *       * Other containers (projects, skills, services) use CSS `order`.
  *   - text swaps: data-variant-text-<key>  → element.textContent
- *   - link rewrites: [data-variant-href]   → href="<base>?v=<current>"
+ *   - link rewrites: data-variant-href-<key> → href="<value>"
  *
  * Admin switcher: when ?admin=1 (or sessionStorage.pvAdmin) is set, we inject
  * a floating pill that writes the new variant to storage and reloads. Reloading
@@ -76,11 +76,11 @@
   }
 
   function applyLinkRewrites(variant) {
-    document.querySelectorAll('[data-variant-href]').forEach(function (a) {
-      var base = a.getAttribute('data-variant-href');
-      if (!base) return;
-      var sep = base.indexOf('?') >= 0 ? '&' : '?';
-      a.setAttribute('href', base + sep + 'v=' + variant);
+    if (variant === 'default') return;
+    var attr = 'data-variant-href-' + variant;
+    document.querySelectorAll('[' + attr + ']').forEach(function (a) {
+      var href = a.getAttribute(attr);
+      if (href) a.setAttribute('href', href);
     });
   }
 

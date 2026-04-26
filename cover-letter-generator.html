@@ -17,13 +17,13 @@
       <h1 class="builder-panel__title">Cover Letter Generator</h1>
       <p class="builder-panel__intro">
         Paste the role brief and your drafted letter. In Chrome, this page can save a standalone HTML file into
-        <code>covers/</code>, preview it instantly, and print straight to PDF. In Safari, it can still preview and download.
+        <code>covers/batches/</code>, preview it instantly, and print straight to PDF. In Safari, it can still preview and download.
       </p>
 
       <div class="status-card">
         <div>
           <p class="status-card__label">Output folder</p>
-          <p class="status-card__value" data-connection-status>In Chrome, choose your portfolio folder or the covers folder for one-click saves.</p>
+          <p class="status-card__value" data-connection-status>In Chrome, choose your portfolio folder or the covers folder for one-click batch saves.</p>
         </div>
         <button class="action-button action-button--secondary" type="button" data-action="connect-folder">Choose Output Folder</button>
       </div>
@@ -49,6 +49,12 @@
           </label>
 
           <label class="field">
+            <span class="field__label">JD label</span>
+            <span class="field__hint">Optional Clarity label, for example rtl-ai.</span>
+            <input class="field__control" type="text" name="jobDescriptor" data-job-descriptor placeholder="Auto-filled from role heading">
+          </label>
+
+          <label class="field">
             <span class="field__label">Letter date</span>
             <span class="field__hint">Shown at the top of the letter.</span>
             <input class="field__control" type="date" name="letterDate" data-letter-date>
@@ -62,6 +68,12 @@
               <option value="default">Default</option>
               <option value="ai">Agentic AI</option>
             </select>
+          </label>
+
+          <label class="field">
+            <span class="field__label">Outreach ID</span>
+            <span class="field__hint">Sent to Clarity as a short anonymous reference.</span>
+            <input class="field__control" type="text" name="outreachId" data-outreach-id placeholder="Generated on first save">
           </label>
 
           <label class="field">
@@ -95,17 +107,22 @@
             <p class="output-bar__label">Last save</p>
             <p class="output-bar__value" data-output-path>Preview only. In Chrome, choose your portfolio folder or covers/ to save automatically.</p>
           </div>
+          <div>
+            <p class="output-bar__label">Tracked portfolio link</p>
+            <p class="output-bar__value" data-outreach-link>Generated on first save.</p>
+          </div>
         </div>
 
         <div class="action-row">
           <button class="action-button" type="button" data-action="generate">Generate HTML</button>
+          <button class="action-button action-button--secondary" type="button" data-action="new-outreach-id">New ID</button>
           <button class="action-button action-button--secondary" type="button" data-action="view" disabled>View Letter</button>
           <button class="action-button action-button--secondary" type="button" data-action="print" disabled>Print / Save PDF</button>
           <button class="action-button action-button--ghost" type="button" data-action="download" disabled>Download HTML</button>
         </div>
 
         <p class="status-message" data-status-message>
-          In Chrome, choose your portfolio folder or covers/ once, then each generation can write straight into covers/.
+          In Chrome, choose your portfolio folder or covers/ once, then each generation can write into today's batch folder.
         </p>
       </form>
     </section>
