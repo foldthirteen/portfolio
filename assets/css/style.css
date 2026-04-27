@@ -2263,7 +2263,42 @@ main {
 @media (max-width: 480px) {
   .project-modal {
     --gap: 1rem;
-    padding: 1rem;
+    /* extra top padding keeps the close button clear of the hero image */
+    padding: 2.75rem 1rem 1rem;
+  }
+
+  /* Stack meta cells vertically so the row of pills can't force horizontal
+     scroll on tight screens. Each cell becomes a Label … Value pair. */
+  .meta-panel {
+    flex-direction: column;
+    align-self: stretch;
+    width: 100%;
+  }
+  .meta-panel .mp-row {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 8px 12px;
+    border-right: none;
+    border-bottom: 1px solid hsla(45, 85%, 45%, 0.12);
+  }
+  .meta-panel .mp-row:last-child {
+    border-bottom: none;
+  }
+
+  /* Bump touch target + add subtle backdrop so the X reads clearly above
+     the hero image (matches the service-modal pattern). */
+  .project-modal > .modal-close-btn {
+    top: 8px;
+    right: 8px;
+    width: 40px;
+    height: 40px;
+    background: hsla(0, 0%, 0%, 0.55);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    border-radius: 10px;
+    z-index: 3;
   }
 }
 
@@ -2422,10 +2457,17 @@ main {
 .proj-scroll{
   flex:1 1 auto;                /* fill the remaining height        */
   overflow-y:auto;              /* vertical scrollbar if needed     */
+  overflow-x:hidden;            /* never scroll sideways            */
   padding-right:2rem;          /* keeps text off the scroll-bar    */
   overscroll-behavior:contain;  /* stops wheel-scroll from bubbling */
   scrollbar-width: thin;
   scrollbar-color: hsla(45, 100%, 72%, 0.25) transparent;
+}
+
+@media (max-width: 480px) {
+  /* On mobile the scrollbar is thin/auto-hide; matching left/right padding
+     keeps the hero image visually centred in the modal. */
+  .proj-scroll { padding-right: 0.25rem; }
 }
 
 /* ── Modal content scrollbar ──────────────────────────────────────── */
