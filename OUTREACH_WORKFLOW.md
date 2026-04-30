@@ -2,6 +2,8 @@
 
 This repo supports batched CV and cover-letter outreach with short anonymous tracking IDs.
 
+Before generating application documents, read `APPLICATION_WRITING_GUIDE.md`. Tracking correctness is not enough; batches should preserve the canonical CV's proof and make cover letters feel human, specific, and grounded in the employer's real problem.
+
 ## Tracking ID
 
 Each outreach pack gets one ID:
@@ -87,6 +89,27 @@ covers/
 
 `covers/` is ignored by git. The local ledger and generated PDFs do not need commits.
 
+## Writing Standard
+
+Use `APPLICATION_WRITING_GUIDE.md` as the local standard for CV and cover-letter quality.
+
+Default posture:
+
+- Preserve the canonical CV unless there is a clear reason to tailor it.
+- Use only the approved one-column CV sources for generated application CVs:
+  - `cv-ai.html` for software, AI, systems, data, automation, engineering leadership, and general technical roles.
+  - `cv-gamedev.html` only for explicitly game-development, gameplay, Unity, or senior game programmer roles.
+- Do not use `cv.html`, `cv-upwork.html`, `variants/data-migration/cv.html`, multi-column CV layouts, or reference PDFs that render with a blank first page as batch CV sources.
+- Prefer selecting and reordering existing strong bullets over rewriting.
+- Keep metrics, named projects, clients, shipped outcomes, firsts, and turnaround stories.
+- Treat cover letters as human, role-specific responses grounded in the employer's real problem, not generic fit summaries.
+- For each application, write a short pain and human-angle brief before drafting.
+- Draft the cover letter in plain text first when tone matters; generate HTML and PDFs only after the prose passes the voice review in `APPLICATION_WRITING_GUIDE.md`.
+- After the pack is complete, run a fresh review pass as if someone else wrote it.
+- Review each application before moving on to the next full set of documents.
+
+If a batch process needs a script, add or update a reusable tracked script. Do not create a one-off temporary batch generator and delete it unless the user explicitly asks for disposable automation.
+
 ## Ledger Schema
 
 `covers/outreach-ledger.json` should be a JSON array. Each outreach pack should have one entry:
@@ -139,7 +162,7 @@ When creating or updating an outreach pack:
 - If the pack is AI-focused, use `?v=ai#o=<id>`.
 - If the pack is default/general, use `#o=<id>`.
 - Use `jd=<short-label>` when you want the opportunity to be readable inside Clarity.
-- For a per-application CV PDF, open the CV page with the same hash before printing, for example `cv-ai.html#o=k7p&jd=rtl-ai`. The CV page will propagate those values into its printed portfolio link.
+- For a per-application CV PDF, start from the approved one-column source and update its visible portfolio link to the tracked URL before printing, for example `cv-ai.html#o=k7p&jd=rtl-ai`.
 - Update the local ledger with the role/document context.
 - Name batch PDFs with the ID first, for example `001-rtl-ai-engineer-cv.pdf` and `001-rtl-ai-engineer-cover-letter.pdf`.
 - Do not commit per-recipient private mapping data.
@@ -153,12 +176,55 @@ When a bot creates documents directly instead of using the browser generator:
 1. Create or reuse `covers/batches/YYYY-MM-DD/html/` and `covers/batches/YYYY-MM-DD/pdf/`.
 2. Allocate the next outreach ID from the ledger.
 3. Choose `variant` (`ai` or `default`) and `job_descriptor`.
-4. Build the tracked portfolio URL.
-5. Update every visible portfolio link in the CV and cover letter to the tracked URL.
-6. Render/export PDFs into the batch `pdf/` folder.
-7. Save any HTML/source outputs into the batch `html/` folder.
-8. Add or update the matching ledger entry.
-9. Verify the produced PDF text or source HTML contains `#o=<id>` and, when applicable, `jd=<job_descriptor>`.
+4. Create the pain and human-angle brief from `APPLICATION_WRITING_GUIDE.md`.
+5. Build the tracked portfolio URL.
+6. Start from the approved one-column CV source (`cv-ai.html`, or `cv-gamedev.html` only for explicit game roles) and preserve its strongest proof.
+7. Draft the cover letter in plain text first, using the current Rico letter as tone calibration where relevant.
+8. Review the plain-text cover letter against the detailed voice rules before generating the final document.
+9. Generate the cover letter HTML and update every visible portfolio link in the CV and cover letter to the tracked URL.
+10. Render/export PDFs into the batch `pdf/` folder.
+11. Save any HTML/source outputs into the batch `html/` folder.
+12. Add or update the matching ledger entry.
+13. Verify the produced PDF text or source HTML contains `#o=<id>` and, when applicable, `jd=<job_descriptor>`.
+14. Verify the generated CV HTML is not a multi-column source (`grid-template-columns: 62fr 38fr`) and is not titled `Senior Gameplay Engineer` unless the job is explicitly game-development.
+15. Verify the exported CV's first page is not blank.
+16. Run the writing review gate from `APPLICATION_WRITING_GUIDE.md`.
+17. Run the PDF export checks below.
+18. Run the fresh review handoff below before delivery.
+
+## Fresh Review Handoff
+
+After the application pack is complete, step out of builder mode and review the finished result cold.
+
+The reviewer mindset is:
+
+```text
+Assume the draft may be technically correct but tonally wrong.
+Do not defend it.
+Check whether it sounds human, specific, senior, and useful.
+```
+
+Fresh review must check:
+
+- Whether the cover letter has a clear human angle and real reason for interest.
+- Whether the opening sounds grounded rather than generic.
+- Whether the employer's problem is understood without being diagnosed too bluntly.
+- Whether every proof point helps this specific job.
+- Whether anything sounds like AI, marketing copy, or apology.
+- Whether the exported PDFs are clean and ready to send.
+
+If the fresh review fails, return to the plain-text cover letter first. Do not continue by only tweaking HTML, formatting, or PDF output.
+
+## PDF Export Checks
+
+Before treating an application pack as ready:
+
+- Confirm the cover letter PDF has no browser-generated header/footer.
+- Confirm the sign-off is visible in the exported PDF.
+- Confirm the cover letter page count is acceptable; prefer one page unless the user explicitly approves a longer letter.
+- Confirm the CV first page is not blank.
+- Confirm the CV and cover letter PDFs both use the same tracked portfolio URL.
+- Confirm the source HTML still contains the outreach ID and `jd` label.
 
 ## Clarity
 
