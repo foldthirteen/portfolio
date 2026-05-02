@@ -389,6 +389,19 @@ Do not make the reader fight through dense blocks.
 
 A cover letter should feel easy to skim while still having substance.
 
+### Sign-Off Layout
+
+The sign-off should feel intentional, not stranded.
+
+Default to balanced page spacing:
+
+- If the letter body is naturally short or medium length, place `Kind regards, Ben Visser` after a comfortable gap below the closing paragraph. Do not force it to the absolute bottom just to fill the page.
+- If the letter body nearly fills the page, it is fine to let the sign-off sit low or near the bottom so the page feels complete.
+- If the bottom-pinned sign-off leaves a large empty gulf between the final paragraph and `Kind regards`, revise the layout first. Either let the sign-off rise, slightly rebalance paragraph spacing, or tighten the letter.
+- Never let the sign-off look detached from the letter, hidden, crowded, or like a footer accidentally pasted onto the page.
+
+During visual review, judge the whole page: the final paragraph, white space, sign-off, and bottom margin should feel calm and balanced.
+
 ### Closing
 
 The close should be simple.
@@ -521,7 +534,7 @@ Fresh review questions:
 - Does anything sound over-polished, salesy, apologetic, or inflated?
 - Does the letter avoid generic cover-letter phrases and em dashes?
 - Does the CV preserve Ben's strongest proof?
-- Do the exported PDFs look right, with no browser header/footer, visible sign-off, acceptable page count, and matching tracked links?
+- Do the exported PDFs look right, with no browser header/footer, visible and well-balanced sign-off, acceptable page count, and matching tracked links?
 
 If the fresh review finds a weak letter, revise the prose first. Do not patch around a weak draft with formatting.
 
@@ -542,7 +555,7 @@ Before saving a batch as ready, check every application:
 - Are gaps handled honestly without sounding apologetic?
 - Does the letter avoid generic cover-letter phrases and em dashes?
 - Do the CV and cover letter use the same outreach ID and tracked link?
-- Does the exported cover letter have no browser header/footer, a visible sign-off, and an acceptable page count?
+- Does the exported cover letter have no browser header/footer, a visible and well-balanced sign-off, and an acceptable page count?
 
 If the answer is weak, revise before export.
 

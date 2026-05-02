@@ -164,7 +164,8 @@ When creating or updating an outreach pack:
 - Use `jd=<short-label>` when you want the opportunity to be readable inside Clarity.
 - For a per-application CV PDF, start from the approved one-column source and update its visible portfolio link to the tracked URL before printing, for example `cv-ai.html#o=k7p&jd=rtl-ai`.
 - Update the local ledger with the role/document context.
-- Name batch PDFs with the ID first, for example `001-rtl-ai-engineer-cv.pdf` and `001-rtl-ai-engineer-cover-letter.pdf`.
+- Internal draft/source PDFs may use the outreach ID for local mapping, for example `001-rtl-ai-engineer-cv.pdf`.
+- Send-ready PDFs must not expose the outreach ID in the filename. Use clean upload filenames such as `Ben Visser - CV - Game Developer - Blind Squirrel Games.pdf` and `Ben Visser - Cover Letter - Blind Squirrel Games.pdf`.
 - Do not commit per-recipient private mapping data.
 - Keep clean reference CVs in `covers/reference/untagged-cvs/` untouched.
 - Move pre-tracking loose files to `covers/archive/` rather than mixing them into current batches.
@@ -184,13 +185,14 @@ When a bot creates documents directly instead of using the browser generator:
 9. Generate the cover letter HTML and update every visible portfolio link in the CV and cover letter to the tracked URL.
 10. Render/export PDFs into the batch `pdf/` folder.
 11. Save any HTML/source outputs into the batch `html/` folder.
-12. Add or update the matching ledger entry.
-13. Verify the produced PDF text or source HTML contains `#o=<id>` and, when applicable, `jd=<job_descriptor>`.
-14. Verify the generated CV HTML is not a multi-column source (`grid-template-columns: 62fr 38fr`) and is not titled `Senior Gameplay Engineer` unless the job is explicitly game-development.
-15. Verify the exported CV's first page is not blank.
-16. Run the writing review gate from `APPLICATION_WRITING_GUIDE.md`.
-17. Run the PDF export checks below.
-18. Run the fresh review handoff below before delivery.
+12. Create clean send-ready PDF copies without the outreach ID in the filename.
+13. Add or update the matching ledger entry, including both internal file paths and send-ready file paths.
+14. Verify the produced PDF text or source HTML contains `#o=<id>` and, when applicable, `jd=<job_descriptor>`.
+15. Verify the generated CV HTML is not a multi-column source (`grid-template-columns: 62fr 38fr`) and is not titled `Senior Gameplay Engineer` unless the job is explicitly game-development.
+16. Verify the exported CV's first page is not blank.
+17. Run the writing review gate from `APPLICATION_WRITING_GUIDE.md`.
+18. Run the PDF export checks below.
+19. Run the fresh review handoff below before delivery.
 
 ## Fresh Review Handoff
 
@@ -220,11 +222,13 @@ If the fresh review fails, return to the plain-text cover letter first. Do not c
 Before treating an application pack as ready:
 
 - Confirm the cover letter PDF has no browser-generated header/footer.
-- Confirm the sign-off is visible in the exported PDF.
+- Confirm the sign-off is visible and visually balanced in the exported PDF.
+- Use bottom placement for the sign-off only when it makes the whole page feel complete. If it creates a large empty gulf after the final paragraph, let the sign-off sit higher with a natural gap instead.
 - Confirm the cover letter page count is acceptable; prefer one page unless the user explicitly approves a longer letter.
 - Confirm the CV first page is not blank.
 - Confirm the CV and cover letter PDFs both use the same tracked portfolio URL.
 - Confirm the source HTML still contains the outreach ID and `jd` label.
+- Confirm the send-ready upload filenames do not expose the outreach ID.
 
 ## Clarity
 
