@@ -435,35 +435,65 @@
                 </p>
               </div>
               <div class="service-detail">
-                <div class="svc-media-strip">
-                  <figure>
-                    <img src="./assets/images/projects/project-shape-autoresearch.png" alt="shape auto-research" loading="lazy">
-                    <figcaption>
-                      <strong class="svc-cap-title">shape &middot; auto-research</strong>
-                      <span class="svc-cap-text">A local model turns market-relevant news into probability estimates, then a no-lookahead backtester scores calibration against historical outcomes.</span>
-                    </figcaption>
-                  </figure>
-                  <figure>
-                    <img src="./assets/images/projects/project-shape-experiments.png" alt="shape experiments" loading="lazy">
-                    <figcaption>
-                      <strong class="svc-cap-title">shape &middot; experiments</strong>
-                      <span class="svc-cap-text">Experiment controls for sizing, risk caps, and replay settings make model changes easier to compare against the same historical runs.</span>
-                    </figcaption>
-                  </figure>
-                  <figure>
-                    <img src="./assets/images/projects/project-porter-fit.png" alt="Porter tailoring" loading="lazy">
-                    <figcaption>
-                      <strong class="svc-cap-title">Porter &middot; tailoring</strong>
-                      <span class="svc-cap-text">Parses job posts into requirement trees, scores fit against a private career corpus, and keeps citations visible for review.</span>
-                    </figcaption>
-                  </figure>
-                  <figure class="contain">
-                    <img src="./assets/images/projects/project-generatevr-diagram.svg" alt="GenerateVR pipeline" loading="lazy">
-                    <figcaption>
-                      <strong class="svc-cap-title">GenerateVR &middot; pipeline</strong>
-                      <span class="svc-cap-text">Generates scenario structure, dialogue, and interactable wiring, with optional RAG over customer material to keep output grounded.</span>
-                    </figcaption>
-                  </figure>
+                <div class="svc-ai-feature" data-feature-page="0">
+                  <div class="svc-ai-feature-pager" role="tablist" aria-label="Featured projects">
+                    <button type="button" class="svc-ai-pager-dot is-active" data-feature-target="0" role="tab" aria-selected="true" aria-label="Shape"></button>
+                    <button type="button" class="svc-ai-pager-dot" data-feature-target="1" role="tab" aria-selected="false" aria-label="Porter"></button>
+                  </div>
+                  <a class="svc-ai-feature-link svc-ai-feature-page is-active" data-feature-slide="0" href="#" data-scroll="shape" aria-label="Open the shape project">
+                    <div class="svc-ai-feature-copy">
+                      <span class="svc-ai-feature-kicker">Featured proof</span>
+                      <h5 class="svc-ai-feature-title">Shape turns live context into testable decisions.</h5>
+                      <p>
+                        Local Gemma reads market-relevant news, calls read-only SQLite tools, then scores each decision in a no-lookahead replay. Paper-trading only; the proof is traceable state, visible tools, repeatable runs.
+                      </p>
+                      <div class="ai-state-row" aria-hidden="true">
+                        <span>News</span>
+                        <span>Tools</span>
+                        <span>Eval</span>
+                        <span>Decision</span>
+                      </div>
+                      <span class="svc-ai-feature-action">Open shape <ion-icon name="arrow-forward-outline"></ion-icon></span>
+                    </div>
+                    <div class="svc-ai-feature-visual" aria-hidden="true">
+                      <figure class="ai-shot ai-shot-main">
+                        <img src="./assets/images/projects/project-shape-run-detail.png" alt="" loading="lazy" decoding="async">
+                      </figure>
+                      <figure class="ai-shot ai-shot-chat">
+                        <img src="./assets/images/projects/project-shape-chat-active.png" alt="" loading="lazy" decoding="async">
+                      </figure>
+                      <figure class="ai-shot ai-shot-home">
+                        <img src="./assets/images/projects/project-shape-home.png" alt="" loading="lazy" decoding="async">
+                      </figure>
+                    </div>
+                  </a>
+                  <a class="svc-ai-feature-link svc-ai-feature-page svc-ai-feature--porter" data-feature-slide="1" href="#" data-scroll="porter" aria-label="Open the Porter project" hidden>
+                    <div class="svc-ai-feature-copy">
+                      <span class="svc-ai-feature-kicker">Featured proof</span>
+                      <h5 class="svc-ai-feature-title">Porter ships applications without your résumé leaving your laptop.</h5>
+                      <p>
+                        Bring your own model. Porter is the harness — a structured-output pipeline with RAG over your career, an eval suite that keeps prompts honest, and a Playwright sidecar that drives the actual ATS forms. Local Ollama or hosted Claude, your call.
+                      </p>
+                      <div class="ai-state-row" aria-hidden="true">
+                        <span>Posting</span>
+                        <span>Score</span>
+                        <span>Draft</span>
+                        <span>Submit</span>
+                      </div>
+                      <span class="svc-ai-feature-action">Open Porter <ion-icon name="arrow-forward-outline"></ion-icon></span>
+                    </div>
+                    <div class="svc-ai-feature-visual" aria-hidden="true">
+                      <figure class="ai-shot ai-shot-main">
+                        <img src="./assets/images/projects/project-porter-dashboard.png" alt="" loading="lazy" decoding="async">
+                      </figure>
+                      <figure class="ai-shot ai-shot-chat">
+                        <img src="./assets/images/projects/project-porter-draft.png" alt="" loading="lazy" decoding="async">
+                      </figure>
+                      <figure class="ai-shot ai-shot-home">
+                        <img src="./assets/images/projects/project-porter-form.png" alt="" loading="lazy" decoding="async">
+                      </figure>
+                    </div>
+                  </a>
                 </div>
                 <p class="svc-narrative">The most important AI work often sits between the model and the user: tool contracts, structured-output guards, evaluation harnesses, traceability, and product decisions that make behaviour understandable. That is what turns an impressive demo into a tool someone can trust.</p>
                 <p class="svc-narrative">I use local models when privacy or latency matters, and frontier models when capability is the priority. Either way, I care about systems that keep running, keep passing their checks, and leave behind reasoning people can inspect.</p>
@@ -601,38 +631,31 @@
                 </p>
               </div>
               <div class="service-detail">
-                <div class="svc-media-strip">
+                <div class="svc-media-strip svc-media-strip--comsim-fan">
                   <figure>
-                    <img src="./assets/images/projects/project-comsim1.png" alt="Comsim field view" loading="lazy">
+                    <img src="./assets/images/projects/project-comsim3.png" alt="Comsim welcome and organisation selection" loading="lazy">
                     <figcaption>
-                      <strong class="svc-cap-title">Comsim &middot; field view</strong>
-                      <span class="svc-cap-text">Offline-first field view for electrical engineers, designed to capture work on-site and sync when connectivity returns.</span>
+                      <strong class="svc-cap-title">Comsim &middot; workspace entry</strong>
+                      <span class="svc-cap-text">Role and organisation entry point before field teams move into client and asset workflows.</span>
                     </figcaption>
                   </figure>
                   <figure>
-                    <img src="./assets/images/projects/project-comsim2.png" alt="Comsim capture" loading="lazy">
+                    <img src="./assets/images/projects/project-comsim.png" alt="Comsim client search and file management" loading="lazy">
                     <figcaption>
-                      <strong class="svc-cap-title">Comsim &middot; one-screen capture</strong>
-                      <span class="svc-cap-text">Notes, photos, and calibration data on one surface, designed for fast capture in practical field conditions.</span>
+                      <strong class="svc-cap-title">Comsim &middot; client search</strong>
+                      <span class="svc-cap-text">Client and file management surface for finding the right field context quickly.</span>
                     </figcaption>
                   </figure>
                   <figure>
-                    <img src="./assets/images/projects/project-comsim3.png" alt="Comsim telemetry" loading="lazy">
+                    <img src="./assets/images/projects/project-comsim2.png" alt="Comsim calibration form" loading="lazy">
                     <figcaption>
-                      <strong class="svc-cap-title">Comsim &middot; telemetry</strong>
-                      <span class="svc-cap-text">Instrumentation across enterprise deployments shows slow screens, failing steps, and workflow bottlenecks.</span>
-                    </figcaption>
-                  </figure>
-                  <figure>
-                    <img src="./assets/images/projects/project-furlong-email.png" alt="Furlong daily digest" loading="lazy">
-                    <figcaption>
-                      <strong class="svc-cap-title">Furlong &middot; daily digest</strong>
-                      <span class="svc-cap-text">Scheduled reporting in a lightweight form: one useful morning email, generated and delivered automatically.</span>
+                      <strong class="svc-cap-title">Comsim &middot; calibration form</strong>
+                      <span class="svc-cap-text">Inspection checks, notes, measurements, and PDF generation in one field-ready workflow.</span>
                     </figcaption>
                   </figure>
                 </div>
                 <p class="svc-narrative">Products often need better visibility as much as they need new features. On Comsim, that meant usage analytics, error reporting, user-flow traces, and bottleneck hunting so the team could see where field engineers were getting stuck instead of guessing.</p>
-                <p class="svc-narrative">Paired with scheduled summaries and lightweight dashboards, that kind of instrumentation helps the work explain itself. Furlong is the smallest version of the same idea: one useful email each morning, delivered without anyone needing to chase it.</p>
+                <p class="svc-narrative">Paired with scheduled summaries and lightweight dashboards, that kind of instrumentation helps the work explain itself: what was captured, where people paused, what failed, and which parts of the workflow need attention.</p>
                 <span class="svc-section-label">See it in action</span>
                 <ul class="svc-chips">
                   <li><a href="#" data-scroll="comsim">Comsim <span class="svc-chip-tag">Analytics · Error Tracking</span></a></li>
@@ -1548,6 +1571,7 @@ Delivered the Tycoon Series — three RTS titles (Restaurant, Tech, Construction
     data-variant-order-ai="1"
     data-year="2026"
     data-title="Porter"
+    data-mark="./assets/images/projects/project-porter-icon.png"
     data-subtitle="Local-first AI job-application agent"
     data-genre="AI Agent"
     data-studio="Personal project"
@@ -1583,6 +1607,7 @@ Delivered the Tycoon Series — three RTS titles (Restaurant, Tech, Construction
     data-genre="AI Research"
     data-studio="Personal project"
     data-platforms="mac,web"
+    data-gallery-order="as-provided"
     data-text="
 <b>A focused research system that lets a local Gemma 4 read Strait-of-Hormuz news, estimate whether Polymarket traffic-threshold markets resolve, and score its own calibration against a no-lookahead backtester. Paper-trading only — a simulation, not a trading bot.</b>
 <ul class='proj-bullets'>
@@ -1592,7 +1617,7 @@ Delivered the Tycoon Series — three RTS titles (Restaurant, Tech, Construction
   <li>Grounded chat — the model has nine read-only SQLite tools (recent runs, run detail, calibration, market + experiment listings, news search, Hormuz traffic). Every tool call is visible in the UI; every answer is traceable back to a real row; Gemma cannot write, so it can never corrupt state.</li>
   <li>Mandelbrot-aware sizing: fractional Kelly (¼), vol-scaled, hard-capped. Fat-tailed prediction errors taken seriously.</li>
 </ul>"
-    data-gallery='["./assets/images/projects/project-shape-tour.webm","./assets/images/projects/project-shape-walkthrough.webm","./assets/images/projects/project-shape-replay.png","./assets/images/projects/project-shape-hormuz.png","./assets/images/projects/project-shape-home.png","./assets/images/projects/project-shape-experiments.png","./assets/images/projects/project-shape-run-detail.png","./assets/images/projects/project-shape-chat.png","./assets/images/projects/project-shape-autoresearch.png"]'>
+    data-gallery='["./assets/images/projects/project-shape-run-detail.png","./assets/images/projects/project-shape-chat-active.png","./assets/images/projects/project-shape-home.png","./assets/images/projects/project-shape-tour.webm","./assets/images/projects/project-shape-walkthrough.webm","./assets/images/projects/project-shape-replay.png","./assets/images/projects/project-shape-hormuz.png","./assets/images/projects/project-shape-experiments.png","./assets/images/projects/project-shape-autoresearch.png"]'>
   <a href="#">
     <figure class="project-img">
       <img width="800" height="800" src="./assets/images/projects/projectthumb-shape.png"
@@ -2342,14 +2367,37 @@ A custom Code node rendered the final HTML email, with SMTP handling 6am NZT del
   </section>
 </div>
 
+<!-- ===== MD document viewer (used by deep-dive input cards) ===== -->
+<div id="mdViewer" class="md-viewer" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="mdViewerTitle">
+  <div class="md-viewer-overlay"></div>
+  <section class="md-viewer-panel">
+    <header class="md-viewer-head">
+      <span class="md-viewer-meta">
+        <svg class="md-viewer-glyph" viewBox="0 0 24 24" aria-hidden="true">
+          <g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="5" y="3" width="14" height="18" rx="1.5"/>
+            <path d="M8 8 H16 M8 12 H16 M8 16 H13"/>
+          </g>
+        </svg>
+        <span id="mdViewerTitle" class="md-viewer-filename"></span>
+      </span>
+      <button class="md-viewer-close" type="button" aria-label="Close document viewer">
+        <ion-icon name="close-outline"></ion-icon>
+      </button>
+    </header>
+    <article class="md-viewer-body" id="mdViewerBody"></article>
+  </section>
+</div>
+
 <div class="modal-container" id="projectModal" aria-hidden="true">
 
   <div class="overlay" id="projectOverlay"></div>
 
+  <button class="modal-close-btn" id="projClose">
+    <ion-icon name="close-outline"></ion-icon>
+  </button>
+
   <section class="project-modal">
-    <button class="modal-close-btn" id="projClose">
-      <ion-icon name="close-outline"></ion-icon>
-    </button>
 
     <!-- dynamic bits will be injected here -->
     <div class="proj-scroll">
@@ -2374,6 +2422,7 @@ A custom Code node rendered the final HTML email, with SMTP handling 6am NZT del
       </div>
       <p id="projText" class="modal-blurb"></p>
       <div id="projGallery" class="proj-gallery"></div>
+      <div id="projDeepDive" class="proj-deep-dive" hidden></div>
       <a id="projLink" class="proj-link" target="_blank" rel="noopener">Visit <em class="arrow">↗</em></a>
     </div>
   </section>
@@ -2381,6 +2430,795 @@ A custom Code node rendered the final HTML email, with SMTP handling 6am NZT del
 
 
 
+
+<!-- ========================================================================
+     Per-project deep-dive content (cloned into #projDeepDive on modal open).
+     Add a new <template id="deepdive-{projectId}"> to opt a project in.
+     ======================================================================== -->
+<template id="deepdive-porter">
+
+  <section class="dd-opening">
+    <figure class="dd-media">
+      <video src="./assets/images/projects/project-porter-greenhouse.webm" autoplay muted loop playsinline preload="metadata"></video>
+    </figure>
+    <div class="dd-opening-text">
+      <p class="dd-kicker">A deep dive</p>
+      <h5 class="dd-lead">Bring your own model. Keep your proof.</h5>
+      <p class="dd-standfirst">Porter turns a messy job posting into a checked, evidence-backed application pack. It parses the role into a brief, retrieves proof from a local career corpus, drafts against a voice standard, reviews with a fresh model instance, then uses a Playwright sidecar to handle the real ATS forms. Use local Ollama / Qwen, hosted Claude, or a self-hosted Llama. No subscription. No private application data leaving your machine.</p>
+    </div>
+  </section>
+
+  <section class="dd-pipeline">
+
+    <!-- Inline SVG icon library used by the overview diagram and per-phase cards -->
+    <svg class="dd-defs" aria-hidden="true" focusable="false" width="0" height="0">
+      <defs>
+        <!-- 01 Understand: doc + magnifier + extracted pulls -->
+        <symbol id="dd-i-understand" viewBox="0 0 64 64">
+          <g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="11" y="13" width="26" height="36" rx="2.5"/>
+            <path d="M16 22 H32"/>
+            <path d="M16 28 H30"/>
+            <path d="M16 34 H32"/>
+            <path d="M16 40 H26"/>
+            <circle cx="42" cy="35" r="9" stroke-width="1.8"/>
+            <path d="M48.5 41.5 L55 48" stroke-width="2.2"/>
+            <circle cx="55" cy="16" r="2" fill="currentColor" stroke="none"/>
+            <circle cx="55" cy="22" r="2" fill="currentColor" stroke="none" opacity=".6"/>
+            <circle cx="55" cy="28" r="2" fill="currentColor" stroke="none" opacity=".35"/>
+          </g>
+        </symbol>
+
+        <!-- 02 Tailor: doc with selected bullets pulled out -->
+        <symbol id="dd-i-tailor" viewBox="0 0 64 64">
+          <g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="14" y="10" width="28" height="44" rx="2.5"/>
+            <circle cx="20" cy="20" r="1.5" fill="currentColor" stroke="none"/>
+            <path d="M24 20 H37"/>
+            <circle cx="20" cy="28" r="2.4" fill="currentColor" stroke="none"/>
+            <path d="M24 28 H40" stroke-width="2.4"/>
+            <circle cx="20" cy="36" r="1.5" fill="currentColor" stroke="none"/>
+            <path d="M24 36 H35"/>
+            <circle cx="20" cy="44" r="2.4" fill="currentColor" stroke="none"/>
+            <path d="M24 44 H40" stroke-width="2.4"/>
+            <path d="M48 28 H56"/>
+            <path d="M52 25 L56 28 L52 31"/>
+            <path d="M48 44 H56"/>
+            <path d="M52 41 L56 44 L52 47"/>
+          </g>
+        </symbol>
+
+        <!-- 03 Draft: text area with cursor (plain) -->
+        <symbol id="dd-i-draft" viewBox="0 0 64 64">
+          <g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="9" y="14" width="46" height="36" rx="2.5"/>
+            <path d="M14 22 H40"/>
+            <path d="M14 28 H46"/>
+            <path d="M14 34 H42"/>
+            <path d="M14 40 H30"/>
+            <path d="M40 30 V44" stroke-width="2.4"/>
+            <path d="M37 30 H43" stroke-width="2.4"/>
+            <path d="M37 44 H43" stroke-width="2.4"/>
+          </g>
+        </symbol>
+
+        <!-- Stop: octagon with pause bars -->
+        <symbol id="dd-i-stop" viewBox="0 0 64 64">
+          <g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 8 H42 L56 22 V42 L42 56 H22 L8 42 V22 Z"/>
+            <path d="M26 22 V42" stroke-width="3"/>
+            <path d="M38 22 V42" stroke-width="3"/>
+          </g>
+        </symbol>
+
+        <!-- 04 Render: stack of docs (HTML → PDF) -->
+        <symbol id="dd-i-render" viewBox="0 0 64 64">
+          <g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="22" y="11" width="26" height="34" rx="2.5"/>
+            <path d="M28 19 H40" stroke-width="2.4"/>
+            <path d="M28 25 H42"/>
+            <path d="M28 30 H38"/>
+            <rect x="13" y="20" width="26" height="34" rx="2.5" fill="hsl(235, 18%, 8%)"/>
+            <path d="M19 28 H30" stroke-width="2.4"/>
+            <path d="M19 34 H33"/>
+            <path d="M19 39 H29"/>
+            <rect x="19" y="44" width="14" height="6" rx="1.2" stroke-width="1.4"/>
+          </g>
+        </symbol>
+
+        <!-- 05 Eye: fresh-review (cold reader) -->
+        <symbol id="dd-i-eye" viewBox="0 0 64 64">
+          <g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 32 C 16 16 48 16 58 32 C 48 48 16 48 6 32 Z"/>
+            <circle cx="32" cy="32" r="9"/>
+            <circle cx="32" cy="32" r="3.6" fill="currentColor" stroke="none"/>
+            <circle cx="29" cy="29" r="1.2" fill="hsl(235, 18%, 8%)" stroke="none"/>
+          </g>
+        </symbol>
+
+        <!-- 06 Submit: paper plane -->
+        <symbol id="dd-i-submit" viewBox="0 0 64 64">
+          <g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 30 L58 12 L46 56 L30 38 Z"/>
+            <path d="M30 38 L58 12"/>
+            <path d="M30 38 L33 50"/>
+          </g>
+        </symbol>
+
+        <!-- Loop arrow (return) for inline tags -->
+        <symbol id="dd-i-loop" viewBox="0 0 16 16">
+          <g fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M13 8 a5 5 0 1 0 -2 3.5"/>
+            <polyline points="13 4 13 8 9 8"/>
+          </g>
+        </symbol>
+
+        <!-- MD input icons — drawn as input cards into phase 03 -->
+
+        <!-- Voice/standard: doc with check-circle (rules being followed) -->
+        <symbol id="dd-i-md-voice" viewBox="0 0 32 32">
+          <g fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="6" y="3" width="20" height="26" rx="2"/>
+            <path d="M10 9 H22"/>
+            <path d="M10 13 H22"/>
+            <path d="M10 17 H20"/>
+            <path d="M10 21 H17"/>
+            <circle cx="22" cy="22" r="3.6" stroke-width="1.4"/>
+            <path d="M20.4 22 L21.6 23.2 L23.6 21" stroke-width="1.6"/>
+          </g>
+        </symbol>
+
+        <!-- Flow/workflow: doc with linked nodes inside -->
+        <symbol id="dd-i-md-flow" viewBox="0 0 32 32">
+          <g fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="6" y="3" width="20" height="26" rx="2"/>
+            <circle cx="11" cy="9" r="1.6"/>
+            <path d="M11 10.6 V13"/>
+            <circle cx="11" cy="14.6" r="1.6"/>
+            <path d="M11 16.2 V18.6"/>
+            <circle cx="11" cy="20.2" r="1.6"/>
+            <path d="M14.6 9 H22"/>
+            <path d="M14.6 14.6 H22"/>
+            <path d="M14.6 20.2 H21"/>
+          </g>
+        </symbol>
+
+        <!-- Chevron — used in phase headers; rotated 180° on .is-open -->
+        <symbol id="dd-i-chevron" viewBox="0 0 16 16">
+          <g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="3 6 8 11 13 6"/>
+          </g>
+        </symbol>
+
+        <!-- 07 Tagged arrival: a chain link with a small tag pendant -->
+        <symbol id="dd-i-link-tag" viewBox="0 0 64 64">
+          <g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <!-- chain link 1 (left) -->
+            <path d="M22 32 a8 8 0 0 1 8-8 H38"/>
+            <path d="M22 32 a8 8 0 0 0 8 8 H38"/>
+            <!-- chain link 2 (right), interlocked -->
+            <path d="M42 32 a8 8 0 0 0 -8 -8 H26"/>
+            <path d="M42 32 a8 8 0 0 1 -8 8 H26"/>
+            <!-- tag pendant hanging from link -->
+            <path d="M48 18 L56 18 L56 26 L52 30 L48 26 Z"/>
+            <circle cx="52" cy="22" r="1.4" fill="currentColor" stroke="none"/>
+            <!-- string from link to tag -->
+            <path d="M40 26 L48 22" stroke-dasharray="2 2"/>
+          </g>
+        </symbol>
+
+        <!-- 08 Read-back: eye over a horizontal timeline of dots -->
+        <symbol id="dd-i-readback" viewBox="0 0 64 64">
+          <g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <!-- eye -->
+            <path d="M10 24 C 18 14 46 14 54 24 C 46 34 18 34 10 24 Z"/>
+            <circle cx="32" cy="24" r="6"/>
+            <circle cx="32" cy="24" r="2.5" fill="currentColor" stroke="none"/>
+            <!-- timeline -->
+            <path d="M10 46 H54"/>
+            <circle cx="14" cy="46" r="2.4" fill="currentColor" stroke="none"/>
+            <circle cx="24" cy="46" r="2.4" fill="currentColor" stroke="none" opacity=".75"/>
+            <circle cx="34" cy="46" r="3" fill="currentColor" stroke="none"/>
+            <circle cx="44" cy="46" r="2.4" fill="currentColor" stroke="none" opacity=".55"/>
+            <circle cx="54" cy="46" r="2.4" fill="currentColor" stroke="none" opacity=".35"/>
+          </g>
+        </symbol>
+
+        <!-- 09 Front-foot the call: open dossier (doc + handle) -->
+        <symbol id="dd-i-frontfoot" viewBox="0 0 64 64">
+          <g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <!-- briefcase / dossier outer -->
+            <rect x="10" y="20" width="44" height="32" rx="3"/>
+            <!-- handle -->
+            <path d="M24 20 V14 a3 3 0 0 1 3 -3 H37 a3 3 0 0 1 3 3 V20"/>
+            <!-- divider strap across -->
+            <path d="M10 30 H54"/>
+            <!-- doc poking out the top -->
+            <path d="M28 30 V40"/>
+            <path d="M22 36 H42"/>
+            <path d="M22 41 H38"/>
+          </g>
+        </symbol>
+
+        <!-- Brief: doc with bullet list and inflow arrow on the side -->
+        <symbol id="dd-i-md-brief" viewBox="0 0 32 32">
+          <g fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="9" y="3" width="20" height="26" rx="2"/>
+            <circle cx="13" cy="9" r="1" fill="currentColor" stroke="none"/>
+            <path d="M16 9 H25"/>
+            <circle cx="13" cy="14" r="1" fill="currentColor" stroke="none"/>
+            <path d="M16 14 H25"/>
+            <circle cx="13" cy="19" r="1" fill="currentColor" stroke="none"/>
+            <path d="M16 19 H25"/>
+            <circle cx="13" cy="24" r="1" fill="currentColor" stroke="none"/>
+            <path d="M16 24 H22"/>
+            <path d="M2 16 H8"/>
+            <path d="M5 13 L8 16 L5 19"/>
+          </g>
+        </symbol>
+
+        <!-- Arrowhead marker for overview connector + loop arcs.
+             markerUnits=userSpaceOnUse keeps arrowhead size fixed regardless of stroke width. -->
+        <marker id="dd-arrow-head" viewBox="0 0 12 12" refX="10" refY="6"
+                markerWidth="10" markerHeight="10" orient="auto" markerUnits="userSpaceOnUse">
+          <path d="M 0 0 L 12 6 L 0 12 Z" fill="currentColor"/>
+        </marker>
+      </defs>
+    </svg>
+
+    <h6 class="dd-h">The pipeline, in detail</h6>
+    <p class="dd-h-sub">Porter is designed to prove before it sends. The first loop builds the pack: parse the posting, select evidence, draft in plain text, render only after voice review, and stop whenever the argument gets weaker. The second loop starts when the recipient opens the tracked link: portfolio variant and interaction signals are tied to the same anonymous outreach ID, so a follow-up conversation can start from what they actually looked at. <em>Click any phase below to read its detail.</em></p>
+
+    <!-- 2-column layout: vertical diagram on the left, detail capsule on
+         the right. The diagram is sticky so it stays visible while the
+         reader works through the capsule content. -->
+    <div class="dd-pipeline-layout">
+
+    <!-- ============= UNIFIED OVERVIEW (desktop) =============
+         Vertical chain. Top half is the build pipeline (01–06 + STOP),
+         then a "submitted" gap, then the post-send phases (07–09).
+         Loop arrows curve in the LEFT gutter back from 05 to 03/04.
+         Designed for clear separation: every line lands somewhere
+         intentional, no collisions. -->
+    <figure class="dd-overview" role="img" aria-label="Pipeline overview: nine phases — six pre-submission with a voice-rules stop-break and two feedback loops from the fresh-eye review, then three post-submission, joined by the moment of submitting.">
+      <svg class="dd-overview-svg" viewBox="0 0 380 560" preserveAspectRatio="xMidYMid meet">
+
+        <!-- ─── Forward connectors (solid hairlines between adjacent rows) ─── -->
+        <line class="dd-ov-conn" x1="128" y1="46"  x2="128" y2="60"/>   <!-- 01 → 02 -->
+        <line class="dd-ov-conn" x1="128" y1="96"  x2="128" y2="110"/>  <!-- 02 → 03 -->
+        <line class="dd-ov-conn" x1="128" y1="146" x2="128" y2="160"/>  <!-- 03 → STOP -->
+        <line class="dd-ov-conn" x1="128" y1="196" x2="128" y2="210"/>  <!-- STOP → 04 -->
+        <line class="dd-ov-conn" x1="128" y1="246" x2="128" y2="260"/>  <!-- 04 → 05 -->
+        <line class="dd-ov-conn" x1="128" y1="296" x2="128" y2="310"/>  <!-- 05 → 06 -->
+
+        <!-- Submission gap — longer dashed pattern + an italic label. The
+             gap is wider than a normal connector segment so the moment
+             of submission visually breathes. -->
+        <line class="dd-ov-conn dd-ov-conn--wrap" x1="128" y1="346" x2="128" y2="384"/>
+        <text class="dd-ov-wrap-label" x="148" y="368" text-anchor="start">submitted</text>
+
+        <!-- ─── Forward connectors (post-send) ─── -->
+        <line class="dd-ov-conn" x1="128" y1="420" x2="128" y2="434"/>  <!-- 07 → 08 -->
+        <line class="dd-ov-conn" x1="128" y1="470" x2="128" y2="484"/>  <!-- 08 → 09 -->
+
+        <!-- ─── Feedback loops (in the left gutter) ───
+             Both originate at the LEFT EDGE of phase 05 (x=110, y=278)
+             and arrow horizontally INTO the LEFT EDGE of their target
+             (03 or 04), ending tangent-right.
+             Drawn long-first so short renders on top where they cross. -->
+
+        <path class="dd-ov-loop dd-ov-loop--prose"
+              d="M 110 278 C -10 278 -10 128 110 128"
+              marker-end="url(#dd-arrow-head)"/>
+        <text class="dd-ov-loop-label dd-ov-loop-label--prose"
+              x="40" y="206" text-anchor="start">re-prose</text>
+
+        <path class="dd-ov-loop dd-ov-loop--render"
+              d="M 110 278 C 35 278 35 228 110 228"
+              marker-end="url(#dd-arrow-head)"/>
+        <text class="dd-ov-loop-label dd-ov-loop-label--render"
+              x="66" y="256" text-anchor="start">re-render</text>
+
+        <!-- ─── Phase shards (vertical chain) ───
+             Each shard is a clickable group containing a bg rect (lights
+             up when selected), a circle, the bespoke icon, and a row of
+             text (number + label). Origin is at the icon centre so all
+             internal coords stay simple. -->
+
+        <g class="dd-ov-shard" data-target-phase="01" transform="translate(128 28)">
+          <rect class="dd-ov-shard-bg" x="-30" y="-22" width="280" height="44" rx="8"/>
+          <circle class="dd-ov-circle" r="18"/>
+          <svg x="-15" y="-15" width="30" height="30" overflow="visible"><use href="#dd-i-understand"/></svg>
+          <text class="dd-ov-row-text" x="34" y="1">
+            <tspan class="dd-ov-num">01</tspan><tspan class="dd-ov-label" dx="10">Understand</tspan>
+          </text>
+        </g>
+
+        <g class="dd-ov-shard" data-target-phase="02" transform="translate(128 78)">
+          <rect class="dd-ov-shard-bg" x="-30" y="-22" width="280" height="44" rx="8"/>
+          <circle class="dd-ov-circle" r="18"/>
+          <svg x="-15" y="-15" width="30" height="30" overflow="visible"><use href="#dd-i-tailor"/></svg>
+          <text class="dd-ov-row-text" x="34" y="1">
+            <tspan class="dd-ov-num">02</tspan><tspan class="dd-ov-label" dx="10">Tailor CV</tspan>
+          </text>
+        </g>
+
+        <g class="dd-ov-shard" data-target-phase="03" transform="translate(128 128)">
+          <rect class="dd-ov-shard-bg" x="-30" y="-22" width="280" height="44" rx="8"/>
+          <circle class="dd-ov-circle" r="18"/>
+          <svg x="-15" y="-15" width="30" height="30" overflow="visible"><use href="#dd-i-draft"/></svg>
+          <text class="dd-ov-row-text" x="34" y="1">
+            <tspan class="dd-ov-num">03</tspan><tspan class="dd-ov-label" dx="10">Draft</tspan>
+          </text>
+        </g>
+
+        <!-- Stop checkpoint — quieter (smaller circle, dashed stroke) -->
+        <g class="dd-ov-shard dd-ov-shard--stop" data-target-phase="stop1" transform="translate(128 178)">
+          <rect class="dd-ov-shard-bg" x="-30" y="-22" width="280" height="44" rx="8"/>
+          <circle class="dd-ov-stop-shape" r="14"/>
+          <svg x="-9" y="-9" width="18" height="18" overflow="visible"><use href="#dd-i-stop"/></svg>
+          <text class="dd-ov-row-text" x="34" y="1">
+            <tspan class="dd-ov-num dd-ov-num--stop">STOP</tspan><tspan class="dd-ov-label dd-ov-label--stop" dx="10">Voice rules</tspan>
+          </text>
+        </g>
+
+        <g class="dd-ov-shard" data-target-phase="04" transform="translate(128 228)">
+          <rect class="dd-ov-shard-bg" x="-30" y="-22" width="280" height="44" rx="8"/>
+          <circle class="dd-ov-circle" r="18"/>
+          <svg x="-15" y="-15" width="30" height="30" overflow="visible"><use href="#dd-i-render"/></svg>
+          <text class="dd-ov-row-text" x="34" y="1">
+            <tspan class="dd-ov-num">04</tspan><tspan class="dd-ov-label" dx="10">Render</tspan>
+          </text>
+        </g>
+
+        <g class="dd-ov-shard dd-ov-shard--fresh" data-target-phase="05" transform="translate(128 278)">
+          <rect class="dd-ov-shard-bg" x="-30" y="-22" width="280" height="44" rx="8"/>
+          <circle class="dd-ov-circle" r="18"/>
+          <svg x="-15" y="-15" width="30" height="30" overflow="visible"><use href="#dd-i-eye"/></svg>
+          <text class="dd-ov-row-text" x="34" y="1">
+            <tspan class="dd-ov-num dd-ov-num--fresh">05</tspan><tspan class="dd-ov-label dd-ov-label--fresh" dx="10">Fresh review</tspan>
+          </text>
+        </g>
+
+        <g class="dd-ov-shard" data-target-phase="06" transform="translate(128 328)">
+          <rect class="dd-ov-shard-bg" x="-30" y="-22" width="280" height="44" rx="8"/>
+          <circle class="dd-ov-circle" r="18"/>
+          <svg x="-15" y="-15" width="30" height="30" overflow="visible"><use href="#dd-i-submit"/></svg>
+          <text class="dd-ov-row-text" x="34" y="1">
+            <tspan class="dd-ov-num">06</tspan><tspan class="dd-ov-label" dx="10">Submit</tspan>
+          </text>
+        </g>
+
+        <g class="dd-ov-shard" data-target-phase="07" transform="translate(128 402)">
+          <rect class="dd-ov-shard-bg" x="-30" y="-22" width="280" height="44" rx="8"/>
+          <circle class="dd-ov-circle" r="18"/>
+          <svg x="-15" y="-15" width="30" height="30" overflow="visible"><use href="#dd-i-link-tag"/></svg>
+          <text class="dd-ov-row-text" x="34" y="1">
+            <tspan class="dd-ov-num">07</tspan><tspan class="dd-ov-label" dx="10">Tagged arrival</tspan>
+          </text>
+        </g>
+
+        <g class="dd-ov-shard" data-target-phase="08" transform="translate(128 452)">
+          <rect class="dd-ov-shard-bg" x="-30" y="-22" width="280" height="44" rx="8"/>
+          <circle class="dd-ov-circle" r="18"/>
+          <svg x="-15" y="-15" width="30" height="30" overflow="visible"><use href="#dd-i-readback"/></svg>
+          <text class="dd-ov-row-text" x="34" y="1">
+            <tspan class="dd-ov-num">08</tspan><tspan class="dd-ov-label" dx="10">Read-back</tspan>
+          </text>
+        </g>
+
+        <g class="dd-ov-shard" data-target-phase="09" transform="translate(128 502)">
+          <rect class="dd-ov-shard-bg" x="-30" y="-22" width="280" height="44" rx="8"/>
+          <circle class="dd-ov-circle" r="18"/>
+          <svg x="-15" y="-15" width="30" height="30" overflow="visible"><use href="#dd-i-frontfoot"/></svg>
+          <text class="dd-ov-row-text" x="34" y="1">
+            <tspan class="dd-ov-num">09</tspan><tspan class="dd-ov-label" dx="10">The picture</tspan>
+          </text>
+        </g>
+
+      </svg>
+    </figure>
+
+    <!-- ============= DETAIL CAPSULE — one phase visible at a time =============
+         Click a shard in the overview above to swap which phase is shown
+         here. Every phase card lives below; CSS hides all but the active
+         one (matched by data-phase). aria-live tells screen readers
+         when content swaps. -->
+    <div class="dd-detail-capsule" aria-live="polite">
+
+      <article class="dd-phase">
+        <div class="dd-phase-icon">
+          <svg viewBox="0 0 64 64" aria-hidden="true"><use href="#dd-i-understand"/></svg>
+          <span class="dd-phase-num">01</span>
+        </div>
+        <div class="dd-phase-body">
+          <header class="dd-phase-head">
+            <h6 class="dd-phase-title">Understand the posting</h6>
+            <span class="dd-tag">LLM</span>
+          </header>
+          <p class="dd-phase-sub">Role signal · pain extraction · brief</p>
+          <ul class="dd-substeps">
+            <li>Pull every "must have", "nice to have", implied seniority signal, and hidden constraint.</li>
+            <li>Separate the employer's likely need from the public marketing language: what they are building, what is hard about it, and what risks they are trying to reduce.</li>
+            <li>Build a brief: pain · human angle · why this role appeals · must-answer requirements · strongest evidence · likely objections · phrases to avoid.</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="dd-phase">
+        <div class="dd-phase-icon">
+          <svg viewBox="0 0 64 64" aria-hidden="true"><use href="#dd-i-tailor"/></svg>
+          <span class="dd-phase-num">02</span>
+        </div>
+        <div class="dd-phase-body">
+          <header class="dd-phase-head">
+            <h6 class="dd-phase-title">Tailor the CV</h6>
+            <span class="dd-tag">RAG</span>
+          </header>
+          <p class="dd-phase-sub">Select the right proof from the canonical source; never make it weaker</p>
+          <ul class="dd-substeps">
+            <li>The CV source keeps layout and content separate. <code>.cv-page</code> owns print styling, margins, and header layout; tailoring changes the evidence, not the frame.</li>
+            <li>Variant-aware sections (<code>data-variant-only="ai"</code>, <code>data-variant-hide="ai"</code>) let one source ship multiple CVs without forking.</li>
+            <li>The top 3-5 requirements from the brief decide bullet selection and order. Metrics, named clients, shipped outcomes, and credibility markers stay intact.</li>
+            <li>Tailoring is selection before rewriting: choose the right wrapper, surface the strongest proof first, and discard anything that turns specific evidence into generic fit.</li>
+          </ul>
+          <div class="dd-check">
+            <span class="dd-check-glyph">◇</span>
+            <span class="dd-check-text"><strong>Check:</strong> the tailored CV must be at least as strong as the canonical. A tailored-but-generic CV fails the gate.</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="dd-phase">
+        <div class="dd-phase-icon">
+          <svg viewBox="0 0 64 64" aria-hidden="true"><use href="#dd-i-draft"/></svg>
+          <span class="dd-phase-num">03</span>
+        </div>
+        <div class="dd-phase-body">
+          <header class="dd-phase-head">
+            <h6 class="dd-phase-title">Draft the cover letter — plain text first</h6>
+            <span class="dd-tag">LLM</span>
+          </header>
+          <p class="dd-phase-sub">Validate early · name the real need · show proof · sound human</p>
+
+          <ul class="dd-substeps">
+            <li>No HTML safety net. The letter has to work as plain text before formatting touches it.</li>
+            <li>Reads against the brief from phase 01 and the cited proof from phase 02, so the cover letter and CV make the same argument.</li>
+            <li>Calibrated against the local writing standard: specific, senior, plain language, no stock enthusiasm.</li>
+          </ul>
+
+          <!-- Reference docs the agent reads first — slim pills below
+               the process so they read as footnotes, not features. -->
+          <div class="dd-refs">
+            <span class="dd-refs-label">Reads first</span>
+            <button type="button" class="dd-ref"
+                    data-md="./APPLICATION_WRITING_GUIDE.md"
+                    data-md-name="APPLICATION_WRITING_GUIDE.md">
+              <svg class="dd-ref-icon" viewBox="0 0 32 32" aria-hidden="true"><use href="#dd-i-md-voice"/></svg>
+              <span class="dd-ref-name">APPLICATION_WRITING_GUIDE.md</span>
+              <span class="dd-ref-cta">view md <em class="arrow">↗</em></span>
+            </button>
+            <button type="button" class="dd-ref"
+                    data-md="./OUTREACH_WORKFLOW.md"
+                    data-md-name="OUTREACH_WORKFLOW.md">
+              <svg class="dd-ref-icon" viewBox="0 0 32 32" aria-hidden="true"><use href="#dd-i-md-flow"/></svg>
+              <span class="dd-ref-name">OUTREACH_WORKFLOW.md</span>
+              <span class="dd-ref-cta">view md <em class="arrow">↗</em></span>
+            </button>
+          </div>
+        </div>
+      </article>
+
+      <article class="dd-stop">
+        <div class="dd-phase-icon dd-phase-icon--stop">
+          <svg viewBox="0 0 64 64" aria-hidden="true"><use href="#dd-i-stop"/></svg>
+        </div>
+        <div class="dd-phase-body">
+          <header class="dd-phase-head">
+            <span class="dd-stop-label">Stop · Voice rules</span>
+          </header>
+          <p class="dd-stop-text">Voice-rules review against the writing standard. If the prose fails, the loop goes back to text. <em>Formatting is not allowed to disguise a weak argument.</em></p>
+          <div class="dd-loops">
+            <span class="dd-loop-tag">
+              <svg class="dd-loop-glyph" viewBox="0 0 16 16" aria-hidden="true"><use href="#dd-i-loop"/></svg>
+              <span><strong>Back to 03</strong> — revise the prose</span>
+            </span>
+          </div>
+        </div>
+      </article>
+
+      <article class="dd-phase">
+        <div class="dd-phase-icon">
+          <svg viewBox="0 0 64 64" aria-hidden="true"><use href="#dd-i-render"/></svg>
+          <span class="dd-phase-num">04</span>
+        </div>
+        <div class="dd-phase-body">
+          <header class="dd-phase-head">
+            <h6 class="dd-phase-title">Render the pack</h6>
+          </header>
+          <p class="dd-phase-sub">HTML · PDF · ledger · tracked link</p>
+          <ul class="dd-substeps">
+            <li>Generate HTML from accepted prose only; embed the tracked outreach ID and tailored portfolio link.</li>
+            <li>Export PDFs into the dated batch folder; check the ordinary things that break trust: no browser headers, visible sign-off, sensible page count.</li>
+            <li>Record the pack in the local ledger so the CV, letter, and portfolio link all share one ID.</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="dd-phase dd-phase--fresh">
+        <div class="dd-phase-icon">
+          <svg viewBox="0 0 64 64" aria-hidden="true"><use href="#dd-i-eye"/></svg>
+          <span class="dd-phase-num">05</span>
+        </div>
+        <div class="dd-phase-body">
+          <header class="dd-phase-head">
+            <h6 class="dd-phase-title">Fresh-eye review — separate instance</h6>
+            <span class="dd-tag dd-tag--alt">Fresh agent</span>
+          </header>
+          <p class="dd-phase-sub">A cold reader with the standard, but not the build history</p>
+          <ul class="dd-substeps">
+            <li>A new model session reads the pack cold. Long context makes a model loyal to its own draft; this one has nothing to defend.</li>
+            <li>It asks: does the opening sound human? Is the pain understood without being diagnosed? Is every proof relevant? Does anything sound apologetic or AI-shaped?</li>
+            <li>It can reject or improve: missed proof, sharper framing, banned phrase to swap. Failures loop back to prose or render, depending on what broke.</li>
+          </ul>
+
+          <div class="dd-loops dd-loops--two">
+            <span class="dd-loop-tag dd-loop-tag--render">
+              <svg class="dd-loop-glyph" viewBox="0 0 16 16" aria-hidden="true"><use href="#dd-i-loop"/></svg>
+              <span><strong>Back to 04</strong> — re-render only (formatting, sign-off, tracked link, page count)</span>
+            </span>
+            <span class="dd-loop-tag dd-loop-tag--prose">
+              <svg class="dd-loop-glyph" viewBox="0 0 16 16" aria-hidden="true"><use href="#dd-i-loop"/></svg>
+              <span><strong>Back to 03</strong> — re-prose (tone, pain framing, evidence, opener)</span>
+            </span>
+          </div>
+        </div>
+      </article>
+
+      <article class="dd-phase">
+        <div class="dd-phase-icon">
+          <svg viewBox="0 0 64 64" aria-hidden="true"><use href="#dd-i-submit"/></svg>
+          <span class="dd-phase-num">06</span>
+        </div>
+        <div class="dd-phase-body">
+          <header class="dd-phase-head">
+            <h6 class="dd-phase-title">Submit</h6>
+            <span class="dd-tag">Playwright</span>
+          </header>
+          <p class="dd-phase-sub">An agent that handles the repetitive last mile</p>
+          <ul class="dd-substeps">
+            <li>A Playwright sidecar drives real ATS forms — Greenhouse, Lever, Workday — filling fields, attaching the right files, answering the screener questions.</li>
+            <li>The browser stays under your control; Porter takes over the typing, clicking, and file uploads. You watch it happen.</li>
+          </ul>
+        </div>
+      </article>
+
+      <!-- ===== Post-submit phases (continued in the same capsule) ===== -->
+
+      <article class="dd-phase">
+        <div class="dd-phase-icon">
+          <svg viewBox="0 0 64 64" aria-hidden="true"><use href="#dd-i-link-tag"/></svg>
+          <span class="dd-phase-num">07</span>
+        </div>
+        <div class="dd-phase-body">
+          <header class="dd-phase-head">
+            <h6 class="dd-phase-title">Tagged arrival</h6>
+            <span class="dd-tag">Bootstrap</span>
+          </header>
+          <p class="dd-phase-sub">The application link already knows which portfolio to load</p>
+          <ul class="dd-substeps">
+            <li>The portfolio link printed on the CV and stamped in the cover letter looks like <code>https://foldthirteen.github.io/portfolio/?v=ai#o=001&amp;jd=ai-engineer</code>. The <code>o</code> and <code>jd</code> values are the only opportunity-specific bits: an opaque base36 ID and a short job slug. Never a name, never an email.</li>
+            <li>A variant bootstrap script in <code>&lt;head&gt;</code> reads <code>?v=ai</code> <em>before first paint</em>, persists it to <code>localStorage</code> and cookie, cleans it from the visible URL, and sets <code>data-variant="ai"</code> on <code>&lt;html&gt;</code>. AI roles get AI services, AI-tilted skills, AI experience, and the CV link auto-rewrites to <code>cv-ai.html</code>. Default visitors see the creative + game-dev cut.</li>
+            <li>The Clarity loader picks up <code>o</code> and <code>jd</code> from the URL and tags the session with <code>outreach_id</code>, <code>job_descriptor</code>, and <code>portfolio_variant</code>, plus an <code>outreach_link_open</code> event. From this moment, every signal Clarity records carries that pair.</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="dd-phase">
+        <div class="dd-phase-icon">
+          <svg viewBox="0 0 64 64" aria-hidden="true"><use href="#dd-i-readback"/></svg>
+          <span class="dd-phase-num">08</span>
+        </div>
+        <div class="dd-phase-body">
+          <header class="dd-phase-head">
+            <h6 class="dd-phase-title">Read-back</h6>
+            <span class="dd-tag">Clarity</span>
+          </header>
+          <p class="dd-phase-sub">Intentional engagement signals, tied to the same opaque ID</p>
+          <ul class="dd-substeps">
+            <li>The portfolio fires custom Clarity events for the signals that matter: <code>section_view_*</code>, <code>project_view_*</code>, <code>project_outbound_*</code> (for live-demo clicks), <code>portfolio_filter_*</code>, <code>cv_click_*</code>, <code>service_open_*</code>, <code>contact_link_*</code>, <code>contact_form_*</code>. All inherit the session-level outreach tag.</li>
+            <li>The local ledger (<code>covers/outreach-ledger.json</code>) records the private pack metadata per outreach ID: company, job descriptor, variant chosen, CV and cover-letter file paths, and source posting URL.</li>
+            <li>Deliberate split: <em>Clarity sees opaque IDs and behaviour. The ledger sees IDs and identities.</em> They join only on my machine, where they should. The recipient is never named in telemetry.</li>
+          </ul>
+          <div class="dd-check">
+            <span class="dd-check-glyph">◇</span>
+            <span class="dd-check-text"><strong>Privacy by construction:</strong> the URL never carries a name or email; the ledger never gets committed; Clarity only sees a 3-character ID.</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="dd-phase">
+        <div class="dd-phase-icon">
+          <svg viewBox="0 0 64 64" aria-hidden="true"><use href="#dd-i-frontfoot"/></svg>
+          <span class="dd-phase-num">09</span>
+        </div>
+        <div class="dd-phase-body">
+          <header class="dd-phase-head">
+            <h6 class="dd-phase-title">The picture, joined up</h6>
+            <span class="dd-tag">Read-out</span>
+          </header>
+          <p class="dd-phase-sub">What is available after send, tied to one opaque ID end-to-end</p>
+          <ul class="dd-substeps">
+            <li><strong>Ledger entry</strong> (local): company, role, job descriptor, variant chosen, CV and cover-letter file paths, the original posting URL.</li>
+            <li><strong>Clarity session</strong> (cloud, opaque ID only): section views, project opens, project outbounds (e.g. live demo clicks), CV print events, contact-link clicks, contact-form starts and completions, and where the session ended.</li>
+            <li><strong>Session metadata</strong>: arrival time, time on each section, traffic source, device, the variant that rendered.</li>
+            <li>The point is not surveillance. It is preparation: know which proof mattered before the first conversation starts.</li>
+          </ul>
+        </div>
+      </article>
+
+    </div>
+    </div>
+  </section>
+
+  <section class="dd-walkthrough">
+    <h6 class="dd-h">A few moments, in pictures</h6>
+
+    <div class="dd-spread dd-spread--image-left">
+      <figure>
+        <img src="./assets/images/projects/project-porter-posting.png" alt="Porter extracting requirements and pain from a job posting" loading="lazy">
+      </figure>
+      <div class="dd-spread-text">
+        <p class="dd-eyebrow">01 · Understand</p>
+        <h6>Read the posting like a product brief.</h6>
+        <p>Most postings bury the real job under marketing copy. Porter pulls the requirements into a structured tree, then writes a short brief naming the likely pain, the human angle, and the questions the application has to answer. Everything downstream is judged against that brief.</p>
+      </div>
+    </div>
+
+    <div class="dd-spread dd-spread--image-right">
+      <figure>
+        <img src="./assets/images/projects/project-porter-fit.png" alt="Porter scoring requirements against career evidence with citations" loading="lazy">
+      </figure>
+      <div class="dd-spread-text">
+        <p class="dd-eyebrow">02 · Tailor</p>
+        <h6>Map every requirement back to evidence.</h6>
+        <p>For each requirement, Porter searches the local corpus — resume, projects, writing samples — and surfaces the strongest evidence with a fit score and citations. The same evidence map drives the CV bullet order and the letter's proof points, so the two documents make one consistent argument.</p>
+      </div>
+    </div>
+
+    <!-- ============= LIVING QUOTE SPOTLIGHT =============
+         2-col panel. Left: cycling quote in big italic display.
+         Right: an SVG abstract document where the cyclable quote
+         lines are <rect> elements; a yellow highlight rect slides
+         between them via CSS transform. SVG renders deterministically
+         across browsers including Safari — no flexbox-with-empty-spans
+         tricks, no offsetTop measurement. -->
+    <figure class="dd-spotlight">
+      <div class="dd-spotlight-quote">
+        <span class="dd-spotlight-mark" aria-hidden="true">“</span>
+        <blockquote class="dd-spotlight-text"></blockquote>
+        <p class="dd-spotlight-attr">From APPLICATION_WRITING_GUIDE.md</p>
+      </div>
+
+      <svg class="dd-spotlight-doc" viewBox="0 0 280 180" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+        <rect class="dd-doc-frame" x="0.5" y="0.5" width="279" height="179" rx="6"/>
+
+        <!-- Compact layout — tighter line spacing, all five quote
+             anchors still visible, panel reads as a quick reference
+             card rather than a full document mock. -->
+        <rect class="dd-line dd-line--h" x="14" y="12"  width="78"  height="3" rx="1.5"/>
+        <rect class="dd-line dd-line--p" x="14" y="22"  width="240" height="2" rx="1"/>
+        <rect class="dd-line dd-line--p" x="14" y="29"  width="208" height="2" rx="1"/>
+
+        <rect class="dd-line dd-line--quote" data-quote-index="0"
+              data-quote-text="A job ad is a signal of pain, but the finished letter should not sound like a diagnosis."
+              x="14" y="42" width="252" height="2" rx="1"/>
+        <rect class="dd-line dd-line--p" x="14" y="49"  width="180" height="2" rx="1"/>
+
+        <rect class="dd-line dd-line--h" x="14" y="62"  width="60"  height="3" rx="1.5"/>
+
+        <rect class="dd-line dd-line--quote" data-quote-index="1"
+              data-quote-text="Prefer plain, confident language."
+              x="14" y="74" width="158" height="2" rx="1"/>
+        <rect class="dd-line dd-line--p" x="14" y="81" width="220" height="2" rx="1"/>
+
+        <rect class="dd-line dd-line--h" x="14" y="94" width="84"  height="3" rx="1.5"/>
+
+        <rect class="dd-line dd-line--quote" data-quote-index="2"
+              data-quote-text="Do not list experience just because it is impressive."
+              x="14" y="106" width="248" height="2" rx="1"/>
+        <rect class="dd-line dd-line--p" x="14" y="113" width="208" height="2" rx="1"/>
+
+        <rect class="dd-line dd-line--h" x="14" y="124" width="72"  height="3" rx="1.5"/>
+
+        <rect class="dd-line dd-line--quote" data-quote-index="3"
+              data-quote-text="Lead with the relevant strength."
+              x="14" y="136" width="148" height="2" rx="1"/>
+        <rect class="dd-line dd-line--p" x="14" y="143" width="232" height="2" rx="1"/>
+
+        <rect class="dd-line dd-line--h" x="14" y="154" width="88"  height="3" rx="1.5"/>
+
+        <rect class="dd-line dd-line--quote" data-quote-index="4"
+              data-quote-text="Don't patch around a weak draft with formatting."
+              x="14" y="166" width="220" height="2" rx="1"/>
+
+        <rect class="dd-spotlight-highlight" x="9" y="0" width="262" height="10" rx="3"/>
+      </svg>
+    </figure>
+
+    <div class="dd-spread dd-spread--image-left">
+      <figure>
+        <img src="./assets/images/projects/project-porter-draft.png" alt="Porter drafting a tailored cover letter in plain text" loading="lazy">
+      </figure>
+      <div class="dd-spread-text">
+        <p class="dd-eyebrow">03 · Draft</p>
+        <h6>Plain text first. HTML waits.</h6>
+        <p>The drafter writes in plain text against a structure: validate early, name the real need, show proof, solve directly, stay personable. It gets the brief, the evidence, and the tone standard. The prose has to clear the voice rules — no "passionate about", no "thrilled to apply", no em-dashes — before any HTML is generated.</p>
+      </div>
+    </div>
+
+    <div class="dd-spread dd-spread--image-right">
+      <figure>
+        <img src="./assets/images/projects/project-porter-form.png" alt="Porter's fresh-review pass examining a finished application pack" loading="lazy">
+      </figure>
+      <div class="dd-spread-text">
+        <p class="dd-eyebrow">05 · Fresh review</p>
+        <h6>A second instance that hasn't seen the work.</h6>
+        <p>A separate agent reads the finished pack cold. It knows the writing standard but not the build history, so it cannot defend choices it did not make. It asks the questions a busy hiring manager would: <em>does this sound human, does it understand what we are building, has this person done adjacent hard work?</em> If it fails, the loop returns to the plain-text letter, not the HTML.</p>
+      </div>
+    </div>
+
+    <div class="dd-spread dd-spread--image-left">
+      <figure>
+        <video src="./assets/images/projects/project-porter-simple.webm" autoplay muted loop playsinline preload="metadata"></video>
+      </figure>
+      <div class="dd-spread-text">
+        <p class="dd-eyebrow">06 · Submit</p>
+        <h6>An agent that handles the clicking.</h6>
+        <p>A Playwright sidecar drives real ATS forms — Greenhouse, Lever, Workday — filling fields, attaching the right files, and answering screener questions. The browser stays under your control; the repetitive work is automated.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="dd-stack">
+    <h6 class="dd-h">The stack, briefly</h6>
+    <div class="dd-stack-grid">
+      <article class="dd-card">
+        <p class="dd-card-tag">Local LLM</p>
+        <h6>Ollama · Qwen</h6>
+        <p>Structured-output prompts run against a local model by default, with hosted Claude or self-hosted models able to slot in when useful. Nothing private has to leave the machine.</p>
+      </article>
+      <article class="dd-card">
+        <p class="dd-card-tag">RAG</p>
+        <h6>Your career, indexed</h6>
+        <p>Resume, projects, and writing samples are embedded once and queried per requirement, so every useful claim can point back to where it came from.</p>
+      </article>
+      <article class="dd-card">
+        <p class="dd-card-tag">Multi-pass</p>
+        <h6>Two instances, two roles</h6>
+        <p>One agent builds; another reviews cold. The reviewer gets the writing standard, not the draft history, so it judges the result instead of defending the process.</p>
+      </article>
+      <article class="dd-card">
+        <p class="dd-card-tag">Agent</p>
+        <h6>Playwright sidecar</h6>
+        <p>A controlled browser handles the messy last mile: multi-step forms, file uploads, and custom screener questions across the major ATS platforms.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="dd-prose">
+    <h6 class="dd-h">How I built it with AI</h6>
+    <p>Porter was built with AI in the loop, but the real shift was treating evaluation as product design. Each stage has fixtures from real, anonymised job postings, so prompt, model, and parser changes can be checked instead of guessed.</p>
+    <p>The cover-letter loop uses two roles: one instance drafts from the brief and evidence; another reads cold against the voice standard. Weak but fluent prose gets caught before it reaches an inbox, and strong claims keep their proof attached.</p>
+    <p>The codebase stays small on purpose: structured outputs, versioned prompts, plain-text drafts before HTML, cached evals, and a demo mode that proves the flow safely without using a real application.</p>
+  </section>
+
+  <section class="dd-closer">
+    <p class="dd-closer-line">Built in concert with Claude Code and Codex, human-directed throughout. Eval harness · cached runs · stability scoring · reproducible demo mode.</p>
+    <a class="proj-link" href="https://porter-625c.vercel.app/applications/demo-ai-engineer/" target="_blank" rel="noopener">Try the live demo <em class="arrow">↗</em></a>
+  </section>
+
+</template>
 
   <!--
     - custom js link

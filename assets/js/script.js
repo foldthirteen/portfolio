@@ -79,13 +79,15 @@ const cardObserver = new IntersectionObserver((entries) => {
 
 document.querySelectorAll('.project-item').forEach(card => cardObserver.observe(card));
 
-function buildHeroSwiper(slideSrcArray){
+function buildHeroSwiper(slideSrcArray, orderMode){
   const wrapper = document.querySelector('#heroSwiper .swiper-wrapper');
   wrapper.innerHTML = '';                // clear previous slides
 
-  // Videos always first
+  // Videos usually lead, unless a project needs a deliberate proof sequence.
   const isVideoSrc = s => /\.(mp4|webm|ogg)$/i.test(typeof s === 'string' ? s : s.src);
-  const sorted = [...slideSrcArray].sort((a, b) => isVideoSrc(b) - isVideoSrc(a));
+  const sorted = orderMode === 'as-provided'
+    ? [...slideSrcArray]
+    : [...slideSrcArray].sort((a, b) => isVideoSrc(b) - isVideoSrc(a));
 
   sorted.forEach(entry => {
     // Entry can be a plain string or { src, fit }
@@ -731,17 +733,23 @@ const projClose    = document.getElementById('projClose');
 const projModalBox = projModal.querySelector('.project-modal');
 
 let lastOpenedItem = null;
+let lastMorphOrigin = null;
+let nextProjectMorphOrigin = null;
 
 /* ── FLIP container morph: card thumbnail → modal ────────────────────
    The modal starts at the card's exact screen rect and expands to its
    natural centred position. Card thumbnail hides so there's no duplicate. */
 function morphOpenModal(item) {
-  const thumb     = item.querySelector('.project-img img');
-  const thumbRect = (thumb || item.querySelector('.project-img')).getBoundingClientRect();
+  const thumb  = item.querySelector('.project-img img');
+  const origin = nextProjectMorphOrigin || thumb || item.querySelector('.project-img');
+  nextProjectMorphOrigin = null;
+
+  const thumbRect = origin.getBoundingClientRect();
   lastOpenedItem  = item;
+  lastMorphOrigin = origin;
 
   // Hide original thumbnail — it visually "becomes" the modal
-  if (thumb) thumb.style.opacity = '0';
+  if (origin) origin.style.opacity = '0';
 
   // Make container visible but modal box invisible first
   projModalBox.style.transition = 'none';
@@ -822,7 +830,21 @@ document.body.style.overflowY = 'scroll';
 
 
     // 2. Populate modal
-    mTitle.textContent = item.dataset.title;
+    mTitle.replaceChildren();
+    projModalBox.classList.toggle('project-modal--porter', item.id === 'porter');
+    mTitle.classList.toggle('modal-title--porter', item.id === 'porter');
+    if (item.id === 'porter') {
+      const logo = document.createElement('img');
+      logo.className = 'porter-title-logo';
+      logo.src = './assets/images/projects/project-porter-title-transparent.png';
+      logo.alt = 'Porter';
+      mTitle.appendChild(logo);
+    } else {
+      const titleText = document.createElement('span');
+      titleText.className = 'modal-title-text';
+      titleText.textContent = item.dataset.title || '';
+      mTitle.appendChild(titleText);
+    }
 
     // Subtitle tagline
     if (mSubtitle) mSubtitle.textContent = item.dataset.subtitle || '';
@@ -851,22 +873,162 @@ document.body.style.overflowY = 'scroll';
     const raw = item.dataset.text || '';
     mText.innerHTML = raw.replace(/\\n/g,'<br>');
 
+    // ── Per-project deep dive (clones <template id="deepdive-{id}"> if present)
+    const ddRoot = document.getElementById('projDeepDive');
+    const ddTpl  = document.getElementById('deepdive-' + item.id);
+    const hasDeepDive = Boolean(ddTpl);
+    if (ddRoot) {
+      ddRoot.replaceChildren();
+      if (hasDeepDive) {
+        ddRoot.appendChild(ddTpl.content.cloneNode(true));
+        ddRoot.hidden = false;
+        projModalBox.classList.add('has-deep-dive');
 
-    
+        // ── Capsule swap. The unified overview is the navigation; the
+        // capsule below shows one phase at a time. Click a shard up top,
+        // the capsule swaps to that phase. Default is phase 01.
+        const ddPhases = ddRoot.querySelectorAll('.dd-phase, .dd-stop');
+        const ovShards = ddRoot.querySelectorAll('[data-target-phase]');
+
+        // Stable id on each card so the shard click can find it.
+        let stopCounter = 0;
+        ddPhases.forEach((phase, idx) => {
+          if (phase.classList.contains('dd-stop')) {
+            stopCounter += 1;
+            phase.dataset.phase = `stop${stopCounter}`;
+          } else {
+            const numEl = phase.querySelector('.dd-phase-num');
+            phase.dataset.phase = numEl ? numEl.textContent.trim() : `p${idx}`;
+          }
+          // Make the active card the live region updater on selection.
+          phase.setAttribute('role', 'tabpanel');
+        });
+
+        // Make shards keyboard-accessible.
+        ovShards.forEach(shard => {
+          shard.setAttribute('role', 'tab');
+          shard.setAttribute('tabindex', '0');
+          shard.setAttribute('aria-selected', 'false');
+        });
+
+        function selectPhase(phaseId) {
+          ddPhases.forEach(p => p.classList.toggle('is-active', p.dataset.phase === phaseId));
+          ovShards.forEach(s => {
+            const match = s.getAttribute('data-target-phase') === phaseId;
+            s.classList.toggle('is-selected', match);
+            s.setAttribute('aria-selected', match ? 'true' : 'false');
+          });
+        }
+
+        ovShards.forEach(shard => {
+          shard.addEventListener('click', () => {
+            selectPhase(shard.getAttribute('data-target-phase'));
+          });
+          shard.addEventListener('keydown', (ev) => {
+            if (ev.key === 'Enter' || ev.key === ' ') {
+              ev.preventDefault();
+              selectPhase(shard.getAttribute('data-target-phase'));
+            } else if (ev.key === 'ArrowRight' || ev.key === 'ArrowLeft') {
+              ev.preventDefault();
+              const list = Array.from(ovShards);
+              const i = list.indexOf(shard);
+              const next = ev.key === 'ArrowRight'
+                ? list[(i + 1) % list.length]
+                : list[(i - 1 + list.length) % list.length];
+              next.focus();
+              selectPhase(next.getAttribute('data-target-phase'));
+            }
+          });
+        });
+
+        // Open phase 01 by default.
+        selectPhase('01');
+
+        // ── Living quote spotlight: yellow highlight rect slides
+        // between SVG quote anchors via CSS transform. SVG <rect>
+        // attribute reads (y, height) are deterministic everywhere
+        // — including Safari. The big italic quote on the left
+        // fades to match. Pause-on-hover.
+        ddRoot.querySelectorAll('.dd-spotlight').forEach(spot => {
+          const anchors   = spot.querySelectorAll('[data-quote-index]');
+          const quoteText = spot.querySelector('.dd-spotlight-text');
+          const highlight = spot.querySelector('.dd-spotlight-highlight');
+          if (!anchors.length || !quoteText || !highlight) return;
+
+          // The highlight's intrinsic height comes from the SVG markup;
+          // we slide it via translate and stretch via scaleY so each
+          // line is fully wrapped regardless of its individual size.
+          const HIGHLIGHT_BASE_H = parseFloat(highlight.getAttribute('height')) || 10;
+          const PAD = 3;
+
+          let index  = 0;
+          let paused = false;
+
+          function activate(i) {
+            const target = anchors[i];
+            const ty = parseFloat(target.getAttribute('y'));
+            const th = parseFloat(target.getAttribute('height'));
+            const wrappedH = th + PAD * 2;
+            const scaleY   = wrappedH / HIGHLIGHT_BASE_H;
+            // Centre the scaled highlight on the line's vertical centre.
+            const lineMid     = ty + th / 2;
+            const halfScaledH = (HIGHLIGHT_BASE_H * scaleY) / 2;
+            const tY          = lineMid - halfScaledH;
+
+            highlight.style.transform = `translate(0, ${tY}px) scaleY(${scaleY})`;
+            highlight.classList.add('is-on');
+
+            anchors.forEach(a => a.classList.toggle('is-active', a === target));
+
+            quoteText.classList.add('is-fading');
+            setTimeout(() => {
+              quoteText.textContent = target.dataset.quoteText || '';
+              quoteText.classList.remove('is-fading');
+            }, 320);
+
+            index = i;
+          }
+
+          // Show first quote immediately; place highlight on next frame
+          // so layout has settled (SVG rects need to be in the DOM).
+          quoteText.textContent = anchors[0].dataset.quoteText || '';
+          requestAnimationFrame(() => activate(0));
+
+          const tick = setInterval(() => {
+            if (!document.body.contains(spot)) { clearInterval(tick); return; }
+            if (paused) return;
+            activate((index + 1) % anchors.length);
+          }, 4500);
+
+          spot.addEventListener('mouseenter', () => paused = true);
+          spot.addEventListener('mouseleave', () => paused = false);
+        });
+      } else {
+        ddRoot.hidden = true;
+        projModalBox.classList.remove('has-deep-dive');
+      }
+    }
+
+    // Reset scroll to top so deep-dive opens from the lead-in.
+    const projScroll = projModalBox.querySelector('.proj-scroll');
+    if (projScroll) projScroll.scrollTop = 0;
+
+
     // ── Build / refresh hero carousel  ────────────────────
     const galleryArr = JSON.parse(item.dataset.gallery || '[]');
-    buildHeroSwiper(galleryArr);             // 🌟 NEW LINE
+    buildHeroSwiper(galleryArr, item.dataset.galleryOrder);
     
 // (mHero and mGall DOM manipulation is no longer needed, delete it)
 
     //   CTAs
-    if (item.dataset.link){
-  mLink.href        = item.dataset.link;
-  mLink.innerHTML   = 'Visit <em class="arrow">↗</em>';
-  mLink.style.display = 'inline-flex';
-}else{
-  mLink.style.display = 'none';
-}
+    if (item.dataset.link && !hasDeepDive) {
+      mLink.href = item.dataset.link;
+      mLink.innerHTML = 'Visit <em class="arrow">↗</em>';
+      mLink.style.display = 'inline-flex';
+    } else {
+      mLink.removeAttribute('href');
+      mLink.style.display = 'none';
+    }
 
     // 3. FLIP morph: card → modal
     morphOpenModal(item);
@@ -882,7 +1044,8 @@ function closeProjModal() {
   if (!lastOpenedItem) { _doClose(); return; }
 
   const thumb     = lastOpenedItem.querySelector('.project-img img');
-  const thumbRect = thumb ? thumb.getBoundingClientRect() : null;
+  const origin    = lastMorphOrigin || thumb;
+  const thumbRect = origin ? origin.getBoundingClientRect() : null;
 
   // If card scrolled off-screen, fade-shrink out
   const inView = thumbRect
@@ -933,9 +1096,10 @@ function _doClose() {
   _isClosing = false;
   // Always restore thumbnail visibility (safety net)
   if (lastOpenedItem) {
-    const t = lastOpenedItem.querySelector('.project-img img');
+    const t = lastMorphOrigin || lastOpenedItem.querySelector('.project-img img');
     if (t) t.style.opacity = '';
     lastOpenedItem = null;
+    lastMorphOrigin = null;
   }
   document.querySelectorAll('#heroSwiper video').forEach(v => {
     v.pause();
@@ -952,7 +1116,36 @@ function _doClose() {
 
 projClose.addEventListener('click', closeProjModal);
 projOverlay.addEventListener('click', closeProjModal);
-window.addEventListener('keyup', e => { if (e.key === 'Escape') closeProjModal(); });
+
+document.querySelectorAll('[data-open-project]').forEach(trigger => {
+  trigger.addEventListener('click', e => {
+    e.preventDefault();
+    const targetId = trigger.dataset.openProject;
+    const projItem = document.getElementById(targetId);
+    if (!projItem) return;
+
+    const wasHidden = !projItem.classList.contains('active');
+    if (wasHidden) projItem.classList.add('active');
+
+    nextProjectMorphOrigin = trigger.querySelector('.svc-ai-feature-visual, .ai-feature-visual') || trigger;
+    projItem.click();
+
+    if (wasHidden) setTimeout(() => projItem.classList.remove('active'), 3000);
+  });
+});
+
+window.addEventListener('keyup', e => {
+  if (e.key !== 'Escape') return;
+  // The MD viewer (a deep-dive document peek) stacks above the project
+  // modal. Close it first if it's open so the reader stays in the dive.
+  const mdViewer = document.getElementById('mdViewer');
+  if (mdViewer?.classList.contains('active')) {
+    mdViewer.classList.remove('active');
+    mdViewer.setAttribute('aria-hidden', 'true');
+    return;
+  }
+  closeProjModal();
+});
 
 
 
@@ -1316,7 +1509,7 @@ initCardShine();
     );
     hydrateVideos(scrollEl);
     scrollEl.querySelectorAll('video[autoplay]').forEach(v => v.play().catch(() => {}));
-    initCarousel(scrollEl);
+    initServiceMedia(scrollEl);
     scrollEl.scrollTop = 0;
     return true;
   }
@@ -1432,12 +1625,37 @@ initCardShine();
     if (e.key === 'Escape' && modal.classList.contains('active')) closeModal();
   });
 
-  // Chip click: close service modal, switch to Portfolio, open project detail modal.
+  // Pager dots inside .svc-ai-feature: swap which featured-proof slide is shown.
   scrollEl.addEventListener('click', e => {
-    const chip = e.target.closest('.svc-chips a[data-scroll]');
+    const dot = e.target.closest('.svc-ai-pager-dot');
+    if (!dot) return;
+    e.preventDefault();
+    e.stopPropagation();
+    const wrapper = dot.closest('.svc-ai-feature');
+    if (!wrapper) return;
+    const target = dot.dataset.featureTarget;
+    wrapper.querySelectorAll('.svc-ai-pager-dot').forEach(d => {
+      const isActive = d.dataset.featureTarget === target;
+      d.classList.toggle('is-active', isActive);
+      d.setAttribute('aria-selected', isActive ? 'true' : 'false');
+    });
+    wrapper.querySelectorAll('.svc-ai-feature-page').forEach(page => {
+      const isActive = page.dataset.featureSlide === target;
+      page.classList.toggle('is-active', isActive);
+      if (isActive) page.removeAttribute('hidden');
+      else page.setAttribute('hidden', '');
+    });
+    wrapper.dataset.featurePage = target;
+  });
+
+  // Project links inside the service modal: close service, switch to Portfolio,
+  // then open the project detail modal.
+  scrollEl.addEventListener('click', e => {
+    const chip = e.target.closest('.svc-chips a[data-scroll], .svc-ai-feature-link[data-scroll]');
     if (!chip) return;
     e.preventDefault();
     const targetId = chip.dataset.scroll;
+    nextProjectMorphOrigin = chip.querySelector('.svc-ai-feature-visual') || chip;
     closeModal();
     setTimeout(() => {
       portfolioBtn?.click();           // switch to portfolio tab
@@ -1456,9 +1674,19 @@ initCardShine();
     }, 280);   // after close-anim finishes
   });
 
-  // Build an auto-advancing carousel from .svc-media-strip figures.
+  // Present service screenshots as a compact product montage. The project
+  // modals carry the readable detail; this surface is for visual proof.
   // Called after populateFrom() clones a template into svcScroll.
   let carouselTimer = null;
+  function initServiceMedia(root) {
+    const strip = root.querySelector('.svc-media-strip');
+    if (!strip) return;
+    const slides = Array.from(strip.querySelectorAll('figure'));
+    if (slides.length < 2) return;
+
+    strip.classList.add('svc-montage');
+  }
+
   function initCarousel(root) {
     const strip = root.querySelector('.svc-media-strip');
     if (!strip) return;
@@ -1567,3 +1795,115 @@ initCardShine();
     items.forEach(item => io.observe(item));
   }
 }());
+
+
+// ============================================================================
+// MD viewer — a small modal-on-modal panel for previewing repo .md docs from
+// inside the project deep-dive. Triggered by clicking any element with
+// data-md="path/to/file.md". Closes via overlay/X click, and ESC (handled in
+// the project-modal keyup listener above so the project modal stays open).
+// ============================================================================
+function renderMarkdown(md) {
+  // Tiny in-house renderer — just enough for the writing-guide / workflow
+  // docs in this repo. Handles: headings, bold/italic/inline-code, fenced
+  // code, links, blockquotes, ordered + unordered lists, paragraphs.
+  const escape = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+  // Pull fenced code blocks aside so other rules don't eat their contents.
+  const codeBlocks = [];
+  md = md.replace(/```(\w*)\n([\s\S]*?)```/g, (_, _lang, code) => {
+    codeBlocks.push(`<pre class="md-pre"><code>${escape(code.replace(/\n$/, ''))}</code></pre>`);
+    return `\n\n__MD_CODE_${codeBlocks.length - 1}__\n\n`;
+  });
+
+  let html = escape(md);
+
+  // Headings (longest match first).
+  html = html.replace(/^###### (.*)$/gm, '<h6>$1</h6>');
+  html = html.replace(/^##### (.*)$/gm, '<h5>$1</h5>');
+  html = html.replace(/^#### (.*)$/gm,  '<h4>$1</h4>');
+  html = html.replace(/^### (.*)$/gm,   '<h3>$1</h3>');
+  html = html.replace(/^## (.*)$/gm,    '<h2>$1</h2>');
+  html = html.replace(/^# (.*)$/gm,     '<h1>$1</h1>');
+
+  // Inline: bold before italic so *** sequences resolve correctly.
+  html = html.replace(/\*\*([^*\n]+)\*\*/g, '<strong>$1</strong>');
+  html = html.replace(/\*([^*\n]+)\*/g,    '<em>$1</em>');
+  html = html.replace(/`([^`\n]+)`/g,      '<code>$1</code>');
+  html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g,
+    '<a href="$2" target="_blank" rel="noopener">$1</a>');
+
+  // Blockquotes — escaped > becomes &gt; after escape().
+  html = html.replace(/((?:^&gt; .+\n?)+)/gm, m => {
+    const text = m.trim().split('\n').map(l => l.replace(/^&gt;\s?/, '')).join(' ');
+    return `<blockquote>${text}</blockquote>`;
+  });
+
+  // Bulleted lists.
+  html = html.replace(/((?:^[-*] .+\n?)+)/gm, m => {
+    const items = m.trim().split('\n')
+      .map(l => `<li>${l.replace(/^[-*] /, '')}</li>`).join('');
+    return `<ul>${items}</ul>`;
+  });
+
+  // Numbered lists.
+  html = html.replace(/((?:^\d+\. .+\n?)+)/gm, m => {
+    const items = m.trim().split('\n')
+      .map(l => `<li>${l.replace(/^\d+\. /, '')}</li>`).join('');
+    return `<ol>${items}</ol>`;
+  });
+
+  // Wrap remaining text-blocks in <p>.
+  html = html.split(/\n{2,}/).map(b => {
+    b = b.trim();
+    if (!b) return '';
+    if (/^<(h[1-6]|ul|ol|pre|blockquote|p|hr|table|div)/.test(b)) return b;
+    if (/^__MD_CODE_\d+__$/.test(b)) return b;
+    return `<p>${b.replace(/\n/g, ' ')}</p>`;
+  }).filter(Boolean).join('\n\n');
+
+  // Restore code blocks.
+  html = html.replace(/__MD_CODE_(\d+)__/g, (_, idx) => codeBlocks[idx]);
+
+  return html;
+}
+
+(function setupMdViewer() {
+  const root = document.getElementById('mdViewer');
+  if (!root) return;
+  const overlay  = root.querySelector('.md-viewer-overlay');
+  const closeBtn = root.querySelector('.md-viewer-close');
+  const filename = root.querySelector('.md-viewer-filename');
+  const body     = root.querySelector('.md-viewer-body');
+
+  function open(path, displayName) {
+    filename.textContent = displayName || path;
+    body.innerHTML = '<p class="md-viewer-loading">Loading…</p>';
+    root.classList.add('active');
+    root.setAttribute('aria-hidden', 'false');
+    body.scrollTop = 0;
+    fetch(path)
+      .then(r => r.ok ? r.text() : Promise.reject(new Error(`HTTP ${r.status}`)))
+      .then(md => { body.innerHTML = renderMarkdown(md); body.scrollTop = 0; })
+      .catch(err => {
+        body.innerHTML =
+          `<p class="md-viewer-error">Could not load <code>${path}</code> — ${err.message}.</p>`;
+      });
+  }
+  function close() {
+    root.classList.remove('active');
+    root.setAttribute('aria-hidden', 'true');
+  }
+
+  closeBtn.addEventListener('click', close);
+  overlay.addEventListener('click', close);
+
+  // Click delegation — works for any [data-md] element in the document,
+  // including the cards inside the cloned Porter deep-dive template.
+  document.addEventListener('click', e => {
+    const card = e.target.closest('[data-md]');
+    if (!card) return;
+    e.preventDefault();
+    open(card.dataset.md, card.dataset.mdName);
+  });
+})();
