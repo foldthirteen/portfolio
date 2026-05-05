@@ -1,0 +1,1829 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>shape - live research preview</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --background: #03050a;
+      --card: #0b0e15;
+      --muted: #11151f;
+      --border: rgba(255, 255, 255, 0.08);
+      --border-strong: rgba(255, 255, 255, 0.14);
+      --foreground: #f4f4f8;
+      --muted-foreground: #959aa8;
+      --chart-1: #53c75d;
+      --chart-2: #ff5957;
+      --chart-3: #39b5ff;
+      --ring: #8a8af8;
+      --serif: "Instrument Serif", "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+      --sans: "Avenir Next", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+      --mono: "SFMono-Regular", "SF Mono", Consolas, "Liberation Mono", Menlo, monospace;
+    }
+
+    * { box-sizing: border-box; }
+
+    html,
+    body {
+      margin: 0;
+      min-height: 100%;
+      background: var(--background);
+      color: var(--foreground);
+      font-family: var(--sans);
+    }
+
+    body {
+      overflow-x: hidden;
+      background:
+        radial-gradient(ellipse 80% 50% at 50% -10%, rgba(120, 119, 198, 0.08), transparent),
+        radial-gradient(ellipse 60% 50% at 80% 120%, rgba(34, 211, 238, 0.05), transparent),
+        var(--background);
+    }
+
+    button {
+      color: inherit;
+      font: inherit;
+    }
+
+    .page {
+      width: min(1180px, calc(100vw - 32px));
+      margin: 0 auto;
+      padding: 0 0 30px;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(270px, 0.9fr) minmax(520px, 1.35fr);
+      gap: clamp(28px, 5vw, 70px);
+      align-items: center;
+      min-height: 470px;
+      padding: 28px 0 18px;
+    }
+
+    .belief-section {
+      padding: 8px 0 24px;
+    }
+
+    .mark-wrap {
+      position: relative;
+      min-height: 275px;
+      display: grid;
+      align-items: center;
+    }
+
+    .mark-wrap::after {
+      content: "";
+      position: absolute;
+      inset: 40px 0 20px;
+      pointer-events: none;
+      background: radial-gradient(ellipse at center, rgba(120, 119, 198, 0.10), transparent 64%);
+      filter: blur(28px);
+    }
+
+    #shapeMark {
+      position: relative;
+      z-index: 1;
+      display: block;
+      width: 100%;
+      height: 260px;
+      touch-action: none;
+      user-select: none;
+    }
+
+    .hero-copy {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      min-width: 0;
+    }
+
+    .kicker,
+    .card-kicker,
+    .metric-label,
+    th {
+      color: var(--muted-foreground);
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      line-height: 1.35;
+      text-transform: uppercase;
+    }
+
+    .kicker {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      margin: 0;
+      color: rgba(149, 154, 168, 0.92);
+    }
+
+    .live-dot {
+      position: relative;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--chart-1);
+      box-shadow: 0 0 16px rgba(83, 199, 93, 0.65);
+    }
+
+    .live-dot::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background: inherit;
+      animation: ping 1.6s cubic-bezier(0, 0, 0.2, 1) infinite;
+    }
+
+    h1 {
+      min-height: 2.18em;
+      margin: 0;
+      max-width: 620px;
+      font-family: var(--serif);
+      font-size: clamp(36px, 3vw, 44px);
+      font-weight: 400;
+      line-height: 1.08;
+      letter-spacing: 0;
+    }
+
+    h1 em {
+      color: rgba(244, 244, 248, 0.62);
+      font-style: italic;
+    }
+
+    .headline-char {
+      color: rgba(244, 244, 248, 0.26);
+      transition: color 180ms ease, opacity 180ms ease, text-shadow 180ms ease;
+    }
+
+    .headline-char.is-locked { color: var(--foreground); }
+    h1 em .headline-char.is-locked { color: rgba(244, 244, 248, 0.62); }
+    .headline-char.is-hot {
+      color: var(--chart-1);
+      text-shadow: 0 0 18px rgba(83, 199, 93, 0.42);
+    }
+
+    .belief-card {
+      position: relative;
+      overflow: hidden;
+      border: 1px solid var(--border-strong);
+      border-radius: 14px;
+      background:
+        linear-gradient(135deg, rgba(255, 255, 255, 0.035), transparent 42%),
+        rgba(11, 14, 21, 0.80);
+      box-shadow:
+        0 24px 80px rgba(0, 0, 0, 0.34),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    }
+
+    .belief-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: linear-gradient(90deg, transparent, rgba(83, 199, 93, 0.10), transparent);
+      opacity: 0;
+      transform: translateX(-130%);
+    }
+
+    .belief-card.is-playing::before {
+      animation: sweep 3.8s cubic-bezier(0.22, 1, 0.36, 1) 900ms 1 both;
+    }
+
+    .belief-head {
+      position: relative;
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 18px 18px 10px;
+    }
+
+    .card-kicker,
+    .question {
+      margin: 0;
+    }
+
+    .question {
+      margin-top: 14px;
+      color: var(--foreground);
+      font-size: 13px;
+      line-height: 1.35;
+    }
+
+    .belief-body {
+      position: relative;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 156px;
+      gap: 16px;
+      padding: 0 18px 18px;
+    }
+
+    .belief-main {
+      min-width: 0;
+    }
+
+    .belief-flow {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 396 / 132;
+      margin-top: 2px;
+    }
+
+    .belief-flow svg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      overflow: visible;
+    }
+
+    .flow-path,
+    .flow-glow,
+    .flow-branch,
+    .flow-dot,
+    .flow-label,
+    .ghost-mark,
+    .delta-badge {
+      opacity: 0;
+    }
+
+    .belief-card.is-playing .flow-path,
+    .belief-card.is-playing .flow-glow {
+      stroke-dasharray: 1;
+      stroke-dashoffset: 1;
+      animation: path-draw 1080ms cubic-bezier(0.22, 1, 0.36, 1) var(--delay, 0ms) forwards;
+    }
+
+    .belief-card.is-playing .flow-branch,
+    .belief-card.is-playing .flow-dot,
+    .belief-card.is-playing .flow-label,
+    .belief-card.is-playing .ghost-mark,
+    .belief-card.is-playing .delta-badge {
+      animation: fade-in 360ms ease var(--delay, 0ms) forwards;
+    }
+
+    .belief-card.is-settled .flow-path,
+    .belief-card.is-settled .flow-glow,
+    .belief-card.is-settled .flow-branch,
+    .belief-card.is-settled .flow-dot,
+    .belief-card.is-settled .flow-label,
+    .belief-card.is-settled .ghost-mark,
+    .belief-card.is-settled .delta-badge {
+      opacity: 1;
+      stroke-dashoffset: 0;
+    }
+
+    .flow-wobble {
+      animation: branch-wobble 5.4s ease-in-out infinite;
+      animation-delay: var(--wobble, 0ms);
+    }
+
+    .flow-survivor {
+      animation: branch-breathe 3.8s ease-in-out infinite;
+    }
+
+    .path-particle {
+      opacity: 0;
+      offset-rotate: 0deg;
+      animation: flow-particle 3200ms linear var(--delay, 0ms) infinite;
+    }
+
+    .spark-halo {
+      animation: spark-halo 2.4s ease-in-out infinite;
+    }
+
+    .spark-halo-outer {
+      animation: spark-halo-outer 3.6s ease-in-out infinite;
+    }
+
+    .news-strip {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 2px;
+    }
+
+    .news-item {
+      min-width: 0;
+      color: rgba(244, 244, 248, 0.86);
+      font-size: 12px;
+      line-height: 1.35;
+      opacity: 0;
+      transform: translateY(6px);
+      transition: opacity 480ms ease, transform 480ms ease;
+    }
+
+    .news-item.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .news-item span {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+      margin-bottom: 4px;
+      color: rgba(244, 244, 248, 0.68);
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+    }
+
+    .news-item b {
+      margin-left: auto;
+      color: var(--chart-1);
+      font-weight: 600;
+    }
+
+    .news-item.is-risk b { color: var(--chart-2); }
+
+    .arrive-dot {
+      display: none;
+      width: 4px;
+      height: 4px;
+      margin-left: 3px;
+      border-radius: 50%;
+      background: currentColor;
+      box-shadow: 0 0 0 5px currentColor;
+      opacity: 0.44;
+      animation: arrive 900ms ease-out 1;
+    }
+
+    .news-item.is-current .arrive-dot {
+      display: inline-block;
+    }
+
+    .parser {
+      position: relative;
+      display: flex;
+      min-height: 220px;
+      flex-direction: column;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      border-radius: 10px;
+      background: rgba(17, 21, 31, 0.70);
+      color: var(--muted-foreground);
+      font-family: var(--mono);
+      font-size: 10px;
+      line-height: 1.35;
+    }
+
+    .parser::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: linear-gradient(rgba(120, 120, 160, 0.03), transparent 30% 85%, rgba(120, 120, 160, 0.04));
+    }
+
+    .parser-top {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 11px 11px 0;
+      color: rgba(149, 154, 168, 0.92);
+      font-size: 9.5px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    .parser-top .live-dot {
+      width: 6px;
+      height: 6px;
+      box-shadow: none;
+    }
+
+    .parser-top .tokens {
+      margin-left: auto;
+      color: rgba(149, 154, 168, 0.70);
+      letter-spacing: 0.08em;
+    }
+
+    .parser-log {
+      position: relative;
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+      justify-content: flex-end;
+      gap: 1px;
+      min-height: 120px;
+      padding: 8px 11px 6px;
+    }
+
+    .parser-line {
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      animation: parser-line-in 320ms cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+
+    .parser-line.retain { color: var(--chart-1); }
+    .parser-line.reject { color: var(--chart-2); }
+    .parser-line.ingest { color: var(--foreground); }
+
+    .parser-cursor {
+      padding: 0 11px 9px;
+      color: rgba(149, 154, 168, 0.86);
+    }
+
+    .cursor-block {
+      animation: cursor-blink 1s steps(2, start) infinite;
+    }
+
+    .posterior {
+      position: relative;
+      margin-top: auto;
+      padding: 10px 12px 11px;
+      background: rgba(244, 244, 248, 0.88);
+      color: #090b11;
+      animation: verdict-flash 0.64s ease-out both;
+    }
+
+    .posterior-top {
+      display: flex;
+      justify-content: space-between;
+      color: rgba(9, 11, 17, 0.58);
+      font-size: 8.5px;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    .delta-pill {
+      padding: 1px 5px;
+      border: 1px solid rgba(83, 199, 93, 0.46);
+      border-radius: 999px;
+      background: rgba(83, 199, 93, 0.22);
+      color: #2c8a38;
+      letter-spacing: 0.06em;
+    }
+
+    .posterior-value {
+      margin-top: 5px;
+      color: #080910;
+      font-family: var(--mono);
+      font-size: 16px;
+      font-weight: 600;
+      line-height: 1;
+    }
+
+    .posterior-value span {
+      font-size: 9px;
+      font-weight: 400;
+      color: rgba(8, 9, 16, 0.60);
+    }
+
+    .explain {
+      max-width: 66ch;
+      min-height: 4.4em;
+      margin: 0;
+      color: rgba(244, 244, 248, 0.64);
+      font-size: 15px;
+      line-height: 1.48;
+    }
+
+    .explain-word {
+      opacity: 0;
+      transform: translateY(3px);
+      display: inline-block;
+      transition: opacity 220ms ease, transform 220ms ease;
+    }
+
+    .explain-word.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .metric {
+      min-height: 118px;
+      padding: 18px 20px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: rgba(17, 21, 31, 0.78);
+    }
+
+    .metric-value {
+      margin-top: 16px;
+      color: var(--foreground);
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: 0;
+    }
+
+    .metric-value.loss { color: var(--chart-2); }
+
+    .metric-note {
+      margin-top: 4px;
+      color: var(--muted-foreground);
+      font-size: 12px;
+    }
+
+    .runs {
+      margin-top: 22px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: rgba(17, 21, 31, 0.78);
+    }
+
+    .runs-head {
+      padding: 18px 18px 12px;
+    }
+
+    .runs-title {
+      margin: 0 0 6px;
+      font-size: 17px;
+      font-weight: 600;
+    }
+
+    .runs-sub {
+      margin: 0;
+      color: var(--muted-foreground);
+      font-size: 13px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+      font-size: 12px;
+    }
+
+    th,
+    td {
+      padding: 13px 18px;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      text-align: left;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    td { color: rgba(244, 244, 248, 0.72); }
+    td.good { color: var(--chart-1); }
+    td.bad { color: var(--chart-2); }
+
+    tbody tr {
+      animation: row-glow 7s ease-in-out infinite;
+      animation-delay: calc(var(--i) * 0.55s);
+    }
+
+    .foot {
+      margin: 18px 0 0;
+      color: rgba(244, 244, 248, 0.64);
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .howto-section {
+      padding: 8px 0 24px;
+    }
+
+    .how-panel {
+      position: relative;
+      width: 100%;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 18px;
+      background: #0b0e15;
+      box-shadow: 0 26px 90px rgba(0, 0, 0, 0.56);
+    }
+
+    .how-intro {
+      padding: 30px 42px 20px;
+    }
+
+    .how-intro p {
+      margin: 0;
+      max-width: 720px;
+      color: var(--muted-foreground);
+      font-size: 15px;
+      line-height: 1.5;
+    }
+
+    .how-intro .card-kicker { margin-bottom: 8px; }
+
+    .how-intro h2 {
+      margin: 0 0 12px;
+      font-family: var(--serif);
+      font-size: clamp(36px, 5vw, 54px);
+      font-weight: 400;
+      line-height: 1.04;
+      letter-spacing: 0;
+    }
+
+    .how-intro em {
+      color: var(--muted-foreground);
+      font-style: italic;
+    }
+
+    .steps {
+      position: relative;
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 14px;
+      margin: 0;
+      padding: 0 24px 18px;
+      list-style: none;
+    }
+
+    .step {
+      position: relative;
+      min-width: 0;
+      animation: hiw-step-in 560ms cubic-bezier(0.22, 1, 0.36, 1) both;
+      animation-delay: calc(160ms + var(--i) * 95ms);
+    }
+
+    .step-button {
+      position: relative;
+      display: flex;
+      width: 100%;
+      height: 84px;
+      align-items: center;
+      justify-content: center;
+      overflow: visible;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.025);
+      color: var(--foreground);
+      cursor: pointer;
+      animation: hiw-icon-breathe 5.4s ease-in-out infinite;
+      transition: border-color 220ms ease, background-color 220ms ease, box-shadow 220ms ease, transform 220ms ease;
+    }
+
+    .step-button:hover,
+    .step-button:focus-visible {
+      border-color: rgba(255, 255, 255, 0.18);
+      background: rgba(255, 255, 255, 0.045);
+      outline: none;
+      transform: translateY(-2px);
+    }
+
+    .step-button.is-selected {
+      border-color: rgba(83, 199, 93, 0.60);
+      background: rgba(83, 199, 93, 0.10);
+      box-shadow: 0 0 0 1px rgba(83, 199, 93, 0.35), 0 0 26px -8px rgba(83, 199, 93, 0.44);
+    }
+
+    .step-button.is-selected::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: 10px;
+      border: 1px solid rgba(83, 199, 93, 0.36);
+      animation: hiw-select-pulse 1.6s ease-in-out infinite;
+      pointer-events: none;
+    }
+
+    .step-button svg {
+      width: 72px;
+      height: 48px;
+      fill: none;
+      stroke: currentColor;
+      stroke-linecap: round;
+      stroke-width: 1;
+    }
+
+    .step-connector {
+      position: absolute;
+      right: -17px;
+      top: 38px;
+      z-index: 4;
+      width: 34px;
+      height: 16px;
+      pointer-events: none;
+    }
+
+    .step:last-child .step-connector { display: none; }
+
+    .step-connector circle {
+      opacity: 0;
+      offset-path: path("M 0 8 L 30 8");
+      offset-rotate: 0deg;
+      animation: hiw-pulse-flow 3200ms linear calc(var(--i) * 800ms) infinite;
+    }
+
+    .step-meta {
+      min-width: 0;
+      margin-top: 11px;
+    }
+
+    .step-meta-row {
+      display: flex;
+      gap: 8px;
+      align-items: baseline;
+    }
+
+    .step-num,
+    .step-label {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    .step-num { color: rgba(149, 154, 168, 0.58); }
+    .step-label { color: rgba(149, 154, 168, 0.78); }
+    .step-label.is-selected { color: var(--chart-1); }
+
+    .step-title {
+      margin: 5px 0 0;
+      height: 1.2rem;
+      overflow: hidden;
+      color: rgba(244, 244, 248, 0.92);
+      font-size: 14px;
+      font-weight: 650;
+    }
+
+    .step-copy {
+      margin: 8px 0 0;
+      height: 3.9rem;
+      overflow: hidden;
+      color: var(--muted-foreground);
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .detail-panel {
+      display: grid;
+      grid-template-columns: 180px minmax(0, 1fr);
+      gap: 20px;
+      min-height: 350px;
+      margin: 0 24px 24px;
+      padding: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.025);
+      animation: hiw-panel-in 320ms cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+
+    .detail-index {
+      color: rgba(149, 154, 168, 0.74);
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    .detail-index strong {
+      display: block;
+      margin: 10px 0 8px;
+      color: var(--foreground);
+      font-family: var(--sans);
+      font-size: 22px;
+      letter-spacing: 0;
+      text-transform: none;
+    }
+
+    .detail-content {
+      color: rgba(244, 244, 248, 0.78);
+      font-size: 14px;
+      line-height: 1.55;
+    }
+
+    .detail-content p {
+      margin: 0 0 12px;
+    }
+
+    .detail-content code,
+    .detail-content pre {
+      font-family: var(--mono);
+    }
+
+    .detail-content code {
+      color: rgba(244, 244, 248, 0.90);
+    }
+
+    .detail-content pre {
+      overflow-x: auto;
+      margin: 12px 0;
+      padding: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 8px;
+      background: rgba(0, 0, 0, 0.22);
+      color: rgba(244, 244, 248, 0.86);
+      font-size: 12px;
+      line-height: 1.55;
+    }
+
+    .detail-table {
+      width: 100%;
+      margin-top: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .detail-row {
+      display: grid;
+      grid-template-columns: 150px minmax(0, 1fr);
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .detail-row:first-child { border-top: 0; }
+
+    .detail-key,
+    .detail-val {
+      padding: 9px 12px;
+      font-size: 12px;
+    }
+
+    .detail-key {
+      color: rgba(149, 154, 168, 0.80);
+      font-family: var(--mono);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      background: rgba(255, 255, 255, 0.025);
+    }
+
+    .detail-val { color: rgba(244, 244, 248, 0.84); }
+
+    .how-foot {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px 24px;
+      align-items: center;
+      padding: 15px 42px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(255, 255, 255, 0.025);
+      color: var(--muted-foreground);
+      font-size: 12px;
+    }
+
+    .how-foot strong { color: var(--foreground); }
+
+    @keyframes ping {
+      75%,
+      100% {
+        transform: scale(2.35);
+        opacity: 0;
+      }
+    }
+
+    @keyframes sweep {
+      0% { transform: translateX(-130%); opacity: 0; }
+      14% { opacity: 0.95; }
+      74% { opacity: 0.95; }
+      100% { transform: translateX(130%); opacity: 0; }
+    }
+
+    @keyframes path-draw {
+      from { stroke-dashoffset: 1; opacity: 0; }
+      to { stroke-dashoffset: 0; opacity: 1; }
+    }
+
+    @keyframes fade-in {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes flow-particle {
+      0% { offset-distance: 0%; opacity: 0; }
+      15% { opacity: var(--flow-opacity, 0.95); }
+      85% { opacity: var(--flow-opacity, 0.95); }
+      100% { offset-distance: 100%; opacity: 0; }
+    }
+
+    @keyframes spark-halo {
+      0%, 100% { r: 4; fill-opacity: 0.30; }
+      50% { r: 7; fill-opacity: 0.08; }
+    }
+
+    @keyframes spark-halo-outer {
+      0%, 100% { r: 6; fill-opacity: 0.10; }
+      50% { r: 10; fill-opacity: 0.02; }
+    }
+
+    @keyframes branch-breathe {
+      0%, 100% { stroke-opacity: 0.14; }
+      50% { stroke-opacity: 0.32; }
+    }
+
+    @keyframes branch-wobble {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-0.6px); }
+    }
+
+    @keyframes arrive {
+      from { opacity: 0.6; transform: scale(0.2); }
+      to { opacity: 0; transform: scale(1.8); }
+    }
+
+    @keyframes parser-line-in {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes cursor-blink {
+      to { opacity: 0; }
+    }
+
+    @keyframes verdict-flash {
+      0% { filter: brightness(1.04); box-shadow: inset 0 1px rgba(255, 255, 255, 0.40); }
+      100% { filter: brightness(1); box-shadow: inset 0 1px rgba(255, 255, 255, 0); }
+    }
+
+    @keyframes row-glow {
+      0%, 72%, 100% { background: transparent; }
+      82% { background: rgba(83, 199, 93, 0.045); }
+    }
+
+    @keyframes hiw-step-in {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes hiw-icon-breathe {
+      0%, 100% { border-color: rgba(255, 255, 255, 0.08); background-color: rgba(255, 255, 255, 0.025); }
+      50% { border-color: rgba(255, 255, 255, 0.15); background-color: rgba(255, 255, 255, 0.04); }
+    }
+
+    @keyframes hiw-pulse-flow {
+      0% { offset-distance: 0%; opacity: 0; }
+      4% { offset-distance: 0%; opacity: 1; }
+      24% { offset-distance: 100%; opacity: 1; }
+      28% { offset-distance: 100%; opacity: 0; }
+      100% { offset-distance: 100%; opacity: 0; }
+    }
+
+    @keyframes hiw-select-pulse {
+      0%, 100% { opacity: 0.25; transform: scale(1); }
+      50% { opacity: 0.65; transform: scale(1.01); }
+    }
+
+    @keyframes hiw-panel-in {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 900px) {
+      .hero {
+        grid-template-columns: 1fr;
+        min-height: auto;
+        gap: 18px;
+      }
+
+      .mark-wrap {
+        min-height: 178px;
+      }
+
+      #shapeMark {
+        height: 190px;
+      }
+
+      h1 {
+        min-height: 0;
+        font-size: clamp(34px, 10vw, 46px);
+      }
+
+      .belief-body {
+        grid-template-columns: 1fr;
+      }
+
+      .parser {
+        display: none;
+      }
+
+      .metrics {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .news-strip {
+        grid-template-columns: 1fr;
+      }
+
+      .steps {
+        grid-template-columns: repeat(5, minmax(150px, 1fr));
+        overflow-x: auto;
+        padding-bottom: 20px;
+      }
+
+      .detail-panel {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 540px) {
+      .page {
+        width: min(100vw - 20px, 1180px);
+      }
+
+      .hero {
+        padding-top: 8px;
+      }
+
+      .belief-head,
+      .belief-body {
+        padding-left: 14px;
+        padding-right: 14px;
+      }
+
+      .metrics {
+        grid-template-columns: 1fr;
+      }
+
+      th,
+      td {
+        padding: 11px 12px;
+      }
+
+      .how-intro,
+      .how-foot {
+        padding-left: 22px;
+        padding-right: 22px;
+      }
+
+      .steps,
+      .detail-panel {
+        margin-left: 0;
+        margin-right: 0;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: 1ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: 1ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="hero" aria-label="Shape read-only preview">
+      <div class="mark-wrap">
+        <canvas id="shapeMark" aria-label="shape animated wordmark" role="img"></canvas>
+      </div>
+
+      <div class="hero-copy">
+        <p class="kicker"><span class="live-dot" aria-hidden="true"></span><span id="wireState">live - the wire - gemma 4 local</span></p>
+        <h1 id="heroHeadline" aria-label="A news-reactive research system for prediction markets.">A news-reactive research system for <em>prediction markets</em>.</h1>
+
+        <p class="explain" id="explainText">The model considers several posteriors at every headline, weighs them against prior belief, and keeps the one evidence supports. A fractional-Kelly sizer then turns belief into a paper bet; every decision is logged for calibration.</p>
+      </div>
+    </section>
+
+    <section class="belief-section" aria-label="How shape thinks">
+      <article class="belief-card" id="beliefCard">
+          <div class="belief-head">
+            <div>
+              <p class="card-kicker">Belief - live</p>
+              <p class="question">Strait of Hormuz traffic returns to normal by April 30</p>
+            </div>
+          </div>
+
+          <div class="belief-body">
+            <div class="belief-main">
+              <div class="belief-flow" aria-hidden="true">
+                <svg viewBox="0 0 396 132" preserveAspectRatio="xMidYMid meet">
+                  <defs>
+                    <linearGradient id="snake-tail" x1="0" x2="1" y1="0" y2="0">
+                      <stop offset="0%" stop-color="currentColor" stop-opacity="0"></stop>
+                      <stop offset="55%" stop-color="currentColor" stop-opacity="0.32"></stop>
+                      <stop offset="100%" stop-color="currentColor" stop-opacity="0.85"></stop>
+                    </linearGradient>
+                  </defs>
+
+                  <g class="flow-wobble" style="--wobble: 1200ms">
+                    <path class="flow-glow" pathLength="1" d="M 6 46.8 C 36 46.8, 36 85.2, 66 85.2" stroke="var(--chart-2)" stroke-width="6" stroke-linecap="round" fill="none" stroke-opacity="0.18" style="--delay: 620ms; filter: blur(3px)"></path>
+                    <path class="flow-path flow-survivor" pathLength="1" d="M 6 46.8 C 36 46.8, 36 85.2, 66 85.2" stroke="var(--chart-2)" stroke-width="1.45" stroke-linecap="round" fill="none" style="--delay: 620ms"></path>
+                    <path class="flow-branch" d="M 6 46.8 C 36 46.8, 36 102.8, 66 102.8" stroke="currentColor" stroke-opacity="0.26" stroke-dasharray="1.6 2.2" stroke-width="0.7" fill="none" style="--delay: 1380ms"></path>
+                    <path class="flow-branch" d="M 6 46.8 C 36 46.8, 36 74.0, 66 74.0" stroke="currentColor" stroke-opacity="0.26" stroke-dasharray="1.6 2.2" stroke-width="0.7" fill="none" style="--delay: 1380ms"></path>
+                    <circle class="path-particle" r="1.3" fill="var(--chart-2)" style='--delay: 1500ms; --flow-opacity: .95; offset-path: path("M 6 46.8 C 36 46.8, 36 85.2, 66 85.2")'></circle>
+                    <g class="ghost-mark" transform="translate(66 102.8)" style="--delay: 1420ms"><circle r="2.2" fill="none" stroke="currentColor" stroke-opacity="0.48" stroke-width="0.7"></circle><path d="M-1.6 -1.6 1.6 1.6M-1.6 1.6 1.6 -1.6" stroke="currentColor" stroke-opacity="0.48" stroke-width="0.7"></path></g>
+                    <g class="ghost-mark" transform="translate(66 74.0)" style="--delay: 1420ms"><circle r="2.2" fill="none" stroke="currentColor" stroke-opacity="0.48" stroke-width="0.7"></circle><path d="M-1.6 -1.6 1.6 1.6M-1.6 1.6 1.6 -1.6" stroke="currentColor" stroke-opacity="0.48" stroke-width="0.7"></path></g>
+                    <circle class="flow-dot" cx="66" cy="85.2" r="3" fill="var(--chart-2)" stroke="var(--card)" stroke-width="1" style="--delay: 1600ms"></circle>
+                    <text class="flow-label" x="66" y="79" text-anchor="middle" font-size="6" fill="currentColor" style="--delay: 1720ms; font-family: var(--mono)">0.38</text>
+                    <text class="flow-label" x="73" y="105" font-size="5.5" fill="currentColor" fill-opacity="0.44" style="--delay: 1740ms; font-family: var(--mono)">0.27</text>
+                    <text class="flow-label" x="73" y="76" font-size="5.5" fill="currentColor" fill-opacity="0.44" style="--delay: 1740ms; font-family: var(--mono)">0.45</text>
+                  </g>
+
+                  <g class="flow-wobble" style="--wobble: 1700ms">
+                    <path class="flow-glow" pathLength="1" d="M 66 85.2 C 132 85.2, 132 62.8, 198 62.8" stroke="var(--chart-1)" stroke-width="6" stroke-linecap="round" fill="none" stroke-opacity="0.18" style="--delay: 1870ms; filter: blur(3px)"></path>
+                    <path class="flow-path flow-survivor" pathLength="1" d="M 66 85.2 C 132 85.2, 132 62.8, 198 62.8" stroke="var(--chart-1)" stroke-width="1.45" stroke-linecap="round" fill="none" style="--delay: 1870ms"></path>
+                    <path class="flow-branch" d="M 66 85.2 C 132 85.2, 132 75.6, 198 75.6" stroke="currentColor" stroke-opacity="0.26" stroke-dasharray="1.6 2.2" stroke-width="0.7" fill="none" style="--delay: 2620ms"></path>
+                    <path class="flow-branch" d="M 66 85.2 C 132 85.2, 132 50.0, 198 50.0" stroke="currentColor" stroke-opacity="0.26" stroke-dasharray="1.6 2.2" stroke-width="0.7" fill="none" style="--delay: 2620ms"></path>
+                    <circle class="path-particle" r="1.3" fill="var(--chart-1)" style='--delay: 2750ms; --flow-opacity: .95; offset-path: path("M 66 85.2 C 132 85.2, 132 62.8, 198 62.8")'></circle>
+                    <g class="ghost-mark" transform="translate(198 75.6)" style="--delay: 2660ms"><circle r="2.2" fill="none" stroke="currentColor" stroke-opacity="0.48" stroke-width="0.7"></circle><path d="M-1.6 -1.6 1.6 1.6M-1.6 1.6 1.6 -1.6" stroke="currentColor" stroke-opacity="0.48" stroke-width="0.7"></path></g>
+                    <g class="ghost-mark" transform="translate(198 50.0)" style="--delay: 2660ms"><circle r="2.2" fill="none" stroke="currentColor" stroke-opacity="0.48" stroke-width="0.7"></circle><path d="M-1.6 -1.6 1.6 1.6M-1.6 1.6 1.6 -1.6" stroke="currentColor" stroke-opacity="0.48" stroke-width="0.7"></path></g>
+                    <circle class="flow-dot" cx="198" cy="62.8" r="3" fill="var(--chart-1)" stroke="var(--card)" stroke-width="1" style="--delay: 2850ms"></circle>
+                    <text class="flow-label" x="198" y="56.8" text-anchor="middle" font-size="6" fill="currentColor" style="--delay: 2980ms; font-family: var(--mono)">0.52</text>
+                    <text class="flow-label" x="205" y="78" font-size="5.5" fill="currentColor" fill-opacity="0.44" style="--delay: 3000ms; font-family: var(--mono)">0.44</text>
+                    <text class="flow-label" x="205" y="52" font-size="5.5" fill="currentColor" fill-opacity="0.44" style="--delay: 3000ms; font-family: var(--mono)">0.60</text>
+                  </g>
+
+                  <g class="flow-wobble" style="--wobble: 2200ms">
+                    <path class="flow-glow" pathLength="1" d="M 198 62.8 C 264 62.8, 264 40.4, 330 40.4" stroke="var(--chart-1)" stroke-width="6" stroke-linecap="round" fill="none" stroke-opacity="0.18" style="--delay: 3120ms; filter: blur(3px)"></path>
+                    <path class="flow-path flow-survivor" pathLength="1" d="M 198 62.8 C 264 62.8, 264 40.4, 330 40.4" stroke="var(--chart-1)" stroke-width="1.45" stroke-linecap="round" fill="none" style="--delay: 3120ms"></path>
+                    <path class="flow-branch" d="M 198 62.8 C 264 62.8, 264 53.2, 330 53.2" stroke="currentColor" stroke-opacity="0.26" stroke-dasharray="1.6 2.2" stroke-width="0.7" fill="none" style="--delay: 3860ms"></path>
+                    <path class="flow-branch" d="M 198 62.8 C 264 62.8, 264 30.8, 330 30.8" stroke="currentColor" stroke-opacity="0.26" stroke-dasharray="1.6 2.2" stroke-width="0.7" fill="none" style="--delay: 3860ms"></path>
+                    <circle class="path-particle" r="1.3" fill="var(--chart-1)" style='--delay: 4000ms; --flow-opacity: .95; offset-path: path("M 198 62.8 C 264 62.8, 264 40.4, 330 40.4")'></circle>
+                    <g class="ghost-mark" transform="translate(330 53.2)" style="--delay: 3900ms"><circle r="2.2" fill="none" stroke="currentColor" stroke-opacity="0.48" stroke-width="0.7"></circle><path d="M-1.6 -1.6 1.6 1.6M-1.6 1.6 1.6 -1.6" stroke="currentColor" stroke-opacity="0.48" stroke-width="0.7"></path></g>
+                    <g class="ghost-mark" transform="translate(330 30.8)" style="--delay: 3900ms"><circle r="2.2" fill="none" stroke="currentColor" stroke-opacity="0.48" stroke-width="0.7"></circle><path d="M-1.6 -1.6 1.6 1.6M-1.6 1.6 1.6 -1.6" stroke="currentColor" stroke-opacity="0.48" stroke-width="0.7"></path></g>
+                    <circle class="flow-dot spark-halo-outer" cx="330" cy="40.4" r="7" fill="var(--chart-1)" fill-opacity="0.10" style="--delay: 4100ms"></circle>
+                    <circle class="flow-dot spark-halo" cx="330" cy="40.4" r="5" fill="var(--chart-1)" fill-opacity="0.22" style="--delay: 4100ms"></circle>
+                    <circle class="flow-dot" cx="330" cy="40.4" r="3" fill="var(--chart-1)" stroke="var(--card)" stroke-width="1" style="--delay: 4100ms"></circle>
+                    <text class="flow-label" x="330" y="34.4" text-anchor="middle" font-size="6" fill="currentColor" style="--delay: 4220ms; font-family: var(--mono)">0.66</text>
+                    <g class="delta-badge" transform="translate(330 25)" style="--delay: 4280ms">
+                      <rect x="-16" y="-6.4" width="32" height="9.6" rx="2.6" fill="var(--chart-1)" fill-opacity="0.18" stroke="var(--chart-1)" stroke-opacity="0.55" stroke-width="0.6"></rect>
+                      <text x="0" y="0.7" text-anchor="middle" font-size="6" font-weight="600" fill="var(--chart-1)" style="font-family: var(--mono)">+4 pts</text>
+                    </g>
+                  </g>
+                  <circle class="flow-dot" cx="376" cy="40.4" r="2.4" fill="var(--foreground)" style="--delay: 4420ms"></circle>
+                </svg>
+              </div>
+
+              <div class="news-strip">
+                <p class="news-item is-risk"><span>Reuters <small>1d</small> <b>-0.24<i class="arrive-dot"></i></b></span>IRGC boards tanker near Strait of Hormuz<br>0.62 -> 0.38</p>
+                <p class="news-item"><span>AP <small>4h</small> <b>+0.14<i class="arrive-dot"></i></b></span>US, UK escorts resume Hormuz convoys<br>0.38 -> 0.52</p>
+                <p class="news-item"><span>PortWatch <small>12m</small> <b>+0.14<i class="arrive-dot"></i></b></span>Daily transits rebound above 55 ships<br>0.52 -> 0.66</p>
+              </div>
+            </div>
+
+            <aside class="parser" aria-label="Parser state">
+              <div class="parser-top"><span class="live-dot" aria-hidden="true"></span><span>parse</span><span class="tokens" id="tokenCount">156t</span></div>
+              <div class="parser-log" id="parserLog"></div>
+              <div class="parser-cursor"><span class="cursor-block">|</span> <span id="parserState">idle</span></div>
+              <div class="posterior" id="posteriorBox">
+                <div class="posterior-top"><span>posterior</span><span class="delta-pill" id="deltaPill">+4</span></div>
+                <div class="posterior-value"><span id="posteriorValue">66</span><span> %</span></div>
+              </div>
+            </aside>
+          </div>
+      </article>
+    </section>
+
+    <section class="howto-section" aria-label="How shape thinks">
+      <div class="how-panel">
+        <div class="how-intro">
+          <p class="card-kicker">the five-step loop - gemma 4 local</p>
+          <h2 id="howTitle">How <em>shape</em> thinks.</h2>
+          <p>Here is what shape does, broken into five steps. It reads the news as it comes in, estimates how each story should move the market price, sizes a small paper bet, checks how the prediction held up, and uses what it got wrong to suggest the next thing to try.</p>
+        </div>
+
+        <ol class="steps" id="steps">
+          <li class="step" style="--i:0">
+            <button class="step-button is-selected" type="button" data-step="0" aria-pressed="true">
+              <svg viewBox="0 0 72 48" aria-hidden="true">
+                <g><path d="M6 12h16M6 15h10M6 24h16M6 27h10M6 36h16M6 39h10"></path></g>
+                <path d="M24 12C34 12 34 24 44 24M24 24h20M24 36C34 36 34 24 44 24" stroke-opacity=".45"></path>
+                <ellipse cx="56" cy="14" rx="10" ry="3"></ellipse><path d="M46 14v20M66 14v20"></path><ellipse cx="56" cy="34" rx="10" ry="3"></ellipse><path d="M46 24a10 3 0 0 0 20 0" stroke-opacity=".3"></path>
+              </svg>
+            </button>
+            <svg class="step-connector" viewBox="0 0 34 16" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" aria-hidden="true"><path d="M0 8h30" stroke-opacity=".55"></path><path d="M26 4l4 4-4 4" stroke-opacity=".75"></path><circle r="1.6" fill="var(--chart-1)" stroke="none"></circle></svg>
+            <div class="step-meta"><div class="step-meta-row"><span class="step-num">01</span><span class="step-label is-selected">ingest</span></div><h3 class="step-title">Read the wire</h3><p class="step-copy">AP, Reuters and Bloomberg land locally, keyed to markets they might move.</p></div>
+          </li>
+          <li class="step" style="--i:1">
+            <button class="step-button" type="button" data-step="1" aria-pressed="false">
+              <svg viewBox="0 0 72 48" aria-hidden="true">
+                <circle cx="36" cy="8" r="2" fill="currentColor" stroke="none"></circle>
+                <path d="M36 10C36 24 14 24 14 40" stroke-opacity=".38" stroke-dasharray="1.6 2"></path>
+                <path d="M36 10C36 24 36 24 36 40" stroke="var(--chart-1)" stroke-opacity=".9" stroke-width="1.2"></path>
+                <path d="M36 10C36 24 58 24 58 40" stroke-opacity=".38" stroke-dasharray="1.6 2"></path>
+                <g stroke-opacity=".5"><circle cx="14" cy="40" r="2"></circle><path d="M12.4 38.4l3.2 3.2M12.4 41.6l3.2-3.2"></path></g>
+                <g stroke-opacity=".5"><circle cx="58" cy="40" r="2"></circle><path d="M56.4 38.4l3.2 3.2M56.4 41.6l3.2-3.2"></path></g>
+                <circle cx="36" cy="40" r="2.4" fill="var(--chart-1)" stroke="none"></circle>
+              </svg>
+            </button>
+            <svg class="step-connector" viewBox="0 0 34 16" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" aria-hidden="true"><path d="M0 8h30" stroke-opacity=".55"></path><path d="M26 4l4 4-4 4" stroke-opacity=".75"></path><circle r="1.6" fill="var(--chart-1)" stroke="none"></circle></svg>
+            <div class="step-meta"><div class="step-meta-row"><span class="step-num">02</span><span class="step-label">infer</span></div><h3 class="step-title">Branch and survive</h3><p class="step-copy">Gemma commits to a posterior and logs the alternatives it killed.</p></div>
+          </li>
+          <li class="step" style="--i:2">
+            <button class="step-button" type="button" data-step="2" aria-pressed="false">
+              <svg viewBox="0 0 72 48" aria-hidden="true">
+                <rect x="6" y="20" width="60" height="8" rx="1.5" stroke-opacity=".55"></rect>
+                <rect x="6" y="20" width="15" height="8" rx="1.5" fill="var(--chart-1)" fill-opacity=".78" stroke="none"></rect>
+                <path d="M21 28v4M36 28v4M51 28v4" stroke-opacity=".3"></path>
+                <text x="13.5" y="15" text-anchor="middle" font-size="6" fill="currentColor" stroke="none" style="font-family: var(--mono)">1/4K</text>
+                <text x="66" y="42" text-anchor="end" font-size="5.5" fill="currentColor" fill-opacity=".5" stroke="none" style="font-family: var(--mono)">bankroll</text>
+              </svg>
+            </button>
+            <svg class="step-connector" viewBox="0 0 34 16" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" aria-hidden="true"><path d="M0 8h30" stroke-opacity=".55"></path><path d="M26 4l4 4-4 4" stroke-opacity=".75"></path><circle r="1.6" fill="var(--chart-1)" stroke="none"></circle></svg>
+            <div class="step-meta"><div class="step-meta-row"><span class="step-num">03</span><span class="step-label">size</span></div><h3 class="step-title">Fractional Kelly</h3><p class="step-copy">Edge becomes a quarter-Kelly paper stake with caps and abstentions.</p></div>
+          </li>
+          <li class="step" style="--i:3">
+            <button class="step-button" type="button" data-step="3" aria-pressed="false">
+              <svg viewBox="0 0 72 48" aria-hidden="true">
+                <path d="M10 4v36M10 40h54" stroke-opacity=".5"></path>
+                <path d="M10 40L60 6" stroke-opacity=".4" stroke-dasharray="1.6 2"></path>
+                <circle cx="18" cy="34" r="2" fill="var(--chart-1)" stroke="none"></circle><circle cx="28" cy="26" r="2" fill="var(--chart-1)" stroke="none"></circle><circle cx="38" cy="20" r="2" fill="var(--chart-1)" stroke="none"></circle><circle cx="48" cy="12" r="2" fill="var(--chart-1)" stroke="none"></circle><circle cx="56" cy="8" r="2" fill="var(--chart-1)" stroke="none"></circle>
+              </svg>
+            </button>
+            <svg class="step-connector" viewBox="0 0 34 16" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" aria-hidden="true"><path d="M0 8h30" stroke-opacity=".55"></path><path d="M26 4l4 4-4 4" stroke-opacity=".75"></path><circle r="1.6" fill="var(--chart-1)" stroke="none"></circle></svg>
+            <div class="step-meta"><div class="step-meta-row"><span class="step-num">04</span><span class="step-label">log</span></div><h3 class="step-title">Score calibration</h3><p class="step-copy">Every decision, fill and outcome gets scored by Brier buckets.</p></div>
+          </li>
+          <li class="step" style="--i:4">
+            <button class="step-button" type="button" data-step="4" aria-pressed="false">
+              <svg viewBox="0 0 72 48" aria-hidden="true">
+                <path d="M14 28c0-10 8-18 18-18 9 0 17 6 18 15" stroke-opacity=".45"></path>
+                <path d="M49 17l1 8-8-1" stroke-opacity=".65"></path>
+                <path d="M58 20c0 10-8 18-18 18-9 0-17-6-18-15" stroke="var(--chart-1)" stroke-opacity=".8"></path>
+                <path d="M23 31l-1-8 8 1" stroke="var(--chart-1)" stroke-opacity=".8"></path>
+                <circle cx="36" cy="24" r="4" fill="var(--chart-1)" fill-opacity=".78" stroke="none"></circle>
+              </svg>
+            </button>
+            <div class="step-meta"><div class="step-meta-row"><span class="step-num">05</span><span class="step-label">review</span></div><h3 class="step-title">Self-review</h3><p class="step-copy">Autoresearch inspects misses and proposes the next backtest.</p></div>
+          </li>
+        </ol>
+
+        <div class="detail-panel" id="hiwDetail" aria-live="polite"></div>
+        <div class="how-foot"><span><strong>Zero server costs.</strong> Gemma runs locally via Ollama; positions are paper-only in this preview.</span><span>Every branch and rejection stays inspectable.</span></div>
+      </div>
+    </section>
+
+    <section class="metrics" aria-label="Run metrics">
+      <article class="metric">
+        <p class="metric-label">Total runs</p>
+        <div class="metric-value">33</div>
+        <div class="metric-note">18 markets</div>
+      </article>
+      <article class="metric">
+        <p class="metric-label">Mean return</p>
+        <div class="metric-value loss">-0.02%</div>
+        <div class="metric-note">across all runs</div>
+      </article>
+      <article class="metric">
+        <p class="metric-label">Mean Brier</p>
+        <div class="metric-value">0.1970</div>
+        <div class="metric-note">lower is better</div>
+      </article>
+      <article class="metric">
+        <p class="metric-label">Best signal</p>
+        <div class="metric-value">news_signal</div>
+        <div class="metric-note">421 trades - 33592 news items</div>
+      </article>
+    </section>
+
+    <section class="runs" aria-label="Recent runs">
+      <div class="runs-head">
+        <p class="runs-title">Recent runs</p>
+        <p class="runs-sub">Backtests recorded locally. Click a row for the trade log and price journey.</p>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Market</th>
+            <th>Rule</th>
+            <th>Target</th>
+            <th>Resolves</th>
+            <th>Return</th>
+            <th>Brier</th>
+            <th>Outcome</th>
+            <th>Experiment</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="--i:0"><td>Strait of Hormuz traffic returns to normal by April 30</td><td>any-day</td><td>above normal</td><td>Apr 30</td><td class="good">+0.92%</td><td>0.1820</td><td class="good">YES</td><td>hormuz_freeze</td></tr>
+          <tr style="--i:1"><td>Hormuz traffic above 92 daily</td><td>bracket</td><td>90-95</td><td>Apr 30</td><td class="bad">-1.63%</td><td>0.2140</td><td class="bad">NO</td><td>shipping_tail</td></tr>
+          <tr style="--i:2"><td>Weekly arrivals above 600</td><td>weekly</td><td>600</td><td>Apr 15</td><td class="good">+0.92%</td><td>0.1980</td><td class="good">YES</td><td>news_signal</td></tr>
+          <tr style="--i:3"><td>Daily arrivals within five percent</td><td>normal</td><td>5%</td><td>Mar 30</td><td class="bad">-0.72%</td><td>0.2210</td><td class="good">YES</td><td>calibration</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <p class="foot">All figures are paper-trading simulations. Local Gemma via Ollama. No real positions are held.</p>
+  </main>
+
+  <script>
+    (() => {
+      const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const serifStack = getComputedStyle(document.documentElement).getPropertyValue("--serif").trim() || "Georgia, serif";
+      const monoStack = getComputedStyle(document.documentElement).getPropertyValue("--mono").trim() || "monospace";
+
+      function initShapeMorph(canvas, text = "shape", interactive = true) {
+        const ctx = canvas.getContext("2d", { alpha: true });
+        if (!ctx) return;
+
+        const dpr = Math.min(devicePixelRatio || 1, 2);
+        let width = 0;
+        let height = 0;
+        let cols = 0;
+        let rows = 0;
+        let cells = [];
+        const active = new Set();
+        const offscreen = document.createElement("canvas");
+        const off = offscreen.getContext("2d");
+        const pointer = { x: -9999, y: -9999, vx: 0, vy: 0, active: false, lastT: 0 };
+        let frame = 0;
+        let destroyed = false;
+
+        function drawBase() {
+          off.clearRect(0, 0, width, height);
+          off.fillStyle = "rgba(240, 240, 246, 0.96)";
+          const size = Math.min(0.34 * width, 0.80 * height);
+          off.font = `italic 400 ${size}px ${serifStack}`;
+          off.textAlign = "center";
+          off.textBaseline = "middle";
+          off.fillText(text, width / 2, height / 2 + 0.02 * size);
+        }
+
+        function resize() {
+          const rect = canvas.getBoundingClientRect();
+          width = Math.max(1, rect.width);
+          height = Math.max(1, rect.height);
+          canvas.width = Math.round(width * dpr);
+          canvas.height = Math.round(height * dpr);
+          ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+          offscreen.width = canvas.width;
+          offscreen.height = canvas.height;
+          off.setTransform(dpr, 0, 0, dpr, 0, 0);
+          cols = Math.ceil(width / 3);
+          rows = Math.ceil(height / 3);
+          cells = Array(cols * rows);
+          for (let i = 0; i < cells.length; i += 1) {
+            cells[i] = { dx: 0, dy: 0, vx: 0, vy: 0, active: false };
+          }
+          active.clear();
+          drawBase();
+        }
+
+        function pointerMove(ev) {
+          const rect = canvas.getBoundingClientRect();
+          const x = ev.clientX - rect.left;
+          const y = ev.clientY - rect.top;
+          const now = performance.now();
+          if (pointer.active) {
+            const elapsed = Math.max(8, now - pointer.lastT);
+            pointer.vx = ((x - pointer.x) / elapsed) * 16;
+            pointer.vy = ((y - pointer.y) / elapsed) * 16;
+          }
+          pointer.x = x;
+          pointer.y = y;
+          pointer.active = true;
+          pointer.lastT = now;
+        }
+
+        function pointerLeave() {
+          pointer.active = false;
+          pointer.x = -9999;
+          pointer.y = -9999;
+          pointer.vx = 0;
+          pointer.vy = 0;
+        }
+
+        function drawStill() {
+          ctx.clearRect(0, 0, width, height);
+          ctx.setTransform(1, 0, 0, 1, 0, 0);
+          ctx.drawImage(offscreen, 0, 0);
+          ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        }
+
+        function animate() {
+          pointer.vx *= 0.78;
+          pointer.vy *= 0.78;
+
+          if (pointer.active) {
+            const col = Math.floor(pointer.x / 3);
+            const row = Math.floor(pointer.y / 3);
+            const radius = Math.ceil(85 / 3);
+            const rowStart = Math.max(0, row - radius);
+            const rowEnd = Math.min(rows - 1, row + radius);
+            const colStart = Math.max(0, col - radius);
+            const colEnd = Math.min(cols - 1, col + radius);
+
+            for (let y = rowStart; y <= rowEnd; y += 1) {
+              for (let x = colStart; x <= colEnd; x += 1) {
+                const idx = y * cols + x;
+                const cell = cells[idx];
+                const cy = 3 * y + 1.5;
+                const cx = 3 * x + 1.5;
+                const dx = cx - pointer.x;
+                const dy = cy - pointer.y;
+                const dist2 = dx * dx + dy * dy;
+                if (dist2 < 7225) {
+                  const dist = Math.sqrt(dist2) + 0.01;
+                  const falloff = 1 - dist / 85;
+                  const power = falloff * falloff;
+                  cell.vx += pointer.vx * power * 1.15;
+                  cell.vy += pointer.vy * power * 1.15;
+                  cell.vx += (dx / dist) * falloff * 0.22;
+                  cell.vy += (dy / dist) * falloff * 0.22;
+                  if (!cell.active) {
+                    cell.active = true;
+                    active.add(idx);
+                  }
+                }
+              }
+            }
+          }
+
+          ctx.clearRect(0, 0, width, height);
+          ctx.setTransform(1, 0, 0, 1, 0, 0);
+          ctx.drawImage(offscreen, 0, 0);
+
+          const finished = [];
+          for (const idx of active) {
+            const cell = cells[idx];
+            cell.vx += -0.24 * cell.dx;
+            cell.vy += -0.24 * cell.dy;
+            cell.vx *= 0.72;
+            cell.vy *= 0.72;
+            cell.dx += cell.vx;
+            cell.dy += cell.vy;
+            if (Math.abs(cell.dx) < 0.08 && Math.abs(cell.dy) < 0.08 && Math.abs(cell.vx) < 0.08 && Math.abs(cell.vy) < 0.08) {
+              cell.dx = 0;
+              cell.dy = 0;
+              cell.vx = 0;
+              cell.vy = 0;
+              cell.active = false;
+              finished.push(idx);
+            }
+          }
+
+          ctx.globalCompositeOperation = "destination-out";
+          ctx.fillStyle = "#000";
+          const cellPx = 3 * dpr;
+          for (const idx of active) {
+            if (!cells[idx].active) continue;
+            const x = idx % cols;
+            const y = (idx - x) / cols;
+            ctx.fillRect(x * cellPx, y * cellPx, cellPx, cellPx);
+          }
+
+          ctx.globalCompositeOperation = "source-over";
+          for (const idx of active) {
+            const cell = cells[idx];
+            if (!cell.active) continue;
+            const x = idx % cols;
+            const y = (idx - x) / cols;
+            const sx = x * cellPx;
+            const sy = y * cellPx;
+            ctx.drawImage(offscreen, sx, sy, cellPx, cellPx, sx + cell.dx * dpr, sy + cell.dy * dpr, cellPx, cellPx);
+          }
+
+          for (const idx of finished) active.delete(idx);
+          ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+          if (!destroyed) frame = requestAnimationFrame(animate);
+        }
+
+        resize();
+        document.fonts?.ready.then(() => {
+          if (!destroyed) {
+            drawBase();
+            if (reduced) drawStill();
+          }
+        });
+
+        if (interactive && !reduced) {
+          canvas.addEventListener("pointermove", pointerMove);
+          canvas.addEventListener("pointerleave", pointerLeave);
+          frame = requestAnimationFrame(animate);
+        } else {
+          drawStill();
+        }
+
+        const ro = new ResizeObserver(() => {
+          resize();
+          if (reduced) drawStill();
+        });
+        ro.observe(canvas);
+        return () => {
+          destroyed = true;
+          cancelAnimationFrame(frame);
+          ro.disconnect();
+          canvas.removeEventListener("pointermove", pointerMove);
+          canvas.removeEventListener("pointerleave", pointerLeave);
+        };
+      }
+
+      function initHeadline() {
+        const h1 = document.getElementById("heroHeadline");
+        const parts = [
+          { text: "A news-reactive research system for ", em: false },
+          { text: "prediction markets", em: true },
+          { text: ".", em: false }
+        ];
+        let index = 0;
+        h1.textContent = "";
+        const spans = [];
+
+        for (const part of parts) {
+          const wrapper = part.em ? document.createElement("em") : document.createDocumentFragment();
+          for (const ch of part.text) {
+            const span = document.createElement("span");
+            span.className = "headline-char";
+            span.dataset.idx = String(index);
+            span.dataset.char = ch;
+            span.setAttribute("aria-hidden", "true");
+            span.textContent = ch;
+            spans.push(span);
+            wrapper.appendChild(span);
+            index += 1;
+          }
+          h1.appendChild(wrapper);
+        }
+
+        const letters = "abcdefghknoprstuvxyz";
+        const caps = "ABCDEFGHKLNOPQRSTUVXYZ";
+        const stable = /[\s.\-,;:!?]/;
+        let locked = reduced ? spans.length : 0;
+        let tick = 0;
+
+        function randomFor(ch, idx) {
+          if (stable.test(ch)) return ch;
+          const alphabet = /[A-Z]/.test(ch) ? caps : letters;
+          return alphabet[(7 * tick + 17 * idx + 13) % alphabet.length];
+        }
+
+        function render() {
+          spans.forEach((span, idx) => {
+            const ch = span.dataset.char;
+            const isLocked = idx < locked;
+            const isHot = isLocked && idx === locked - 1 && !stable.test(ch);
+            span.textContent = isLocked ? ch : randomFor(ch, idx);
+            span.classList.toggle("is-locked", isLocked);
+            span.classList.toggle("is-hot", isHot);
+          });
+        }
+
+        render();
+        return new Promise((resolve) => {
+          if (reduced) {
+            resolve();
+            return;
+          }
+          setTimeout(() => {
+            const timer = setInterval(() => {
+              tick += 1;
+              locked += 1;
+              render();
+              if (locked >= spans.length) {
+                clearInterval(timer);
+                spans.forEach((span) => span.classList.remove("is-hot"));
+                resolve();
+              }
+            }, 38);
+          }, 560);
+        });
+      }
+
+      function initExplain() {
+        const el = document.getElementById("explainText");
+        const text = el.textContent.trim();
+        const words = text.split(/(\s+)/);
+        el.textContent = "";
+        const spans = words.map((word) => {
+          if (/^\s+$/.test(word)) {
+            el.appendChild(document.createTextNode(word));
+            return null;
+          }
+          const span = document.createElement("span");
+          span.className = "explain-word";
+          span.textContent = word;
+          el.appendChild(span);
+          return span;
+        }).filter(Boolean);
+
+        return () => {
+          if (reduced) {
+            spans.forEach((span) => span.classList.add("is-visible"));
+            return;
+          }
+          spans.forEach((span) => span.classList.remove("is-visible"));
+          spans.forEach((span, i) => {
+            setTimeout(() => span.classList.add("is-visible"), 22 * i);
+          });
+        };
+      }
+
+      function initBeliefPlayback() {
+        const card = document.getElementById("beliefCard");
+        const wireState = document.getElementById("wireState");
+        const newsItems = [...document.querySelectorAll(".news-item")];
+        const posterior = document.getElementById("posteriorValue");
+        const delta = document.getElementById("deltaPill");
+        const tokenCount = document.getElementById("tokenCount");
+        const parserState = document.getElementById("parserState");
+        const parserLog = document.getElementById("parserLog");
+        const posteriorBox = document.getElementById("posteriorBox");
+        const logLines = [
+          { kind: "ingest", text: "[Reuters] IRGC tanker" },
+          { kind: "pipe", text: " - tokenize 52t" },
+          { kind: "pipe", text: " - embed 384d" },
+          { kind: "score", text: " - weigh -0.24" },
+          { kind: "retain", text: " - retain" },
+          { kind: "flush", text: "-- flush --" },
+          { kind: "ingest", text: "[gCaptain] Oman talks" },
+          { kind: "pipe", text: " - tokenize 38t" },
+          { kind: "score", text: " - weigh +0.06" },
+          { kind: "reject", text: " - reject" },
+          { kind: "flush", text: "-- flush --" },
+          { kind: "ingest", text: "[Bloomberg] convoy" },
+          { kind: "pipe", text: " - tokenize 41t" },
+          { kind: "score", text: " - weigh +0.14" },
+          { kind: "retain", text: " - retain" }
+        ];
+        let lineCursor = 0;
+        let tokens = 0;
+
+        function pushParserLine() {
+          const data = logLines[lineCursor % logLines.length];
+          lineCursor += 1;
+          const line = document.createElement("div");
+          line.className = `parser-line ${data.kind}`;
+          line.textContent = data.text;
+          parserLog.appendChild(line);
+          while (parserLog.children.length > 7) parserLog.removeChild(parserLog.firstElementChild);
+          parserState.textContent = data.kind;
+          tokens = (tokens + 38 + (lineCursor % 4) * 7) % 1000;
+          tokenCount.textContent = `${156 + tokens}t`;
+        }
+
+        function animateNumber(from, to, duration = 520) {
+          if (reduced) {
+            posterior.textContent = String(to);
+            return;
+          }
+          const start = performance.now();
+          function step(now) {
+            const t = Math.min(1, (now - start) / duration);
+            const eased = 1 - Math.pow(1 - t, 3);
+            posterior.textContent = String(Math.round(from + (to - from) * eased));
+            if (t < 1) requestAnimationFrame(step);
+          }
+          requestAnimationFrame(step);
+        }
+
+        function replay() {
+          card.classList.remove("is-playing", "is-settled");
+          newsItems.forEach((item) => item.classList.remove("is-visible", "is-current"));
+          void card.offsetWidth;
+          card.classList.add("is-playing");
+          wireState.textContent = "gemma 4 - reading - weighing - deciding";
+
+          const steps = [
+            { at: 1200, index: 0, from: 62, to: 38, d: "-24" },
+            { at: 2450, index: 1, from: 38, to: 52, d: "+14" },
+            { at: 3700, index: 2, from: 52, to: 66, d: "+4" }
+          ];
+
+          steps.forEach((step) => {
+            setTimeout(() => {
+              newsItems.forEach((item) => item.classList.remove("is-current"));
+              newsItems[step.index].classList.add("is-visible", "is-current");
+              animateNumber(step.from, step.to);
+              delta.textContent = step.d;
+              posteriorBox.style.animation = "none";
+              void posteriorBox.offsetWidth;
+              posteriorBox.style.animation = "";
+            }, step.at);
+          });
+
+          setTimeout(() => {
+            newsItems.forEach((item) => item.classList.remove("is-current"));
+            card.classList.remove("is-playing");
+            card.classList.add("is-settled");
+            wireState.textContent = "live - the wire - gemma 4 local";
+          }, 5200);
+        }
+
+        for (let i = 0; i < 5; i += 1) pushParserLine();
+        setInterval(pushParserLine, 560);
+        replay();
+        setInterval(replay, 14500);
+      }
+
+      function initHowto() {
+        const detail = document.getElementById("hiwDetail");
+        const stepButtons = [...document.querySelectorAll(".step-button")];
+        const stepLabels = [...document.querySelectorAll(".step-label")];
+
+        const steps = [
+          {
+            n: "01",
+            label: "ingest",
+            title: "Read the wire",
+            lead: "A local worker polls public AP, Reuters and Bloomberg feeds into SQLite. Each headline keeps source, timestamp, body, entities, and the market IDs it might touch.",
+            body: "There are no hosted queues or third-party model calls in the loop. The only outbound traffic is the source feed. One headline can fan out to several markets, and the raw item remains inspectable after scoring.",
+            rows: [["source", "AP - Reuters - Bloomberg public wires"], ["store", "SQLite local file, append-only"], ["keys", "market_id and published_at per headline"], ["cadence", "around five minutes, configurable"]]
+          },
+          {
+            n: "02",
+            label: "infer",
+            title: "Branch and survive",
+            lead: "For every headline-market pair, Gemma 4 receives the market criteria, CLOB prior, headline body, and a conservative prompt policy.",
+            body: "The analyzer returns structured JSON: posterior, confidence, rejected alternatives, and a short rationale. The survivor becomes the visible belief. Rejections are logged because later evidence can make them useful again.",
+            rows: [["model", "Gemma 4 local via Ollama"], ["prompt", "policy, market prior, headline"], ["output", "{ posterior, confidence, alternatives[], rationale }"], ["killed", "persisted for review"]]
+          },
+          {
+            n: "03",
+            label: "size",
+            title: "Fractional Kelly",
+            lead: "Belief only matters if it differs from price. The sizer turns edge into a paper stake, then quarters Kelly so estimate noise does not dominate the bankroll.",
+            body: "Guardrails abstain when edge is thin, cap single-market exposure, and decay size when correlated markets are already open.",
+            code: "b  = (1 - P) / P\nq  = 1 - p\nf* = (p * b - q) / b\nstake = 0.25 * f* * bankroll",
+            rows: [["belief", "p = 0.62"], ["market price", "P = 0.53"], ["full Kelly", "0.192"], ["quarter-Kelly", "$24 on a $500 paper bankroll"]]
+          },
+          {
+            n: "04",
+            label: "log",
+            title: "Score calibration",
+            lead: "Every posterior, rejected branch, simulated fill and outcome is written back to the local database.",
+            body: "Calibration buckets predictions by confidence and scores them with Brier loss. The dashboard can show where the model is overconfident, underreactive, or simply paying too much for an edge.",
+            rows: [["metric", "Brier score"], ["buckets", "probability deciles"], ["joins", "beliefs, fills, outcomes"], ["view", "runs, experiments, signal scoreboard"]]
+          },
+          {
+            n: "05",
+            label: "review",
+            title: "Self-review",
+            lead: "Autoresearch turns misses into the next experiment instead of letting them disappear into a table.",
+            body: "The reviewer clusters errors, drafts hypotheses, and proposes new backtests. The result is a small closed loop: observe, infer, size, score, and then ask what would have made the model less wrong.",
+            rows: [["input", "misses and rejected branches"], ["output", "candidate backtests"], ["goal", "better calibration, not bigger bets"], ["status", "local, paper-only preview"]]
+          }
+        ];
+
+        function renderDetail(index) {
+          const step = steps[index];
+          stepButtons.forEach((button, i) => {
+            const selected = i === index;
+            button.classList.toggle("is-selected", selected);
+            button.setAttribute("aria-pressed", selected ? "true" : "false");
+          });
+          stepLabels.forEach((label, i) => label.classList.toggle("is-selected", i === index));
+
+          detail.innerHTML = "";
+          const side = document.createElement("aside");
+          side.className = "detail-index";
+          side.innerHTML = `<span>${step.n} - ${step.label}</span><strong>${step.title}</strong><span>feeds into ${steps[(index + 1) % steps.length].n} - ${steps[(index + 1) % steps.length].label}</span>`;
+
+          const content = document.createElement("div");
+          content.className = "detail-content";
+          const lead = document.createElement("p");
+          lead.textContent = step.lead;
+          const body = document.createElement("p");
+          body.textContent = step.body;
+          content.append(lead, body);
+
+          if (step.code) {
+            const pre = document.createElement("pre");
+            pre.textContent = step.code;
+            content.appendChild(pre);
+          }
+
+          const table = document.createElement("div");
+          table.className = "detail-table";
+          step.rows.forEach(([key, value]) => {
+            const row = document.createElement("div");
+            row.className = "detail-row";
+            const k = document.createElement("div");
+            k.className = "detail-key";
+            k.textContent = key;
+            const v = document.createElement("div");
+            v.className = "detail-val";
+            v.textContent = value;
+            row.append(k, v);
+            table.appendChild(row);
+          });
+          content.appendChild(table);
+          detail.append(side, content);
+        }
+
+        stepButtons.forEach((button) => button.addEventListener("click", () => renderDetail(Number(button.dataset.step))));
+        renderDetail(0);
+      }
+
+      initShapeMorph(document.getElementById("shapeMark"));
+      const revealExplain = initExplain();
+      initHeadline().then(() => revealExplain());
+      initBeliefPlayback();
+      initHowto();
+
+      function postHeight() {
+        try {
+          if (parent === window) return;
+          const h = Math.ceil(document.documentElement.scrollHeight);
+          parent.postMessage({ type: "shape-demo-height", height: h }, "*");
+        } catch (_) {}
+      }
+
+      requestAnimationFrame(() => {
+        try {
+          if (parent !== window) parent.postMessage({ type: "shape-demo-ready" }, "*");
+        } catch (_) {}
+        postHeight();
+      });
+      window.addEventListener("load", postHeight);
+      if (typeof ResizeObserver !== "undefined") {
+        new ResizeObserver(() => postHeight()).observe(document.documentElement);
+      } else {
+        window.addEventListener("resize", postHeight);
+      }
+    })();
+  </script>
+</body>
+</html>

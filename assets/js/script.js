@@ -818,6 +818,7 @@ const PLATFORM_META = {
   web:     { html: `<ion-icon name="globe-outline"></ion-icon>`,            cls: 'pill-web',     label: 'Web'        },
 };
 
+
 let scrollY = 0;
 
 document.querySelectorAll('.project-item').forEach(item => {
@@ -831,9 +832,13 @@ document.body.style.overflowY = 'scroll';
 
     // 2. Populate modal
     mTitle.replaceChildren();
-    projModalBox.classList.toggle('project-modal--porter', item.id === 'porter');
-    mTitle.classList.toggle('modal-title--porter', item.id === 'porter');
-    if (item.id === 'porter') {
+    const isPorterProject = item.id === 'porter';
+    const isShapeProject = item.id === 'shape';
+    projModalBox.classList.toggle('project-modal--porter', isPorterProject);
+    projModalBox.classList.toggle('project-modal--shape', isShapeProject);
+    mTitle.classList.toggle('modal-title--porter', isPorterProject);
+    mTitle.classList.toggle('modal-title--shape', isShapeProject);
+    if (isPorterProject) {
       const logo = document.createElement('img');
       logo.className = 'porter-title-logo';
       logo.src = './assets/images/projects/project-porter-title-transparent.png';
@@ -944,6 +949,348 @@ document.body.style.overflowY = 'scroll';
         // Open phase 01 by default.
         selectPhase('01');
 
+        function setupDeepDiveReplay(replay) {
+          const panels = Array.from(replay.querySelectorAll('[data-replay-panel]'));
+          const steps = Array.from(replay.querySelectorAll('[data-replay-step]'));
+          if (!panels.length || !steps.length) return;
+
+          const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+          const duration = 5200;
+          let index = 0;
+          let timer = null;
+          let paused = reduceMotion;
+          let selectedByUser = false;
+
+          function syncVideo(panel, active) {
+            const video = panel.querySelector('video');
+            if (!video) return;
+            if (active) video.play().catch(() => {});
+            else video.pause();
+          }
+
+          function setPaused(value) {
+            paused = value || reduceMotion;
+            replay.classList.toggle('is-paused', paused);
+          }
+
+          function activeStepIsHeld() {
+            const activeStep = steps[index];
+            return Boolean(activeStep?.matches(':hover, :focus-visible, :focus-within'));
+          }
+
+          function refreshPauseFromActiveStep(forceSchedule = false) {
+            const wasPaused = paused;
+            setPaused(selectedByUser && activeStepIsHeld());
+            if (paused) {
+              clearTimeout(timer);
+              return;
+            }
+            if (forceSchedule || wasPaused) schedule();
+          }
+
+          function schedule() {
+            clearTimeout(timer);
+            if (paused || reduceMotion) return;
+            timer = setTimeout(() => {
+              if (!document.body.contains(replay)) {
+                clearTimeout(timer);
+                return;
+              }
+              selectReplay(index + 1);
+            }, duration);
+          }
+
+          function selectReplay(nextIndex, byUser = false) {
+            index = (nextIndex + panels.length) % panels.length;
+            if (byUser) selectedByUser = true;
+            panels.forEach((panel, i) => {
+              const active = i === index;
+              panel.hidden = !active;
+              panel.classList.toggle('is-active', active);
+              syncVideo(panel, active);
+            });
+
+            steps.forEach((step, i) => {
+              const active = i === index;
+              step.classList.toggle('is-active', active);
+              step.setAttribute('aria-selected', active ? 'true' : 'false');
+            });
+            if (byUser) refreshPauseFromActiveStep(true);
+            else schedule();
+          }
+
+          steps.forEach((step, i) => {
+            step.addEventListener('click', () => selectReplay(i, true));
+            step.addEventListener('keydown', (ev) => {
+              if (ev.key !== 'ArrowRight' && ev.key !== 'ArrowLeft') return;
+              ev.preventDefault();
+              const next = ev.key === 'ArrowRight'
+                ? steps[(i + 1) % steps.length]
+                : steps[(i - 1 + steps.length) % steps.length];
+              next.focus();
+              selectReplay(steps.indexOf(next), true);
+            });
+            step.addEventListener('mouseenter', refreshPauseFromActiveStep);
+            step.addEventListener('mouseleave', refreshPauseFromActiveStep);
+            step.addEventListener('focusin', refreshPauseFromActiveStep);
+            step.addEventListener('focusout', () => {
+              requestAnimationFrame(refreshPauseFromActiveStep);
+            });
+          });
+
+          setPaused(reduceMotion);
+          selectReplay(0);
+        }
+
+        ddRoot.querySelectorAll('[data-dd-replay]').forEach(setupDeepDiveReplay);
+
+        const architectureDefault = {
+          kicker: 'Architecture at a glance',
+          title: 'A proof loop before send. A signal loop after.',
+          body: 'Porter is less a cover-letter bot than a small application system: it turns the posting into requirements, pulls cited proof from local career material, drafts and reviews with separate model roles, then submits through a controlled browser. The same opaque ID links the finished pack to anonymous portfolio signals, so follow-up starts from evidence instead of guesswork.',
+          points: [
+            'Before submit: parse the role, retrieve proof, draft, review cold, and loop only the broken layer.',
+            'After submit: tagged portfolio arrival, anonymous behaviour, private local ledger context.',
+            'The useful bit is the control system around the model: evidence, evals, gates, and reversible handoffs.'
+          ],
+          icon: '#dd-i-frontfoot'
+        };
+
+        const architecturePhases = {
+          reprose: {
+            kicker: 'Loop · Re-prose',
+            title: 'Send weak arguments back to text',
+            body: 'If the fresh reviewer finds the substance is off, Porter returns before rendering. The next pass rewrites the argument in plain text against the brief and cited evidence, then runs the voice gate again.',
+            points: [
+              'Used for tone drift, generic openings, thin proof, wrong pain framing, or banned phrases.',
+              'Prevents a polished PDF from hiding a weak argument.'
+            ],
+            icon: '#dd-i-loop',
+            iconViewBox: '0 0 16 16'
+          },
+          rerender: {
+            kicker: 'Loop · Re-render',
+            title: 'Fix the pack without reopening the prose',
+            body: 'If the words are accepted but the output is wrong, Porter loops only the packaging layer: HTML, PDF, sign-off visibility, page count, attachments, tracked link, and ledger alignment.',
+            points: [
+              'Keeps approved writing stable while the files are regenerated.',
+              'Used for formatting, exports, file naming, outreach ID, and link checks.'
+            ],
+            icon: '#dd-i-loop',
+            iconViewBox: '0 0 16 16'
+          },
+          '01': {
+            kicker: '01 · Understand',
+            title: 'Understand the posting',
+            body: 'The job ad becomes a brief: requirements, seniority signal, hidden pain, likely objections, and the proof the application must carry.',
+            points: [
+              'Extracts must-haves, nice-to-haves, and implied constraints.',
+              'Separates real employer need from generic job-ad language.'
+            ]
+          },
+          '02': {
+            kicker: '02 · Tailor CV',
+            title: 'Choose the strongest proof',
+            body: 'The CV is tailored by selection first, not vague rewriting. The system surfaces the evidence that best answers the role while keeping metrics and shipped outcomes intact.',
+            points: [
+              'Uses the canonical career source instead of forking content.',
+              'Keeps specific proof stronger than generic fit language.'
+            ]
+          },
+          '03': {
+            kicker: '03 · Draft',
+            title: 'Draft in plain text first',
+            body: 'The cover letter is written before formatting touches it. It has to make the argument on its own: relevant, specific, human, and backed by evidence.',
+            points: [
+              'Reads the brief and cited proof together.',
+              'Applies the writing standard before any HTML is generated.'
+            ]
+          },
+          stop1: {
+            kicker: 'Stop · Voice rules',
+            title: 'Stop weak-but-fluent prose',
+            body: 'The voice gate catches stock phrases, vague enthusiasm, and prose that sounds polished but says too little. If the argument is weak, it loops back to text.',
+            points: [
+              'Formatting is not allowed to hide weak substance.',
+              'Failures return to the draft, not the renderer.'
+            ]
+          },
+          '04': {
+            kicker: '04 · Render',
+            title: 'Render the accepted pack',
+            body: 'Only accepted prose becomes HTML and PDF. The tailored portfolio link, outreach ID, and local ledger record all align to the same application pack.',
+            points: [
+              'Exports the CV and letter from approved content.',
+              'Records the pack locally with one opaque outreach ID.'
+            ]
+          },
+          '05': {
+            kicker: '05 · Fresh review',
+            title: 'Review cold with a second instance',
+            body: 'A separate model session reads the finished pack without draft history, so it judges the result rather than defending the process that created it.',
+            points: [
+              'Checks relevance, voice, proof, and credibility.',
+              'Can send the pack back to prose or render depending on what failed.'
+            ]
+          },
+          '06': {
+            kicker: '06 · Submit',
+            title: 'Handle the repetitive last mile',
+            body: 'A Playwright sidecar fills ATS forms, attaches the right files, and answers screener questions while the browser remains visible and under user control.',
+            points: [
+              'Works across real ATS flows like Greenhouse, Lever, and Workday.',
+              'Automates the clicking and typing, not the decision to apply.'
+            ]
+          },
+          '07': {
+            kicker: '07 · Tagged arrival',
+            title: 'Load the right portfolio variant',
+            body: 'The application link carries an opaque ID and job descriptor. The portfolio variant loads before first paint, so the recipient sees the most relevant proof immediately.',
+            points: [
+              'Never puts a name or email in the public URL.',
+              'Tags the session with outreach ID, role descriptor, and variant.'
+            ]
+          },
+          '08': {
+            kicker: '08 · Read-back',
+            title: 'Connect signals without exposing identity',
+            body: 'Portfolio events are tagged with the same opaque ID, while the private job context stays in the local ledger. The two only join on the local machine.',
+            points: [
+              'Tracks meaningful actions like project views, CV clicks, and demo opens.',
+              'Keeps analytics anonymous while preserving useful follow-up context.'
+            ]
+          },
+          '09': {
+            kicker: '09 · The picture',
+            title: 'Prepare for the follow-up',
+            body: 'After send, the local read-out shows which proof was opened, where attention went, and what context should lead the next conversation.',
+            points: [
+              'Combines local pack metadata with anonymous session behaviour.',
+              'Turns outreach from a blind send into an informed conversation.'
+            ]
+          }
+        };
+
+        ddRoot.querySelectorAll('[data-dd-architecture-diagram]').forEach(slot => {
+          const source = ddRoot.querySelector('.dd-pipeline .dd-overview');
+          if (!source) return;
+          const detail = ddRoot.querySelector('[data-dd-architecture-detail]');
+          const detailKicker = detail?.querySelector('[data-architecture-kicker]');
+          const detailTitle = detail?.querySelector('[data-architecture-title]');
+          const detailBody = detail?.querySelector('[data-architecture-body]');
+          const detailPoints = detail?.querySelector('[data-architecture-points]');
+          const detailIcon = detail?.querySelector('[data-architecture-icon]');
+          const clone = source.cloneNode(true);
+          clone.classList.add('dd-architecture-diagram');
+          clone.setAttribute('aria-label', 'Full Porter architecture overview diagram');
+          slot.replaceChildren(clone);
+
+          const nodes = Array.from(clone.querySelectorAll('[data-target-phase], [data-architecture-phase]'));
+
+          function positionArchitectureDetail(node) {
+            if (!detail) return;
+            const copy = detail.closest('.dd-architecture-copy');
+            if (!copy || window.matchMedia('(max-width: 1000px)').matches) return;
+
+            const nodeRect = node.getBoundingClientRect();
+            const copyRect = copy.getBoundingClientRect();
+            const detailRect = detail.getBoundingClientRect();
+            const rawY = nodeRect.top + nodeRect.height / 2 - copyRect.top;
+            const minY = detailRect.height / 2 + 10;
+            const maxY = Math.max(minY, copyRect.height - detailRect.height / 2 - 10);
+            const y = Math.min(maxY, Math.max(minY, rawY));
+            detail.style.setProperty('--architecture-detail-y', `${Math.round(y)}px`);
+          }
+
+          function setArchitectureIcon(href, viewBox = '0 0 64 64') {
+            if (!detailIcon) return;
+            detailIcon.replaceChildren();
+            if (!href) return;
+
+            const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+            const use = document.createElementNS('http://www.w3.org/2000/svg', 'use');
+            svg.setAttribute('viewBox', viewBox);
+            svg.setAttribute('aria-hidden', 'true');
+            use.setAttribute('href', href);
+            svg.append(use);
+            detailIcon.append(svg);
+          }
+
+          function setArchitectureDetail(content, phaseId = null, sourceNode = null) {
+            nodes.forEach(node => {
+              const nodePhase = node.getAttribute('data-target-phase') || node.getAttribute('data-architecture-phase');
+              const active = phaseId && nodePhase === phaseId;
+              node.classList.toggle('is-selected', active);
+              node.setAttribute('aria-selected', active ? 'true' : 'false');
+            });
+            detail?.classList.toggle('is-fresh', phaseId === '05' || phaseId === '08' || phaseId === 'rerender');
+            detail?.classList.toggle('is-stop', phaseId === 'stop1');
+            if (detailKicker) detailKicker.textContent = content.kicker;
+            if (detailTitle) detailTitle.textContent = content.title;
+            if (detailBody) detailBody.textContent = content.body;
+            setArchitectureIcon(sourceNode?.querySelector('use')?.getAttribute('href') || content.icon, content.iconViewBox);
+            if (detailPoints) {
+              detailPoints.replaceChildren(...content.points.map(point => {
+                const li = document.createElement('li');
+                li.textContent = point;
+                return li;
+              }));
+            }
+            if (sourceNode) {
+              requestAnimationFrame(() => positionArchitectureDetail(sourceNode));
+            } else {
+              detail?.style.setProperty('--architecture-detail-y', '50%');
+            }
+          }
+
+          function showArchitectureOverview() {
+            setArchitectureDetail(architectureDefault);
+          }
+
+          function showArchitecturePhase(phaseId, sourceNode) {
+            const phase = architecturePhases[phaseId];
+            if (!phase) return;
+            setArchitectureDetail(phase, phaseId, sourceNode);
+          }
+
+          function restoreOverviewWhenIdle() {
+            if (!window.matchMedia('(hover: hover)').matches) return;
+            requestAnimationFrame(() => {
+              const hoveringNode = nodes.some(node => node.matches(':hover'));
+              const focusedNode = nodes.some(node => node.contains(document.activeElement));
+              if (!hoveringNode && !focusedNode) showArchitectureOverview();
+            });
+          }
+
+          nodes.forEach(node => {
+            const phaseId = node.getAttribute('data-target-phase') || node.getAttribute('data-architecture-phase');
+            node.setAttribute('role', 'button');
+            node.setAttribute('tabindex', '0');
+            node.setAttribute('aria-selected', 'false');
+            node.addEventListener('mouseenter', () => showArchitecturePhase(phaseId, node));
+            node.addEventListener('mouseleave', restoreOverviewWhenIdle);
+            node.addEventListener('focus', () => showArchitecturePhase(phaseId, node));
+            node.addEventListener('click', () => showArchitecturePhase(phaseId, node));
+            node.addEventListener('keydown', ev => {
+              if (ev.key !== 'Enter' && ev.key !== ' ') return;
+              ev.preventDefault();
+              showArchitecturePhase(phaseId, node);
+            });
+          });
+
+          clone.addEventListener('mouseleave', restoreOverviewWhenIdle);
+          clone.addEventListener('focusout', ev => {
+            if (!clone.contains(ev.relatedTarget)) showArchitectureOverview();
+          });
+
+          showArchitectureOverview();
+          window.addEventListener('resize', () => {
+            const selected = nodes.find(node => node.classList.contains('is-selected'));
+            if (selected) positionArchitectureDetail(selected);
+            else detail?.style.setProperty('--architecture-detail-y', '50%');
+          });
+        });
+
         // ── Living quote spotlight: yellow highlight rect slides
         // between SVG quote anchors via CSS transform. SVG <rect>
         // attribute reads (y, height) are deterministic everywhere
@@ -1032,6 +1379,52 @@ document.body.style.overflowY = 'scroll';
 
     // 3. FLIP morph: card → modal
     morphOpenModal(item);
+
+    if (isShapeProject) {
+      const frame = projModalBox.querySelector('.dd-shape-embed-frame');
+      const iframe = frame?.querySelector('.dd-shape-embed-iframe');
+      if (iframe && !iframe.src && iframe.dataset.src) {
+        let revealed = false;
+        const reveal = () => {
+          if (revealed) return;
+          revealed = true;
+          frame.classList.add('is-loaded');
+        };
+        const revealIfStyled = () => {
+          try {
+            const doc = iframe.contentDocument;
+            if (!doc || doc.readyState === 'loading') return;
+            const bg = getComputedStyle(doc.body).backgroundColor;
+            const font = getComputedStyle(doc.documentElement).fontFamily;
+            const hasAppShell = Boolean(doc.querySelector('[data-slot="card"], main, canvas'));
+            const hasTheme = bg && bg !== 'rgba(0, 0, 0, 0)' && bg !== 'transparent';
+            const hasFont = font && !/Times New Roman/i.test(font);
+            if (hasAppShell && hasTheme && hasFont) reveal();
+          } catch (_) {
+            // Cross-origin fallback: keep the poster until the app posts ready.
+          }
+        };
+        const onMessage = ev => {
+          if (ev.source !== iframe.contentWindow) return;
+          if (!ev.data) return;
+          if (ev.data.type === 'shape-demo-ready') {
+            reveal();
+          } else if (ev.data.type === 'shape-demo-height' && Number.isFinite(ev.data.height)) {
+            iframe.style.height = ev.data.height + 'px';
+          }
+        };
+        window.addEventListener('message', onMessage);
+        // Only reveal once the embedded app has hydrated. A plain iframe
+        // `load` can still mean "HTML arrived but CSS/JS failed", which
+        // fades the poster into a blank dark rectangle.
+        iframe.addEventListener('load', () => {
+          iframe.dataset.loaded = 'true';
+          setTimeout(revealIfStyled, 500);
+          setTimeout(revealIfStyled, 1600);
+        }, { once: true });
+        iframe.src = iframe.dataset.src;
+      }
+    }
   });
 });
 
@@ -1094,6 +1487,12 @@ function closeProjModal() {
 
 function _doClose() {
   _isClosing = false;
+  const _shapeFrame = projModalBox.querySelector('.dd-shape-embed-frame');
+  if (_shapeFrame) {
+    const _shapeIframe = _shapeFrame.querySelector('.dd-shape-embed-iframe');
+    if (_shapeIframe) _shapeIframe.removeAttribute('src');
+    _shapeFrame.classList.remove('is-loaded');
+  }
   // Always restore thumbnail visibility (safety net)
   if (lastOpenedItem) {
     const t = lastMorphOrigin || lastOpenedItem.querySelector('.project-img img');

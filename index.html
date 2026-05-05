@@ -313,7 +313,7 @@
           <ul class="service-list">
 
             <li class="service-item" data-variant-hide="ai" role="button" tabindex="0" aria-expanded="false"
-                data-standfirst="Practical AI systems that connect models to real workflows, from VR training characters to local-first agents and automation.">
+                data-standfirst="Production AI features that connect models to product workflows: tool use, retrieval, evaluation, self-hosted models, and the product layer around them.">
               <button class="service-toggle" aria-label="Expand" tabindex="-1"><span class="service-toggle-chevron">▾</span></button>
               <div class="service-icon-box">
                 <img src="./assets/images/icon-ai.svg" alt="AI icon" width="40">
@@ -321,53 +321,84 @@
               <div class="service-content-box">
                 <h4 class="h4 service-item-title">AI Development</h4>
                 <p class="service-item-text">
-                  <strong>Practical AI systems.</strong> I build AI features that connect models to real product workflows: AI-driven NPCs for VR training, local-first agents, retrieval pipelines, tool use, and automation that can be tested, maintained, and shipped with confidence.
+                  <strong>AI systems that do useful work.</strong>
+                  <br>I build practical AI features end-to-end: tool use, structured outputs, retrieval, evaluation loops, self-hosted models, and workflows that connect models to real products. The goal is software people can understand, trust, and rely on.
                 </p>
               </div>
               <div class="service-detail">
-                <div class="svc-media-strip">
-                  <figure>
-                    <img src="./assets/images/projects/project-shape-home.png" alt="shape home view" loading="lazy">
-                    <figcaption>
-                      <strong class="svc-cap-title">shape &middot; home</strong>
-                      <span class="svc-cap-text">SQLite-backed local research stack tracking markets, prices, news, backtests, and per-run model reasoning.</span>
-                    </figcaption>
-                  </figure>
-                  <figure>
-                    <img src="./assets/images/projects/project-shape-experiments.png" alt="shape grounded chat" loading="lazy">
-                    <figcaption>
-                      <strong class="svc-cap-title">shape &middot; grounded chat</strong>
-                      <span class="svc-cap-text">Read-only SQLite tools let the model answer from traceable data, with every tool call visible in the interface.</span>
-                    </figcaption>
-                  </figure>
-                  <figure>
-                    <img src="./assets/images/projects/project-porter-dashboard.png" alt="Porter macOS queue" loading="lazy">
-                    <figcaption>
-                      <strong class="svc-cap-title">Porter &middot; macOS queue</strong>
-                      <span class="svc-cap-text">Local-first job agent with a Playwright sidecar for completing real ATS forms, keeping each submission reviewable.</span>
-                    </figcaption>
-                  </figure>
-                  <figure class="contain">
-                    <img src="./assets/images/projects/project-generatevr-diagram.svg" alt="GenerateVR pipeline diagram" loading="lazy">
-                    <figcaption>
-                      <strong class="svc-cap-title">GenerateVR &middot; pipeline</strong>
-                      <span class="svc-cap-text">Structured scenario generation with optional retrieval over customer source material, keeping output grounded and reviewable.</span>
-                    </figcaption>
-                  </figure>
+                <div class="svc-ai-feature" data-feature-page="0">
+                  <div class="svc-ai-feature-pager" role="tablist" aria-label="Featured projects">
+                    <button type="button" class="svc-ai-pager-dot is-active" data-feature-target="0" role="tab" aria-selected="true" aria-label="Shape"></button>
+                    <button type="button" class="svc-ai-pager-dot" data-feature-target="1" role="tab" aria-selected="false" aria-label="Porter"></button>
+                  </div>
+                  <a class="svc-ai-feature-link svc-ai-feature-page is-active" data-feature-slide="0" href="#" data-scroll="shape" aria-label="Open the shape project">
+                    <div class="svc-ai-feature-copy">
+                      <span class="svc-ai-feature-kicker">Featured proof</span>
+                      <h5 class="svc-ai-feature-title">Shape turns live context into testable decisions.</h5>
+                      <p>
+                        Local Gemma reads market-relevant news, calls read-only SQLite tools, then scores each decision in a no-lookahead replay. Paper-trading only; the proof is traceable state, visible tools, repeatable runs.
+                      </p>
+                      <div class="ai-state-row" aria-hidden="true">
+                        <span>News</span>
+                        <span>Tools</span>
+                        <span>Eval</span>
+                        <span>Decision</span>
+                      </div>
+                      <span class="svc-ai-feature-action">Open shape <ion-icon name="arrow-forward-outline"></ion-icon></span>
+                    </div>
+                    <div class="svc-ai-feature-visual" aria-hidden="true">
+                      <figure class="ai-shot ai-shot-main">
+                        <img src="./assets/images/projects/project-shape-run-detail.png" alt="" loading="lazy" decoding="async">
+                      </figure>
+                      <figure class="ai-shot ai-shot-chat">
+                        <img src="./assets/images/projects/project-shape-chat-active.png" alt="" loading="lazy" decoding="async">
+                      </figure>
+                      <figure class="ai-shot ai-shot-home">
+                        <img src="./assets/images/projects/project-shape-home.png" alt="" loading="lazy" decoding="async">
+                      </figure>
+                    </div>
+                  </a>
+                  <a class="svc-ai-feature-link svc-ai-feature-page svc-ai-feature--porter" data-feature-slide="1" href="#" data-scroll="porter" aria-label="Open the Porter project" hidden>
+                    <div class="svc-ai-feature-copy">
+                      <span class="svc-ai-feature-kicker">Featured proof</span>
+                      <h5 class="svc-ai-feature-title">Porter ships applications without your résumé leaving your laptop.</h5>
+                      <p>
+                        Bring your own model. Porter is the harness — a structured-output pipeline with RAG over your career, an eval suite that keeps prompts honest, and a Playwright sidecar that drives the actual ATS forms. Local Ollama or hosted Claude, your call.
+                      </p>
+                      <div class="ai-state-row" aria-hidden="true">
+                        <span>Posting</span>
+                        <span>Score</span>
+                        <span>Draft</span>
+                        <span>Submit</span>
+                      </div>
+                      <span class="svc-ai-feature-action">Open Porter <ion-icon name="arrow-forward-outline"></ion-icon></span>
+                    </div>
+                    <div class="svc-ai-feature-visual" aria-hidden="true">
+                      <figure class="ai-shot ai-shot-main">
+                        <img src="./assets/images/projects/project-porter-dashboard.png" alt="" loading="lazy" decoding="async">
+                      </figure>
+                      <figure class="ai-shot ai-shot-chat">
+                        <img src="./assets/images/projects/project-porter-draft.png" alt="" loading="lazy" decoding="async">
+                      </figure>
+                      <figure class="ai-shot ai-shot-home">
+                        <img src="./assets/images/projects/project-porter-form.png" alt="" loading="lazy" decoding="async">
+                      </figure>
+                    </div>
+                  </a>
                 </div>
-                <p class="svc-narrative">Useful AI features depend on the engineering around the model: clear tool contracts, structured outputs, retry behaviour, evaluation, and product decisions that help people understand what the system is doing. That is the layer I enjoy most &mdash; turning capable models into dependable features.</p>
-                <p class="svc-narrative">Sometimes that means local models for privacy and latency; sometimes it means frontier models for capability. The important part is choosing deliberately, then building the surrounding system so the feature remains predictable, observable, and useful after the first demo.</p>
+                <p class="svc-narrative">The most important AI work often sits between the model and the user: tool contracts, structured-output guards, evaluation harnesses, traceability, and product decisions that make behaviour understandable. That is what turns an impressive demo into a tool someone can trust.</p>
+                <p class="svc-narrative">I use local models when privacy or latency matters, and frontier models when capability is the priority. Either way, I care about systems that keep running, keep passing their checks, and leave behind reasoning people can inspect.</p>
                 <span class="svc-section-label">See it in action</span>
                 <ul class="svc-chips">
-                  <li><a href="#" data-scroll="porter">Porter <span class="svc-chip-tag">AI Agent</span></a></li>
-                  <li><a href="#" data-scroll="shape">shape <span class="svc-chip-tag">AI Research</span></a></li>
+                  <li><a href="#" data-scroll="porter">Porter <span class="svc-chip-tag">Local-first Agent</span></a></li>
+                  <li><a href="#" data-scroll="shape">shape <span class="svc-chip-tag">Local-LLM Research</span></a></li>
                   <li><a href="#" data-scroll="generatevr">GenerateVR <span class="svc-chip-tag">AI Product</span></a></li>
                 </ul>
               </div>
             </li>
 
             <li class="service-item" data-variant-hide="ai" role="button" tabindex="0" aria-expanded="false"
-                data-standfirst="Cross-platform software built for real working environments: offline-first apps, companion tools, and resilient product infrastructure.">
+                data-standfirst="Desktop and mobile products that feel like one coherent product: clear on a laptop, useful on a phone, and reliable when people are doing real work.">
               <button class="service-toggle" aria-label="Expand" tabindex="-1"><span class="service-toggle-chevron">▾</span></button>
               <div class="service-icon-box">
                 <img src="./assets/images/icon-app.svg" alt="mobile app icon" width="40">
@@ -375,48 +406,36 @@
               <div class="service-content-box">
                 <h4 class="h4 service-item-title">Desktop &amp; Mobile Apps</h4>
                 <p class="service-item-text">
-                  Cross-platform applications for environments where reliability matters: offline-first field tools, companion mobile apps, headset-based training products, and the supporting services that keep them running.
+                  Desktop and mobile products that feel like one coherent product: clear on a laptop, useful on a phone, and reliable when people are doing real work.
                 </p>
               </div>
               <div class="service-detail">
-                <div class="svc-media-strip">
-                  <figure>
-                    <img src="./assets/images/projects/project-porter-dashboard.png" alt="Porter macOS" loading="lazy">
-                    <figcaption>
-                      <strong class="svc-cap-title">Porter &middot; macOS</strong>
-                      <span class="svc-cap-text">Native menu-bar agent with private retrieval over resume and writing samples, designed to keep sensitive job-search data local.</span>
-                    </figcaption>
-                  </figure>
-                  <figure>
-                    <img src="./assets/images/projects/project-hospitality-ss1.jpg" alt="Hospitality Passport on Quest" loading="lazy">
-                    <figcaption>
-                      <strong class="svc-cap-title">Hospitality Passport &middot; Quest</strong>
-                      <span class="svc-cap-text">Front-of-house training built around interactive props, NPC decision points, and repeatable deployment across Quest fleets.</span>
-                    </figcaption>
-                  </figure>
-                  <figure>
-                    <img src="./assets/images/projects/project-millertraining-1.jpg" alt="Child Welfare VR" loading="lazy">
-                    <figcaption>
-                      <strong class="svc-cap-title">Child Welfare VR &middot; Quest</strong>
-                      <span class="svc-cap-text">VR home assessment where social-work trainees identify safety and protection factors before making scenario decisions.</span>
-                    </figcaption>
-                  </figure>
-                  <figure>
-                    <img src="./assets/images/projects/project-motb1.jpg" alt="Museum of the Bible companion" loading="lazy">
-                    <figcaption>
-                      <strong class="svc-cap-title">Museum of the Bible &middot; AR-adjacent</strong>
-                      <span class="svc-cap-text">Mobile companion experience guiding children through story missions and exhibit-linked activities.</span>
-                    </figcaption>
-                  </figure>
+                <div class="svc-app-showcase svc-app-showcase--simple">
+                  <div class="svc-app-copy">
+                    <span class="svc-showcase-kicker">Desktop + mobile</span>
+                    <h5>One product, shaped for the screens people actually use.</h5>
+                    <p>A laptop can carry the deep work. A phone can keep the important actions close. The craft is making both feel intentional, reliable, and part of the same product.</p>
+                  </div>
+                  <div class="svc-device-stage svc-device-stage--simple" aria-label="ComSim logo shown on laptop and mobile screens">
+                    <figure class="svc-product-device svc-product-device--laptop">
+                      <span class="svc-device-chrome" aria-hidden="true"><span></span><span></span><span></span></span>
+                      <img class="svc-product-logo svc-product-logo--wordmark svc-product-logo--comsim" src="./assets/images/view-comsim.png" alt="ComSim logo" loading="lazy" decoding="async">
+                      <span class="svc-laptop-base" aria-hidden="true"></span>
+                    </figure>
+                    <figure class="svc-product-device svc-product-device--phone">
+                      <span class="svc-phone-speaker" aria-hidden="true"></span>
+                      <img class="svc-product-logo svc-product-logo--icon svc-product-logo--comsim-icon" src="./assets/images/view-comsim.png" alt="ComSim app icon" loading="lazy" decoding="async">
+                    </figure>
+                  </div>
                 </div>
-                <p class="svc-narrative">Cross-platform apps earn trust through the details: reliable offline behaviour, clean recovery when a connection returns, clear multi-tenant boundaries, and interfaces that stay usable in the field. Those decisions are often invisible, but they are what keep a product useful long after launch.</p>
-                <p class="svc-narrative">I&rsquo;ve worked across architecture, implementation, polish, and long-term maintenance for products that run on desktops, mobile devices, and managed headset fleets. Different surfaces, same standard: software that remains dependable in the conditions people actually use it in.</p>
+                <p class="svc-narrative">Good cross-platform work starts with the product, not the platform. The desktop app should make complex tasks feel manageable; the mobile app should handle the moments that need to happen quickly or away from the desk.</p>
+                <p class="svc-narrative">I build the shared system underneath: data, sync, accounts, state, error handling, and the small interface details that make the whole thing feel calm in production.</p>
                 <span class="svc-section-label">See it in action</span>
                 <ul class="svc-chips">
+                  <li><a href="#" data-scroll="comsim">ComSim <span class="svc-chip-tag">iOS / Android / Desktop</span></a></li>
                   <li><a href="#" data-scroll="porter">Porter <span class="svc-chip-tag">macOS / Web</span></a></li>
-                  <li><a href="#" data-scroll="warehousing-passport">Warehousing Passport <span class="svc-chip-tag">Cross-platform</span></a></li>
-                  <li><a href="#" data-scroll="hospitality-passport">Hospitality Passport <span class="svc-chip-tag">Cross-platform</span></a></li>
-                  <li><a href="#" data-scroll="museum-of-the-bible">Museum of the Bible <span class="svc-chip-tag">AR-adjacent</span></a></li>
+                  <li><a href="#" data-scroll="museum-of-the-bible">Museum of the Bible <span class="svc-chip-tag">Android Guide</span></a></li>
+                  <li><a href="#" data-scroll="aetherlight">The Aetherlight <span class="svc-chip-tag">PC / iOS / Android</span></a></li>
                 </ul>
               </div>
             </li>
@@ -507,7 +526,7 @@
             </li>
 
             <li class="service-item" data-variant-only="ai" data-variant-order-ai="2" role="button" tabindex="0" aria-expanded="false"
-                data-standfirst="Desktop and mobile applications built for real-world use: offline-first, multi-tenant, and reliable outside controlled environments.">
+                data-standfirst="Desktop and mobile apps that share one product idea: clear interfaces, durable data, and one product system underneath.">
               <button class="service-toggle" aria-label="Expand" tabindex="-1"><span class="service-toggle-chevron">▾</span></button>
               <div class="service-icon-box">
                 <img src="./assets/images/icon-app.svg" alt="mobile app icon" width="40">
@@ -516,54 +535,42 @@
                 <h4 class="h4 service-item-title">Desktop &amp; Mobile Apps</h4>
                 <p class="service-item-text">
                   <strong>Production software beyond the prototype.</strong>
-                  <br>I build and maintain cross-platform applications across desktop, mobile, and headset environments: offline-first systems, multi-tenant products, companion tools, and the infrastructure behind them. I&rsquo;m comfortable owning architecture, implementation, polish, and long-term reliability.
+                  <br>Desktop and mobile apps that share one product idea: clear interfaces, durable data, and one product system underneath.
                 </p>
               </div>
               <div class="service-detail">
-                <div class="svc-media-strip">
-                  <figure>
-                    <img src="./assets/images/projects/project-porter-dashboard.png" alt="Porter macOS" loading="lazy">
-                    <figcaption>
-                      <strong class="svc-cap-title">Porter &middot; macOS</strong>
-                      <span class="svc-cap-text">Local-first desktop workflow with cached evaluation runs and reproducible demo data for safer iteration.</span>
-                    </figcaption>
-                  </figure>
-                  <figure>
-                    <img src="./assets/images/projects/project-hospitality-ss2.jpg" alt="Hospitality Passport dialogue" loading="lazy">
-                    <figcaption>
-                      <strong class="svc-cap-title">Hospitality Passport &middot; dialogue</strong>
-                      <span class="svc-cap-text">Reusable dialogue and TTS pipeline that lets writers revise NPC lines without waiting on code changes.</span>
-                    </figcaption>
-                  </figure>
-                  <figure>
-                    <img src="./assets/images/projects/project-millertraining-2.jpg" alt="Child Welfare VR branching interview" loading="lazy">
-                    <figcaption>
-                      <strong class="svc-cap-title">Child Welfare VR &middot; branching</strong>
-                      <span class="svc-cap-text">Branching in-world interviews present realistic response choices and adapt the scenario based on trainee decisions.</span>
-                    </figcaption>
-                  </figure>
-                  <figure>
-                    <img src="./assets/images/projects/project-motb1.jpg" alt="Museum of the Bible routing" loading="lazy">
-                    <figcaption>
-                      <strong class="svc-cap-title">Museum of the Bible &middot; routing</strong>
-                      <span class="svc-cap-text">Mobile companion routing that adapts a child&rsquo;s museum journey around age, timing, interests, and the adult itinerary.</span>
-                    </figcaption>
-                  </figure>
+                <div class="svc-app-showcase svc-app-showcase--simple">
+                  <div class="svc-app-copy">
+                    <span class="svc-showcase-kicker">Desktop + mobile</span>
+                    <h5>One product, shaped for the screens people actually use.</h5>
+                    <p>A laptop can carry the deep work. A phone can keep the important actions close. The craft is making both feel intentional, reliable, and part of the same product.</p>
+                  </div>
+                  <div class="svc-device-stage svc-device-stage--simple" aria-label="ComSim logo shown on laptop and mobile screens">
+                    <figure class="svc-product-device svc-product-device--laptop">
+                      <span class="svc-device-chrome" aria-hidden="true"><span></span><span></span><span></span></span>
+                      <img class="svc-product-logo svc-product-logo--wordmark svc-product-logo--comsim" src="./assets/images/view-comsim.png" alt="ComSim logo" loading="lazy" decoding="async">
+                      <span class="svc-laptop-base" aria-hidden="true"></span>
+                    </figure>
+                    <figure class="svc-product-device svc-product-device--phone">
+                      <span class="svc-phone-speaker" aria-hidden="true"></span>
+                      <img class="svc-product-logo svc-product-logo--icon svc-product-logo--comsim-icon" src="./assets/images/view-comsim.png" alt="ComSim app icon" loading="lazy" decoding="async">
+                    </figure>
+                  </div>
                 </div>
-                <p class="svc-narrative">I build for devices that leave controlled environments: headsets used in training, tablets used on-site, and laptops that have to keep working wherever the job is happening. Offline-first data affects everything: capture, sync, conflict resolution, and the UI states that only appear when connectivity is unreliable.</p>
-                <p class="svc-narrative">The work spans different form factors, but the goal is consistent: products that stay usable, recover cleanly, and remain maintainable years after launch.</p>
+                <p class="svc-narrative">Good cross-platform work starts with the product, not the platform. The desktop app should make complex tasks feel manageable; the mobile app should handle the moments that need to happen quickly or away from the desk.</p>
+                <p class="svc-narrative">I build the shared system underneath: data, sync, accounts, state, error handling, and the small interface details that make the whole thing feel calm in production.</p>
                 <span class="svc-section-label">See it in action</span>
                 <ul class="svc-chips">
+                  <li><a href="#" data-scroll="comsim">ComSim <span class="svc-chip-tag">iOS / Android / Desktop</span></a></li>
                   <li><a href="#" data-scroll="porter">Porter <span class="svc-chip-tag">macOS / Web</span></a></li>
-                  <li><a href="#" data-scroll="warehousing-passport">Warehousing Passport <span class="svc-chip-tag">Cross-platform</span></a></li>
-                  <li><a href="#" data-scroll="hospitality-passport">Hospitality Passport <span class="svc-chip-tag">Cross-platform</span></a></li>
-                  <li><a href="#" data-scroll="museum-of-the-bible">Museum of the Bible <span class="svc-chip-tag">AR-adjacent</span></a></li>
+                  <li><a href="#" data-scroll="generatevr">GenerateVR <span class="svc-chip-tag">Web Authoring</span></a></li>
+                  <li><a href="#" data-scroll="furlong">Furlong <span class="svc-chip-tag">Web Workflow</span></a></li>
                 </ul>
               </div>
             </li>
 
             <li class="service-item" data-variant-only="ai" data-variant-order-ai="3" role="button" tabindex="0" aria-expanded="false"
-                data-standfirst="The systems that make AI reliable: repeatable pipelines, evaluations, telemetry, deployment flows, and operational tooling.">
+                data-standfirst="Pipelines, evals, telemetry, deployment paths, and automations that make AI features easier to trust in production.">
               <button class="service-toggle" aria-label="Expand" tabindex="-1"><span class="service-toggle-chevron">▾</span></button>
               <div class="service-icon-box">
                 <img src="./assets/images/icon-pipeline.svg" alt="pipeline icon" width="40">
@@ -571,43 +578,31 @@
               <div class="service-content-box">
                 <h4 class="h4 service-item-title">Pipelines &amp; Automation</h4>
                 <p class="service-item-text">
-                  <strong>The systems around the model.</strong>
-                  <br>Strong AI products need more than prompts. I build repeatable pipelines, evaluation harnesses, telemetry, deployment flows, caching, and operational tooling so AI features are easier to ship, observe, and improve over time.
+                  <strong>Reliability around the model.</strong>
+                  <br>I build the loops that make AI features dependable: structured inputs, checked outputs, evals, telemetry, caching, scheduled jobs, and operational tooling.
                 </p>
               </div>
               <div class="service-detail">
-                <div class="svc-media-strip">
-                  <figure class="contain">
-                    <img src="./assets/images/projects/project-furlong-workflow.png" alt="Furlong n8n workflow" loading="lazy">
-                    <figcaption>
-                      <strong class="svc-cap-title">Furlong &middot; n8n graph</strong>
-                      <span class="svc-cap-text">Self-hosted 12-node workflow that scrapes curated NZ racing sources, dedupes against a rolling SHA-1 index, and sends the morning email.</span>
-                    </figcaption>
-                  </figure>
-                  <figure>
-                    <img src="./assets/images/projects/project-furlong-email.png" alt="Furlong 6am digest" loading="lazy">
-                    <figcaption>
-                      <strong class="svc-cap-title">Furlong &middot; 6am digest</strong>
-                      <span class="svc-cap-text">A custom Code node renders the digest; SMTP handles the 6am NZT delivery without manual follow-up.</span>
-                    </figcaption>
-                  </figure>
-                  <figure>
-                    <img src="./assets/images/projects/project-furlong-code.png" alt="Furlong code node" loading="lazy">
-                    <figcaption>
-                      <strong class="svc-cap-title">Furlong &middot; code node</strong>
-                      <span class="svc-cap-text">Normalises source content through HTML extraction, cleanup, and SHA-1 hashing before the dedupe check.</span>
-                    </figcaption>
-                  </figure>
-                  <figure>
-                    <img src="./assets/images/projects/project-porter-form.png" alt="Porter agent pipeline" loading="lazy">
-                    <figcaption>
-                      <strong class="svc-cap-title">Porter &middot; agent pipeline</strong>
-                      <span class="svc-cap-text">Structured-output pipeline from posting to requirement tree, fit score, and tailored draft, with the loop kept local.</span>
-                    </figcaption>
-                  </figure>
+                <div class="svc-pipeline-showcase">
+                  <div class="svc-pipeline-main">
+                    <div class="svc-pipeline-header">
+                      <span class="svc-showcase-kicker">Automation as product infrastructure</span>
+                      <strong>Runs before breakfast. Leaves a trail.</strong>
+                      <p>Furlong turns scattered racing-source pages into a daily digest: crawl, normalise, fingerprint, dedupe, send. The point is a run you can inspect once, then trust.</p>
+                    </div>
+                    <figure class="svc-pipeline-graph">
+                      <img src="./assets/images/projects/project-furlong-workflow.png" alt="Furlong self-hosted n8n workflow graph" loading="lazy" decoding="async">
+                    </figure>
+                  </div>
+                  <div class="svc-pipeline-side">
+                    <figure class="svc-pipeline-card svc-pipeline-card--email">
+                      <img src="./assets/images/projects/project-furlong-email.png" alt="Furlong 6am email digest" loading="lazy" decoding="async">
+                      <figcaption><span>Output</span><strong>6am digest</strong></figcaption>
+                    </figure>
+                  </div>
                 </div>
-                <p class="svc-narrative">Shipping AI features takes repeatable infrastructure: evaluations that catch model regressions, caches that control cost and latency, structured-output validation, and telemetry that shows what users actually received. I enjoy building the operational layer that lets a demo become a product.</p>
-                <p class="svc-narrative">Furlong is a simple example of that preference: a self-hosted twelve-node n8n workflow that scrapes curated NZ horse-racing sources, dedupes them against a rolling SHA-1 index, and sends a daily digest at 6am. Small, reliable, explainable automation is the shape I keep aiming for.</p>
+                <p class="svc-narrative">The same taste matters in AI work: validate the structure, cache the expensive parts, measure quality, and show what happened. The model is one stage in a system that should be legible from input to outcome.</p>
+                <p class="svc-narrative">I like automations that feel finished: quiet enough to trust, explicit enough to debug, and polished enough that the handoff looks inevitable.</p>
                 <span class="svc-section-label">See it in action</span>
                 <ul class="svc-chips">
                   <li><a href="#" data-scroll="furlong">Furlong <span class="svc-chip-tag">n8n Automation</span></a></li>
@@ -677,35 +672,36 @@
                 </p>
               </div>
               <div class="service-detail">
-                <div class="svc-media-strip">
-                  <figure>
-                    <img src="./assets/images/projects/project-sing1.png" alt="VR Singing Club" loading="lazy">
-                    <figcaption>
-                      <strong class="svc-cap-title">VR Singing Club &middot; Quest</strong>
-                      <span class="svc-cap-text">Social karaoke prototype with node-based dialogue tools for wiring NPC behaviour and speech without code changes.</span>
-                    </figcaption>
-                  </figure>
-                  <figure>
-                    <img src="./assets/images/projects/project-heights1.png" alt="Working at Heights" loading="lazy">
-                    <figcaption>
-                      <strong class="svc-cap-title">Working at Heights</strong>
-                      <span class="svc-cap-text">Immersive height-safety training with competency mapping aligned to NZQA standards and varied scenario flow.</span>
-                    </figcaption>
-                  </figure>
-                  <figure>
-                    <img src="./assets/images/projects/project-aether3.webp" alt="The Aetherlight MMORPG" loading="lazy">
-                    <figcaption>
-                      <strong class="svc-cap-title">The Aetherlight &middot; MMORPG</strong>
-                      <span class="svc-cap-text">Cross-platform combat systems with team synergy and combo mechanics, shipped across mobile and PC.</span>
-                    </figcaption>
-                  </figure>
-                  <figure>
-                    <img src="./assets/images/projects/project-hospitality-ss1.jpg" alt="Hospitality Passport" loading="lazy">
-                    <figcaption>
-                      <strong class="svc-cap-title">Hospitality Passport &middot; Quest</strong>
-                      <span class="svc-cap-text">In-world tablet UI, visual guidance, and outcome tracking for scalable training content.</span>
-                    </figcaption>
-                  </figure>
+                <div class="svc-vr-showcase">
+                  <div class="svc-vr-gallery" aria-label="Selected VR project screenshots">
+                    <figure class="svc-vr-card">
+                      <img src="./assets/images/projects/project-heights1.png" alt="Working at Heights VR training scenario" loading="lazy" decoding="async">
+                      <figcaption><strong>Working at Heights</strong><span>Safety training</span></figcaption>
+                    </figure>
+                    <figure class="svc-vr-card">
+                      <img src="./assets/images/projects/project-hospitality-ss1.jpg" alt="Hospitality Passport in-world tablet UI" loading="lazy" decoding="async">
+                      <figcaption><strong>Hospitality Passport</strong><span>In-world UI</span></figcaption>
+                    </figure>
+                    <figure class="svc-vr-card">
+                      <img src="./assets/images/projects/project-sing1.png" alt="VR Singing Club social karaoke room" loading="lazy" decoding="async">
+                      <figcaption><strong>VR Singing Club</strong><span>Social prototype</span></figcaption>
+                    </figure>
+                    <figure class="svc-vr-card">
+                      <img src="./assets/images/projects/project-millertraining-1.jpg" alt="Child Welfare VR home assessment" loading="lazy" decoding="async">
+                      <figcaption><strong>Child Welfare VR</strong><span>Branching assessment</span></figcaption>
+                    </figure>
+                  </div>
+                  <div class="svc-vr-copy">
+                    <span class="svc-showcase-kicker">Selected VR work</span>
+                    <h5>Shipped headset projects across training, UI, and social VR.</h5>
+                    <p>Training scenarios, in-world UI, social prototypes, and branching assessments across Quest, Pico, and PC-VR.</p>
+                    <div class="svc-vr-tags" aria-label="VR delivery areas">
+                      <span>Training</span>
+                      <span>Interaction</span>
+                      <span>Comfort</span>
+                      <span>Performance</span>
+                    </div>
+                  </div>
                 </div>
                 <p class="svc-narrative">Good VR depends on small decisions adding up: frame budgets, hand feel, spatial audio, readable interaction cues, and locomotion choices that support comfort instead of distracting from the task. Those details determine whether a simulation feels natural enough for people to focus on what they are learning.</p>
                 <p class="svc-narrative">I&rsquo;ve worked across interaction design, multiplayer networking, performance, and platform-specific delivery for safety training, social VR, and cross-platform games. The aim is always the same: immersion that supports the experience instead of getting in its way.</p>
@@ -713,7 +709,8 @@
                 <ul class="svc-chips">
                   <li><a href="#" data-scroll="vr-singing-club">VR Singing Club <span class="svc-chip-tag">VR Social</span></a></li>
                   <li><a href="#" data-scroll="heights">Working at Heights <span class="svc-chip-tag">VR Training</span></a></li>
-                  <li><a href="#" data-scroll="aetherlight">The Aetherlight <span class="svc-chip-tag">MMORPG</span></a></li>
+                  <li><a href="#" data-scroll="hospitality-passport">Hospitality Passport <span class="svc-chip-tag">Training UI</span></a></li>
+                  <li><a href="#" data-scroll="miller-training">Child Welfare VR <span class="svc-chip-tag">Assessment</span></a></li>
                 </ul>
               </div>
             </li>
@@ -731,35 +728,36 @@
                 </p>
               </div>
               <div class="service-detail">
-                <div class="svc-media-strip">
-                  <figure>
-                    <img src="./assets/images/projects/project-dungemstitle.gif" alt="Dungems reverse-dungeon" loading="lazy">
-                    <figcaption>
-                      <strong class="svc-cap-title">Dungems &middot; reverse-dungeon</strong>
-                      <span class="svc-cap-text">Reverse-dungeon design built around traps, tunnels, trained monsters, and AI heroes testing the player&rsquo;s layout.</span>
-                    </figcaption>
-                  </figure>
-                  <figure>
-                    <img src="./assets/images/projects/project-crossy2.png" alt="Crossy Road Castle" loading="lazy">
-                    <figcaption>
-                      <strong class="svc-cap-title">Crossy Road Castle &middot; Apple Arcade</strong>
-                      <span class="svc-cap-text">Co-op tower climber with couch and online multiplayer, shipped on Apple Arcade.</span>
-                    </figcaption>
-                  </figure>
-                  <figure>
-                    <img src="./assets/images/projects/HUIA-ss1.png" alt="Huia narrative" loading="lazy">
-                    <figcaption>
-                      <strong class="svc-cap-title">Huia &middot; narrative</strong>
-                      <span class="svc-cap-text">Narrative exploration through hand-painted Aotearoa environments, ecology, and folklore-inspired storytelling.</span>
-                    </figcaption>
-                  </figure>
-                  <figure>
-                    <img src="./assets/images/projects/project-tumbly2.png" alt="Tumbly Beasts" loading="lazy">
-                    <figcaption>
-                      <strong class="svc-cap-title">Tumbly Beasts &middot; physics runner</strong>
-                      <span class="svc-cap-text">Procedural physics runner with mobile release features, social sharing, and supporting sticker-pack content.</span>
-                    </figcaption>
-                  </figure>
+                <div class="svc-game-showcase">
+                  <div class="svc-game-copy">
+                    <span class="svc-showcase-kicker">Playable first</span>
+                    <h5>Games are built from feel, readable rules, and enough production discipline to ship.</h5>
+                    <p>The same loop keeps showing up: get the mechanic playable, expose the feedback, tune the timing, then keep the build stable enough for real iteration.</p>
+                    <ol class="svc-game-loop" aria-label="Game development loop">
+                      <li><span>01</span><strong>Prototype</strong></li>
+                      <li><span>02</span><strong>Feel</strong></li>
+                      <li><span>03</span><strong>Systems</strong></li>
+                      <li><span>04</span><strong>Ship</strong></li>
+                    </ol>
+                  </div>
+                  <div class="svc-game-stage">
+                    <figure class="svc-game-card svc-game-card--hero">
+                      <img src="./assets/images/projects/project-crossy2.png" alt="Crossy Road Castle co-op gameplay" loading="lazy" decoding="async">
+                      <figcaption>Apple Arcade co-op</figcaption>
+                    </figure>
+                    <figure class="svc-game-card svc-game-card--dungems">
+                      <img src="./assets/images/projects/project-dungemstitle.gif" alt="Dungems reverse-dungeon title animation" loading="lazy" decoding="async">
+                      <figcaption>Reverse dungeon</figcaption>
+                    </figure>
+                    <figure class="svc-game-card svc-game-card--huia">
+                      <img src="./assets/images/projects/HUIA-ss1.png" alt="Huia hand-painted narrative scene" loading="lazy" decoding="async">
+                      <figcaption>Narrative world</figcaption>
+                    </figure>
+                    <figure class="svc-game-card svc-game-card--tumbly">
+                      <img src="./assets/images/projects/project-tumbly2.png" alt="Tumbly Beasts physics runner" loading="lazy" decoding="async">
+                      <figcaption>Physics runner</figcaption>
+                    </figure>
+                  </div>
                 </div>
                 <p class="svc-narrative">The part I keep returning to is feel: timing, responsiveness, readable feedback, and systems that make player decisions clear. Whether it is a physics runner, a co-op platformer, or a strategy game, those details are what make a game easy to understand and satisfying to keep playing.</p>
                 <p class="svc-narrative">I&rsquo;ve shipped on Apple Arcade, in independent studios, and across iOS, Android, PC, and console. I like the combination of creative iteration and practical engineering required to make a game hold together all the way to release.</p>
@@ -1617,7 +1615,7 @@ Delivered the Tycoon Series — three RTS titles (Restaurant, Tech, Construction
   <li>Grounded chat — the model has nine read-only SQLite tools (recent runs, run detail, calibration, market + experiment listings, news search, Hormuz traffic). Every tool call is visible in the UI; every answer is traceable back to a real row; Gemma cannot write, so it can never corrupt state.</li>
   <li>Mandelbrot-aware sizing: fractional Kelly (¼), vol-scaled, hard-capped. Fat-tailed prediction errors taken seriously.</li>
 </ul>"
-    data-gallery='["./assets/images/projects/project-shape-run-detail.png","./assets/images/projects/project-shape-chat-active.png","./assets/images/projects/project-shape-home.png","./assets/images/projects/project-shape-tour.webm","./assets/images/projects/project-shape-walkthrough.webm","./assets/images/projects/project-shape-replay.png","./assets/images/projects/project-shape-hormuz.png","./assets/images/projects/project-shape-experiments.png","./assets/images/projects/project-shape-autoresearch.png"]'>
+    data-gallery='["./assets/images/projects/project-shape-run-detail.png","./assets/images/projects/project-shape-chat-active.png","./assets/images/projects/project-shape-home.png"]'>
   <a href="#">
     <figure class="project-img">
       <img width="800" height="800" src="./assets/images/projects/projectthumb-shape.png"
@@ -2448,6 +2446,132 @@ A custom Code node rendered the final HTML email, with SMTP handling 6am NZT del
     </div>
   </section>
 
+  <section class="dd-replay" data-dd-replay>
+    <div class="dd-replay-head">
+      <h6 class="dd-h">One posting → one application pack</h6>
+      <p class="dd-h-sub">A guided replay of the loop Porter runs to stop fluent-but-empty AI writing from reaching an inbox.</p>
+    </div>
+
+    <div class="dd-replay-shell">
+      <div class="dd-replay-stage" aria-live="polite">
+        <figure class="dd-replay-panel is-active" data-replay-panel="0">
+          <img src="./assets/images/projects/project-porter-posting.png" alt="Porter parsing a job posting into requirements" loading="lazy">
+          <figcaption>
+            <span>01</span>
+            <strong>Messy posting in</strong>
+            <em>The role is read for requirements, implied seniority, risks, and the actual pain underneath the listing.</em>
+          </figcaption>
+        </figure>
+
+        <figure class="dd-replay-panel dd-replay-panel--brief" data-replay-panel="1" hidden>
+          <div class="dd-brief-surface" aria-hidden="true">
+            <div class="dd-brief-doc">
+              <span class="dd-brief-kicker">Parsed brief</span>
+              <h6>What this role needs</h6>
+              <ul>
+                <li><span>Must prove</span><strong>AI product judgement</strong></li>
+                <li><span>Evidence needed</span><strong>shipped systems, evals, agents</strong></li>
+                <li><span>Risk to reduce</span><strong>fluent demos without reliability</strong></li>
+              </ul>
+            </div>
+            <div class="dd-brief-tags">
+              <span>requirements</span>
+              <span>pain</span>
+              <span>objections</span>
+              <span>proof gaps</span>
+            </div>
+          </div>
+          <figcaption>
+            <span>02</span>
+            <strong>Brief extracted</strong>
+            <em>The posting becomes a small decision object: what must be answered, what proof matters, and what to avoid.</em>
+          </figcaption>
+        </figure>
+
+        <figure class="dd-replay-panel" data-replay-panel="2" hidden>
+          <img src="./assets/images/projects/project-porter-fit.png" alt="Porter matching job requirements to cited career evidence" loading="lazy">
+          <figcaption>
+            <span>03</span>
+            <strong>Evidence matched</strong>
+            <em>Claims are scored against the local career corpus, with citations back to the source material.</em>
+          </figcaption>
+        </figure>
+
+        <figure class="dd-replay-panel" data-replay-panel="3" hidden>
+          <img src="./assets/images/projects/project-porter-draft.png" alt="Porter drafting a tailored cover letter in plain text" loading="lazy">
+          <figcaption>
+            <span>04</span>
+            <strong>Plain text first</strong>
+            <em>The letter has to work before formatting touches it: relevant, specific, human, and proof-backed.</em>
+          </figcaption>
+        </figure>
+
+        <figure class="dd-replay-panel" data-replay-panel="4" hidden>
+          <img src="./assets/images/projects/project-porter-form.png" alt="Porter's cold review pass checking a finished application pack" loading="lazy">
+          <figcaption>
+            <span>05</span>
+            <strong>Cold review</strong>
+            <em>A second instance reads the pack without draft history, catching weak prose before it ships.</em>
+          </figcaption>
+        </figure>
+
+        <figure class="dd-replay-panel" data-replay-panel="5" hidden>
+          <video src="./assets/images/projects/project-porter-simple.webm" autoplay muted loop playsinline preload="metadata"></video>
+          <figcaption>
+            <span>06</span>
+            <strong>Submit safely</strong>
+            <em>A Playwright sidecar handles the repetitive ATS work while the browser stays under your control.</em>
+          </figcaption>
+        </figure>
+      </div>
+
+      <ol class="dd-replay-steps" role="tablist" aria-label="Porter replay steps">
+        <li>
+          <button type="button" class="dd-replay-step is-active" data-replay-step="0" role="tab" aria-selected="true">
+            <span class="dd-replay-num">01</span>
+            <span class="dd-replay-copy"><strong>Paste job</strong><em>Read the messy listing.</em></span>
+            <span class="dd-replay-progress"><span></span></span>
+          </button>
+        </li>
+        <li>
+          <button type="button" class="dd-replay-step" data-replay-step="1" role="tab" aria-selected="false">
+            <span class="dd-replay-num">02</span>
+            <span class="dd-replay-copy"><strong>Extract brief</strong><em>Turn requirements into a useful decision object.</em></span>
+            <span class="dd-replay-progress"><span></span></span>
+          </button>
+        </li>
+        <li>
+          <button type="button" class="dd-replay-step" data-replay-step="2" role="tab" aria-selected="false">
+            <span class="dd-replay-num">03</span>
+            <span class="dd-replay-copy"><strong>Match evidence</strong><em>Attach proof from the local corpus.</em></span>
+            <span class="dd-replay-progress"><span></span></span>
+          </button>
+        </li>
+        <li>
+          <button type="button" class="dd-replay-step" data-replay-step="3" role="tab" aria-selected="false">
+            <span class="dd-replay-num">04</span>
+            <span class="dd-replay-copy"><strong>Draft plainly</strong><em>Write before formatting.</em></span>
+            <span class="dd-replay-progress"><span></span></span>
+          </button>
+        </li>
+        <li>
+          <button type="button" class="dd-replay-step" data-replay-step="4" role="tab" aria-selected="false">
+            <span class="dd-replay-num">05</span>
+            <span class="dd-replay-copy"><strong>Review cold</strong><em>Separate builder from reviewer.</em></span>
+            <span class="dd-replay-progress"><span></span></span>
+          </button>
+        </li>
+        <li>
+          <button type="button" class="dd-replay-step" data-replay-step="5" role="tab" aria-selected="false">
+            <span class="dd-replay-num">06</span>
+            <span class="dd-replay-copy"><strong>Submit safely</strong><em>Let the agent handle the last mile.</em></span>
+            <span class="dd-replay-progress"><span></span></span>
+          </button>
+        </li>
+      </ol>
+    </div>
+  </section>
+
   <section class="dd-pipeline">
 
     <!-- Inline SVG icon library used by the overview diagram and per-phase cards -->
@@ -2707,17 +2831,31 @@ A custom Code node rendered the final HTML email, with SMTP handling 6am NZT del
              (03 or 04), ending tangent-right.
              Drawn long-first so short renders on top where they cross. -->
 
-        <path class="dd-ov-loop dd-ov-loop--prose"
-              d="M 110 278 C -10 278 -10 128 110 128"
-              marker-end="url(#dd-arrow-head)"/>
-        <text class="dd-ov-loop-label dd-ov-loop-label--prose"
-              x="40" y="206" text-anchor="start">re-prose</text>
+        <g class="dd-ov-loop-target dd-ov-loop-target--prose"
+           data-architecture-phase="reprose"
+           aria-label="Re-prose loop">
+          <rect class="dd-ov-loop-bounds" x="-8" y="112" width="128" height="178" rx="12"/>
+          <path class="dd-ov-loop-hit"
+                d="M 110 278 C -10 278 -10 128 110 128"/>
+          <path class="dd-ov-loop dd-ov-loop--prose"
+                d="M 110 278 C -10 278 -10 128 110 128"
+                marker-end="url(#dd-arrow-head)"/>
+          <text class="dd-ov-loop-label dd-ov-loop-label--prose"
+                x="40" y="206" text-anchor="start">re-prose</text>
+        </g>
 
-        <path class="dd-ov-loop dd-ov-loop--render"
-              d="M 110 278 C 35 278 35 228 110 228"
-              marker-end="url(#dd-arrow-head)"/>
-        <text class="dd-ov-loop-label dd-ov-loop-label--render"
-              x="66" y="256" text-anchor="start">re-render</text>
+        <g class="dd-ov-loop-target dd-ov-loop-target--render"
+           data-architecture-phase="rerender"
+           aria-label="Re-render loop">
+          <rect class="dd-ov-loop-bounds" x="28" y="218" width="92" height="70" rx="12"/>
+          <path class="dd-ov-loop-hit"
+                d="M 110 278 C 35 278 35 228 110 228"/>
+          <path class="dd-ov-loop dd-ov-loop--render"
+                d="M 110 278 C 35 278 35 228 110 228"
+                marker-end="url(#dd-arrow-head)"/>
+          <text class="dd-ov-loop-label dd-ov-loop-label--render"
+                x="66" y="256" text-anchor="start">re-render</text>
+        </g>
 
         <!-- ─── Phase shards (vertical chain) ───
              Each shard is a clickable group containing a bg rect (lights
@@ -3213,9 +3351,458 @@ A custom Code node rendered the final HTML email, with SMTP handling 6am NZT del
     <p>The codebase stays small on purpose: structured outputs, versioned prompts, plain-text drafts before HTML, cached evals, and a demo mode that proves the flow safely without using a real application.</p>
   </section>
 
+  <section class="dd-architecture">
+    <div class="dd-architecture-copy">
+      <div class="dd-architecture-detail" data-dd-architecture-detail aria-live="polite">
+        <div class="dd-architecture-detail-mark" data-architecture-icon aria-hidden="true">
+          <svg viewBox="0 0 64 64" aria-hidden="true"><use href="#dd-i-frontfoot"/></svg>
+        </div>
+        <div class="dd-architecture-detail-copy">
+          <span data-architecture-kicker>Architecture at a glance</span>
+          <h6 data-architecture-title>A proof loop before send. A signal loop after.</h6>
+          <p data-architecture-body>Porter is less a cover-letter bot than a small application system: it turns the posting into requirements, pulls cited proof from local career material, drafts and reviews with separate model roles, then submits through a controlled browser. The same opaque ID links the finished pack to anonymous portfolio signals, so follow-up starts from evidence instead of guesswork.</p>
+          <ul data-architecture-points>
+            <li>Before submit: parse the role, retrieve proof, draft, review cold, and loop only the broken layer.</li>
+            <li>After submit: tagged portfolio arrival, anonymous behaviour, private local ledger context.</li>
+            <li>The useful bit is the control system around the model: evidence, evals, gates, and reversible handoffs.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="dd-architecture-figure" data-dd-architecture-diagram></div>
+  </section>
+
   <section class="dd-closer">
     <p class="dd-closer-line">Built in concert with Claude Code and Codex, human-directed throughout. Eval harness · cached runs · stability scoring · reproducible demo mode.</p>
     <a class="proj-link" href="https://porter-625c.vercel.app/applications/demo-ai-engineer/" target="_blank" rel="noopener">Try the live demo <em class="arrow">↗</em></a>
+  </section>
+
+</template>
+
+<template id="deepdive-generatevr">
+
+  <section class="dd-opening">
+    <figure class="dd-media dd-media--diagram">
+      <!-- Inline SVG (not <img>) so it inherits the page's web fonts
+           instead of being sandboxed. Class/ID names are prefixed
+           gvrh- to avoid collisions with the rest of the page CSS
+           (the global `span { display: block }` is one example of
+           why scoping matters here). -->
+      <svg class="gvrh-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 460" role="img" aria-label="GenerateVR at a glance: author in the browser, generate on a headless server with an LLM (optionally grounded by the customer's own corpus), ship to headset, desktop, and mobile.">
+
+        <defs>
+          <linearGradient id="gvrhGoldGrad" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#FFDB6E"/>
+            <stop offset="100%" stop-color="#FFBC5E"/>
+          </linearGradient>
+
+          <radialGradient id="gvrhNodeBg" cx="50%" cy="35%" r="60%">
+            <stop offset="0%" stop-color="#FFBC5E" stop-opacity="0.10"/>
+            <stop offset="60%" stop-color="#FFBC5E" stop-opacity="0.025"/>
+            <stop offset="100%" stop-color="#FFBC5E" stop-opacity="0"/>
+          </radialGradient>
+
+          <filter id="gvrhSoftGlow" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="2" result="b"/>
+            <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+          <!-- NOTE: styles intentionally NOT defined in an inline <style>
+               here — internal SVG styles can drop during the modal's
+               transform/compositing animation. They live in style.css
+               under the .gvrh-* selectors so they survive layering. -->
+        </defs>
+
+        <rect width="1100" height="460" fill="#0e0e10"/>
+        <line x1="120" y1="200" x2="980" y2="200" stroke="#ffffff" stroke-opacity="0.05" stroke-width="1"/>
+
+        <!-- NODE 01 · AUTHOR -->
+        <g>
+          <text x="220" y="112" class="gvrh-sans gvrh-eyebrow" text-anchor="middle" fill="#FFC964">01</text>
+          <circle cx="220" cy="200" r="80" fill="url(#gvrhNodeBg)"/>
+          <circle cx="220" cy="200" r="64" fill="none" stroke="#FFBC5E" stroke-opacity="0.55" stroke-width="1.4"/>
+          <circle cx="220" cy="200" r="64" fill="#0e0e10"/>
+          <g transform="translate(180 168)" stroke="url(#gvrhGoldGrad)" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="0" y="0" width="80" height="62" rx="5"/>
+            <line x1="0" y1="14" x2="80" y2="14"/>
+            <circle cx="8" cy="7" r="1.6" fill="url(#gvrhGoldGrad)" stroke="none"/>
+            <circle cx="14" cy="7" r="1.6" fill="url(#gvrhGoldGrad)" stroke="none"/>
+            <circle cx="20" cy="7" r="1.6" fill="url(#gvrhGoldGrad)" stroke="none"/>
+            <line x1="10" y1="26" x2="44" y2="26" stroke-opacity="0.7"/>
+            <line x1="10" y1="36" x2="58" y2="36" stroke-opacity="0.5"/>
+            <line x1="10" y1="46" x2="36" y2="46" stroke-opacity="0.5"/>
+            <rect x="52" y="42" width="20" height="12" rx="2" stroke-opacity="0.85"/>
+          </g>
+          <text x="220" y="318" class="gvrh-sans gvrh-label" text-anchor="middle" fill="#f3f3f3">Author</text>
+          <text x="220" y="346" class="gvrh-body gvrh-sub" text-anchor="middle" fill="#9a9a9c">in the customer's own browser</text>
+        </g>
+
+        <!-- FLOW · 01 → 02 -->
+        <g filter="url(#gvrhSoftGlow)">
+          <line x1="295" y1="200" x2="465" y2="200" stroke="url(#gvrhGoldGrad)" stroke-width="1.4"/>
+          <path d="M 460 192 L 472 200 L 460 208" fill="none" stroke="url(#gvrhGoldGrad)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+        </g>
+
+        <!-- NODE 02 · GENERATE -->
+        <g>
+          <text x="550" y="112" class="gvrh-sans gvrh-eyebrow" text-anchor="middle" fill="#FFC964">02</text>
+          <circle cx="550" cy="200" r="86" fill="url(#gvrhNodeBg)"/>
+          <circle cx="550" cy="200" r="64" fill="none" stroke="url(#gvrhGoldGrad)" stroke-width="1.8" filter="url(#gvrhSoftGlow)"/>
+          <circle cx="550" cy="200" r="64" fill="#0e0e10"/>
+          <g transform="translate(508 170)" stroke="url(#gvrhGoldGrad)" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="6" cy="10" r="3.6"/>
+            <circle cx="6" cy="30" r="3.6"/>
+            <circle cx="6" cy="50" r="3.6"/>
+            <circle cx="78" cy="10" r="3.6" fill="url(#gvrhGoldGrad)"/>
+            <circle cx="78" cy="30" r="3.6" fill="url(#gvrhGoldGrad)"/>
+            <circle cx="78" cy="50" r="3.6" fill="url(#gvrhGoldGrad)"/>
+            <line x1="10" y1="10" x2="74" y2="10" stroke-opacity="0.55"/>
+            <line x1="10" y1="10" x2="74" y2="30" stroke-opacity="0.55"/>
+            <line x1="10" y1="30" x2="74" y2="10" stroke-opacity="0.55"/>
+            <line x1="10" y1="30" x2="74" y2="30" stroke-opacity="0.55"/>
+            <line x1="10" y1="30" x2="74" y2="50" stroke-opacity="0.55"/>
+            <line x1="10" y1="50" x2="74" y2="30" stroke-opacity="0.55"/>
+            <line x1="10" y1="50" x2="74" y2="50" stroke-opacity="0.55"/>
+          </g>
+          <text x="550" y="318" class="gvrh-sans gvrh-label" text-anchor="middle" fill="#f3f3f3">Generate</text>
+          <text x="550" y="346" class="gvrh-body gvrh-sub" text-anchor="middle" fill="#9a9a9c">headless server · LLM-authored scenes</text>
+          <g transform="translate(550 372)">
+            <rect x="-140" y="0" width="280" height="26" rx="13" fill="#0e0e10" stroke="#FFBC5E" stroke-opacity="0.6" stroke-dasharray="3 3"/>
+            <text x="0" y="17" class="gvrh-sans gvrh-pill" text-anchor="middle" fill="#FFC964">+ OPTIONAL CUSTOMER RAG CORPUS</text>
+          </g>
+        </g>
+
+        <!-- FLOW · 02 → 03 -->
+        <g filter="url(#gvrhSoftGlow)">
+          <line x1="625" y1="200" x2="795" y2="200" stroke="url(#gvrhGoldGrad)" stroke-width="1.4"/>
+          <path d="M 790 192 L 802 200 L 790 208" fill="none" stroke="url(#gvrhGoldGrad)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+        </g>
+
+        <!-- NODE 03 · SHIP -->
+        <g>
+          <text x="880" y="112" class="gvrh-sans gvrh-eyebrow" text-anchor="middle" fill="#FFC964">03</text>
+          <circle cx="880" cy="200" r="80" fill="url(#gvrhNodeBg)"/>
+          <circle cx="880" cy="200" r="64" fill="none" stroke="#FFBC5E" stroke-opacity="0.55" stroke-width="1.4"/>
+          <circle cx="880" cy="200" r="64" fill="#0e0e10"/>
+          <g transform="translate(836 156)" stroke="url(#gvrhGoldGrad)" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M44 6 C 60 22 60 50 44 78 C 28 50 28 22 44 6 Z"/>
+            <circle cx="44" cy="32" r="6"/>
+            <circle cx="44" cy="32" r="2.4" fill="url(#gvrhGoldGrad)" stroke="none"/>
+            <path d="M32 56 L20 70 L20 78 L34 70 Z"/>
+            <path d="M56 56 L68 70 L68 78 L54 70 Z"/>
+            <path d="M40 78 Q44 90 48 78" stroke-opacity="0.85"/>
+            <path d="M42 80 Q44 86 46 80" stroke-opacity="0.55"/>
+          </g>
+          <text x="880" y="318" class="gvrh-sans gvrh-label" text-anchor="middle" fill="#f3f3f3">Ship</text>
+          <text x="880" y="346" class="gvrh-body gvrh-sub" text-anchor="middle" fill="#9a9a9c">headset · desktop · mobile</text>
+          <g transform="translate(880 372)">
+            <rect x="-140" y="0" width="280" height="26" rx="13" fill="#0e0e10" stroke="#FFBC5E" stroke-opacity="0.6" stroke-dasharray="3 3"/>
+            <text x="0" y="17" class="gvrh-sans gvrh-pill" text-anchor="middle" fill="#FFC964">+ AUTO-PUSHED TO FLEET HEADSETS</text>
+          </g>
+        </g>
+      </svg>
+    </figure>
+    <div class="dd-opening-text">
+      <p class="dd-kicker">A deep dive</p>
+      <h5 class="dd-lead">Customer training docs in. Playable VR out. No one opens Unity.</h5>
+      <p class="dd-standfirst">GenerateVR is a procedural pipeline shipped inside SkillsVR's Content Creation Kit. A Vue authoring surface on the customer's enterprise site lets non-technical staff wire Unity packages, preview FBX assets in 3D, and assemble a scenario as structured JSON. A headless server takes it from there: ingest, an LLM that authors scene structure, dialogue, and interactable wiring under structured-output prompts, an optional RAG step grounded in the customer's own SOPs and compliance corpus, and a procedural builder that assembles the scene end-to-end. Once built, the server auto-pushes the result to the customer's enterprise headsets, desktop, and mobile — no manual republish.</p>
+    </div>
+  </section>
+
+  <section class="dd-replay" data-dd-replay>
+    <div class="dd-replay-head">
+      <h6 class="dd-h">Customer scenario → playable scene</h6>
+      <p class="dd-h-sub">A guided replay of one cycle through the pipeline — what the customer assembles, what crosses the wire, what the server does with it, and where it lands.</p>
+    </div>
+
+    <div class="dd-replay-shell">
+      <div class="dd-replay-stage" aria-live="polite">
+
+        <!-- Panel 01 — Wire it in the browser -->
+        <figure class="dd-replay-panel dd-replay-panel--gvr is-active" data-replay-panel="0">
+          <div class="gvr-surface gvr-surface--vue" aria-hidden="true">
+            <div class="gvr-browser">
+              <span class="gvr-browser-dots"><i></i><i></i><i></i></span>
+              <span class="gvr-browser-url">customer.skillsvr.com / authoring</span>
+              <span class="gvr-browser-vue">V</span>
+            </div>
+            <div class="gvr-vue-body">
+              <div class="gvr-vue-col">
+                <p class="gvr-vue-eyebrow">Packages</p>
+                <ul class="gvr-vue-list">
+                  <li class="is-on"><span></span>Hospitality · check-in</li>
+                  <li><span></span>Warehousing · forklift</li>
+                  <li><span></span>Compliance · briefing</li>
+                  <li><span></span>Retail · customer service</li>
+                </ul>
+              </div>
+              <div class="gvr-vue-col gvr-vue-col--preview">
+                <p class="gvr-vue-eyebrow">FBX preview</p>
+                <div class="gvr-fbx-tile">
+                  <svg viewBox="0 0 100 100" aria-hidden="true">
+                    <path d="M50 22 L78 36 L50 50 L22 36 Z" fill="none" stroke="#FFBC5E" stroke-width="1.2" stroke-linejoin="round"/>
+                    <path d="M22 36 L22 64 L50 78 L50 50 Z" fill="none" stroke="#FFBC5E" stroke-width="1.2" stroke-linejoin="round"/>
+                    <path d="M78 36 L78 64 L50 78 L50 50 Z" fill="none" stroke="#FFBC5E" stroke-width="1.2" stroke-linejoin="round"/>
+                    <line x1="50" y1="6" x2="50" y2="92" stroke="#ffffff" stroke-opacity="0.18" stroke-dasharray="2 3"/>
+                    <line x1="6" y1="50" x2="92" y2="50" stroke="#ffffff" stroke-opacity="0.18" stroke-dasharray="2 3"/>
+                  </svg>
+                </div>
+              </div>
+            </div>
+            <div class="gvr-vue-foot">
+              <button type="button" class="gvr-pill">Assemble JSON</button>
+              <span class="gvr-foot-meta">scenario · packages · assets</span>
+            </div>
+          </div>
+          <figcaption>
+            <span>01</span>
+            <strong>Wire & preview, in the browser</strong>
+            <em>Non-technical staff pick packages, preview FBX assets in 3D, and assemble scenarios on the customer's own enterprise site — no install, no sandbox, no Unity license.</em>
+          </figcaption>
+        </figure>
+
+        <!-- Panel 02 — Hand off as JSON -->
+        <figure class="dd-replay-panel dd-replay-panel--gvr" data-replay-panel="1" hidden>
+          <div class="gvr-surface gvr-surface--code" aria-hidden="true">
+            <div class="gvr-code-tab"><span>scenario.json</span><em>POST · /scenarios</em></div>
+            <pre class="gvr-code"><span class="gvr-code-key">"scenario"</span>: {
+  <span class="gvr-code-key">"id"</span>: <span class="gvr-code-str">"hospitality.checkin.v3"</span>,
+  <span class="gvr-code-key">"packages"</span>: [<span class="gvr-code-str">"hospitality-core"</span>, <span class="gvr-code-str">"voice-pack-en-au"</span>],
+  <span class="gvr-code-key">"learner_role"</span>: <span class="gvr-code-str">"front_desk_associate"</span>,
+  <span class="gvr-code-key">"objectives"</span>: [
+    <span class="gvr-code-str">"verify_id"</span>,
+    <span class="gvr-code-str">"flag_late_arrival"</span>,
+    <span class="gvr-code-str">"escalate_payment_dispute"</span>
+  ],
+  <span class="gvr-code-key">"grounding"</span>: { <span class="gvr-code-key">"corpus"</span>: <span class="gvr-code-str">"acme-sops-2025"</span>, <span class="gvr-code-key">"top_k"</span>: <span class="gvr-code-num">8</span> },
+  <span class="gvr-code-key">"variants"</span>: [<span class="gvr-code-str">"standalone"</span>, <span class="gvr-code-str">"desktop"</span>, <span class="gvr-code-str">"mobile"</span>]
+}</pre>
+          </div>
+          <figcaption>
+            <span>02</span>
+            <strong>Hand off as JSON</strong>
+            <em>One contract between the customer and the server: scenario as data, not freeform text. The whole pipeline is built around this object.</em>
+          </figcaption>
+        </figure>
+
+        <!-- Panel 03 — Headless server: ingest + LLM authoring + RAG.
+             Generous viewBox, two-line cards (label above body) so
+             nothing has to compete for the same baseline. -->
+        <figure class="dd-replay-panel dd-replay-panel--gvr" data-replay-panel="2" hidden>
+          <div class="gvr-surface gvr-surface--server" aria-hidden="true">
+            <svg viewBox="0 0 640 320" aria-hidden="true">
+              <defs>
+                <linearGradient id="gvrGoldFlow" x1="0" x2="1" y1="0" y2="0">
+                  <stop offset="0%" stop-color="#FFDB6E"/>
+                  <stop offset="100%" stop-color="#FFBC5E"/>
+                </linearGradient>
+                <filter id="gvrSoftGlow" x="-50%" y="-50%" width="200%" height="200%">
+                  <feGaussianBlur stdDeviation="2" result="b"/>
+                  <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+                </filter>
+                <marker id="gvrArr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                  <path d="M0,0 L10,5 L0,10 Z" fill="#FFBC5E"/>
+                </marker>
+                <marker id="gvrArrLight" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                  <path d="M0,0 L10,5 L0,10 Z" fill="#d6d6d6"/>
+                </marker>
+              </defs>
+
+              <!-- Incoming JSON token -->
+              <g transform="translate(24 130)">
+                <rect width="76" height="56" rx="5" fill="#ffffff" fill-opacity="0.04" stroke="#ffffff" stroke-opacity="0.20"/>
+                <text x="38" y="26" font-family="ui-monospace, monospace" font-size="13" fill="#FFC964" text-anchor="middle">{ }</text>
+                <text x="38" y="44" font-family="Space Grotesk, sans-serif" font-size="10" fill="#9a9a9c" text-anchor="middle" letter-spacing="0.5">scenario</text>
+              </g>
+              <line x1="104" y1="158" x2="156" y2="158" stroke="url(#gvrGoldFlow)" stroke-width="1.6" filter="url(#gvrSoftGlow)" marker-end="url(#gvrArr)"/>
+
+              <!-- Server outline + title -->
+              <rect x="156" y="32" width="320" height="256" rx="8" fill="#ffffff" fill-opacity="0.025" stroke="#ffffff" stroke-opacity="0.18"/>
+              <text x="172" y="56" font-family="Space Grotesk, sans-serif" font-size="10" fill="#FFC964" letter-spacing="2.2" font-weight="600">HEADLESS GENERATION SERVER</text>
+
+              <!-- A · Ingest (single-line; label and body stacked clean) -->
+              <g transform="translate(176 74)">
+                <rect width="280" height="50" rx="5" fill="#ffffff" fill-opacity="0.04" stroke="#ffffff" stroke-opacity="0.14"/>
+                <text x="16" y="20" font-family="Space Grotesk, sans-serif" font-size="10" fill="#FFC964" letter-spacing="1.6" font-weight="600">A · INGEST</text>
+                <text x="16" y="38" font-family="Poppins, sans-serif" font-size="12" fill="#dcdcdc">parse · resolve packages · stage assets</text>
+              </g>
+
+              <!-- B · LLM author (highlighted, taller) -->
+              <g transform="translate(176 142)">
+                <rect width="280" height="68" rx="5" fill="#FFBC5E" fill-opacity="0.08" stroke="#FFBC5E" stroke-opacity="0.55" stroke-width="1.2" filter="url(#gvrSoftGlow)"/>
+                <text x="16" y="20" font-family="Space Grotesk, sans-serif" font-size="10" fill="#FFC964" letter-spacing="1.6" font-weight="600">B · LLM AUTHOR</text>
+                <text x="16" y="38" font-family="Poppins, sans-serif" font-size="12" fill="#f3f3f3">structured-output prompting</text>
+                <text x="16" y="56" font-family="ui-monospace, monospace" font-size="10.5" fill="#bdbdbd">scene · dialogue · interactables</text>
+              </g>
+
+              <!-- C · Builder -->
+              <g transform="translate(176 228)">
+                <rect width="280" height="50" rx="5" fill="#ffffff" fill-opacity="0.04" stroke="#ffffff" stroke-opacity="0.14"/>
+                <text x="16" y="20" font-family="Space Grotesk, sans-serif" font-size="10" fill="#FFC964" letter-spacing="1.6" font-weight="600">C · BUILDER</text>
+                <text x="16" y="38" font-family="Poppins, sans-serif" font-size="12" fill="#dcdcdc">procedural scene assembly</text>
+              </g>
+
+              <!-- Internal A→B and B→C arrows -->
+              <line x1="316" y1="124" x2="316" y2="138" stroke="#d6d6d6" stroke-opacity="0.55" stroke-width="1.1" marker-end="url(#gvrArrLight)"/>
+              <line x1="316" y1="210" x2="316" y2="224" stroke="#d6d6d6" stroke-opacity="0.55" stroke-width="1.1" marker-end="url(#gvrArrLight)"/>
+
+              <!-- RAG corpus, glowing, on the right -->
+              <g transform="translate(522 138)" filter="url(#gvrSoftGlow)">
+                <rect width="92" height="76" rx="5" fill="#ffffff" fill-opacity="0.04" stroke="#FFBC5E" stroke-opacity="0.7" stroke-dasharray="4 3"/>
+                <g stroke="#FFBC5E" stroke-width="1.2" fill="none">
+                  <rect x="22" y="12" width="28" height="36" rx="2"/>
+                  <rect x="30" y="18" width="28" height="36" rx="2" fill="#0e0e10"/>
+                  <rect x="38" y="24" width="28" height="36" rx="2" fill="#0e0e10"/>
+                  <path d="M42 36 H60 M42 44 H58 M42 52 H60"/>
+                </g>
+              </g>
+              <text x="568" y="232" font-family="Space Grotesk, sans-serif" font-size="9.5" fill="#FFC964" text-anchor="middle" letter-spacing="1.6" font-weight="600">CUSTOMER RAG</text>
+
+              <!-- RAG → LLM dashed connector. Enters Stage B at its right edge. -->
+              <path d="M 522 176 L 484 176 L 484 176" fill="none" stroke="#FFBC5E" stroke-width="1.2" stroke-dasharray="3 3" marker-end="url(#gvrArr)"/>
+              <text x="500" y="166" font-family="Space Grotesk, sans-serif" font-size="9.5" fill="#FFC964" letter-spacing="0.6" font-weight="600">grounds</text>
+            </svg>
+          </div>
+          <figcaption>
+            <span>03</span>
+            <strong>Server ingests · LLM authors · RAG grounds</strong>
+            <em>Headless ingest, structured-output prompting, optional RAG grounding in the customer's own SOPs and compliance corpus. The LLM stays inside the customer's material — not generic web text.</em>
+          </figcaption>
+        </figure>
+
+        <!-- Panel 04 — Procedural assembly -->
+        <figure class="dd-replay-panel" data-replay-panel="3" hidden>
+          <img src="./assets/images/projects/project-warehousing-ss3.jpg" alt="Generated VR warehousing training scene assembled procedurally from the LLM-authored spec" loading="lazy">
+          <figcaption>
+            <span>04</span>
+            <strong>Procedural assembly</strong>
+            <em>No Unity editor in the loop. Geometry, interactables, and scenario beats are stitched programmatically from the LLM spec — every customer gets a scene built for their own spec, not a stock template.</em>
+          </figcaption>
+        </figure>
+
+        <!-- Panel 05 — Auto-deploys to fleet -->
+        <figure class="dd-replay-panel" data-replay-panel="4" hidden>
+          <img src="./assets/images/projects/project-hospitality-ss1.jpg" alt="Generated hospitality training scene auto-deployed to enterprise headsets, desktop, and mobile" loading="lazy">
+          <figcaption>
+            <span>05</span>
+            <strong>Auto-pushed to the fleet</strong>
+            <em>Once the scene is built, the server auto-deploys it across the customer's enterprise fleet — Quest headsets, desktop, mobile — without anyone re-publishing or sending a build by hand.</em>
+          </figcaption>
+        </figure>
+      </div>
+
+      <ol class="dd-replay-steps" role="tablist" aria-label="GenerateVR replay steps">
+        <li>
+          <button type="button" class="dd-replay-step is-active" data-replay-step="0" role="tab" aria-selected="true">
+            <span class="dd-replay-num">01</span>
+            <span class="dd-replay-copy"><strong>Wire &amp; preview</strong><em>Vue surface with live FBX preview.</em></span>
+            <span class="dd-replay-progress"><span></span></span>
+          </button>
+        </li>
+        <li>
+          <button type="button" class="dd-replay-step" data-replay-step="1" role="tab" aria-selected="false">
+            <span class="dd-replay-num">02</span>
+            <span class="dd-replay-copy"><strong>Hand off JSON</strong><em>One contract over the wire.</em></span>
+            <span class="dd-replay-progress"><span></span></span>
+          </button>
+        </li>
+        <li>
+          <button type="button" class="dd-replay-step" data-replay-step="2" role="tab" aria-selected="false">
+            <span class="dd-replay-num">03</span>
+            <span class="dd-replay-copy"><strong>Server authors</strong><em>Ingest, LLM, optional RAG grounding.</em></span>
+            <span class="dd-replay-progress"><span></span></span>
+          </button>
+        </li>
+        <li>
+          <button type="button" class="dd-replay-step" data-replay-step="3" role="tab" aria-selected="false">
+            <span class="dd-replay-num">04</span>
+            <span class="dd-replay-copy"><strong>Build the scene</strong><em>Procedural assembly, no editor.</em></span>
+            <span class="dd-replay-progress"><span></span></span>
+          </button>
+        </li>
+        <li>
+          <button type="button" class="dd-replay-step" data-replay-step="4" role="tab" aria-selected="false">
+            <span class="dd-replay-num">05</span>
+            <span class="dd-replay-copy"><strong>Auto-deploy</strong><em>Pushed straight to the enterprise fleet.</em></span>
+            <span class="dd-replay-progress"><span></span></span>
+          </button>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="dd-stack">
+    <h6 class="dd-h">The stack, briefly</h6>
+    <div class="dd-stack-grid">
+      <article class="dd-card">
+        <p class="dd-card-tag">Authoring</p>
+        <h6>Vue · WebGL FBX preview</h6>
+        <p>The customer-facing surface lives on the enterprise website. Vue handles the form and state; a WebGL viewer renders Unity FBX assets in-browser so packages can be inspected before they touch the headset.</p>
+      </article>
+      <article class="dd-card">
+        <p class="dd-card-tag">Server</p>
+        <h6>Headless generation &amp; auto-deploy</h6>
+        <p>No Unity editor in the loop. A long-running server ingests the scenario JSON, runs the LLM authoring step, drives the procedural builder, and auto-pushes the built scene straight to the customer's enterprise fleet — Quest, desktop, mobile.</p>
+      </article>
+      <article class="dd-card">
+        <p class="dd-card-tag">LLM</p>
+        <h6>Structured output</h6>
+        <p>Scenario structure, dialogue, and interactable wiring are produced under typed-output constraints. The prompt isn't doing the work the schema is — drift gets caught by the parser, not by review.</p>
+      </article>
+      <article class="dd-card">
+        <p class="dd-card-tag">RAG</p>
+        <h6>Customer corpus</h6>
+        <p>Optional grounding in the customer's own SOPs and compliance material. Embedded once, queried per scenario; top-k passages inline into the structured-output prompt so the model's choices stay traceable.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="dd-closer">
+    <p class="dd-closer-line">Shipped November 2025 as part of SkillsVR's Content Creation Kit. My scope: ingest pipeline · headless generation server · LLM scenario authoring · optional RAG path · auto-deploy to enterprise fleet.</p>
+    <a class="proj-link" href="https://skillsvr.com/" target="_blank" rel="noopener">SkillsVR Content Creation Kit <em class="arrow">↗</em></a>
+  </section>
+
+</template>
+
+<template id="deepdive-shape">
+
+  <section class="dd-shape-embed" aria-label="Shape — interactive demo">
+    <div class="dd-shape-embed-frame">
+      <img class="dd-shape-embed-poster" src="./assets/images/projects/project-shape-home.png" alt="" aria-hidden="true">
+      <iframe class="dd-shape-embed-iframe"
+              data-src="./assets/shape-preview-lite/index.html"
+              title="Shape — interactive demo"
+              loading="lazy"
+              referrerpolicy="no-referrer"></iframe>
+    </div>
+    <p class="dd-shape-embed-caption">Live demo · paper-trading data · model and backend stubbed for the preview.</p>
+  </section>
+
+  <section class="dd-prose dd-prose--shape">
+    <h6 class="dd-h">Why this exists</h6>
+    <p>Shape is built deliberately small. It watches one family of Polymarket contracts — Strait-of-Hormuz traffic markets that resolve from IMF PortWatch data — so the model has a real ruler: one source of truth, related thresholds, repeatable backtests. Gemma reads the news, estimates how the story should move the probability, and leaves the decision trail behind. The backtester then replays the market without lookahead and scores the result. Paper-trading research, not an oracle.</p>
+    <p>The model isn't the interesting part — the harness around it is. <em>Shape</em> replays the same four-week window of news through Gemma over and over, varying one element at a time: the prompt, the sizing rule, the way rejected hypotheses are weighted. Every decision from every run is preserved on disk, which makes the runs directly comparable against the same outcomes. Most variations make no measurable difference. Occasionally one improves calibration, and because the full trail is kept you can see precisely what changed and why. The model reads the news; the harness is what turns that reading into something you can iterate on.</p>
+  </section>
+
+  <section class="dd-stack dd-stack--shape">
+    <h6 class="dd-h">The stack, briefly</h6>
+    <div class="dd-stack-grid">
+      <article class="dd-card">
+        <p class="dd-card-tag">Local LLM</p>
+        <h6>Ollama · Gemma 4</h6>
+        <p>Gemma reads Strait-relevant news locally and produces probability estimates; data stays on the machine.</p>
+      </article>
+      <article class="dd-card">
+        <p class="dd-card-tag">Data spine</p>
+        <h6>SQLite · PortWatch · Polymarket</h6>
+        <p>Markets, prices, news links, PortWatch snapshots, runs, trades, decisions, experiments, and chat tool calls all land in one inspectable file.</p>
+      </article>
+      <article class="dd-card">
+        <p class="dd-card-tag">Replay</p>
+        <h6>No-lookahead backtester</h6>
+        <p>Each decision sees only the context that existed at that tick. Tests enforce the boundary.</p>
+      </article>
+    </div>
   </section>
 
 </template>
