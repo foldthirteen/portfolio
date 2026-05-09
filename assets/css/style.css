@@ -3253,42 +3253,58 @@ main {
   will-change: transform;
 }
 
-/* Layer 2 — section-icon ghost. Tiled silhouette of the card's own icon at
-   very low opacity. Continues to drift on its own slower cadence so the two
-   layers never lock visually. Per-card via --svc-ghost. */
+/* Layer 2 — section-icon signature. A single oversized silhouette of the
+   card's own icon, anchored top-right and bleeding off the corner. Reads as
+   a section mark when the modal opens, then scrolls out of view as the
+   reader moves through the content. Per-card via --svc-ghost. */
 .svc-body::after {
   content: "";
   position: absolute;
-  inset: -6% -4%;
+  top: -2%;
+  right: -6%;
+  width: min(56%, 360px);
+  aspect-ratio: 1;
   z-index: -1;
   background-color: hsl(45, 54%, 58%);
-  opacity: 0.045;
+  opacity: 0.07;
   -webkit-mask-image: var(--svc-ghost, none);
           mask-image: var(--svc-ghost, none);
   -webkit-mask-mode: alpha;
           mask-mode: alpha;
-  -webkit-mask-repeat: repeat;
-          mask-repeat: repeat;
-  -webkit-mask-size: 230px auto;
-          mask-size: 230px auto;
-  -webkit-mask-position: center top;
-          mask-position: center top;
+  -webkit-mask-repeat: no-repeat;
+          mask-repeat: no-repeat;
+  -webkit-mask-size: contain;
+          mask-size: contain;
+  -webkit-mask-position: center;
+          mask-position: center;
   pointer-events: none;
 }
 
+/* Per-card ghost icons inlined as data URIs.
+   The tiled mask-image silhouette in .svc-body::after needs --svc-ghost
+   to resolve to a same-origin URL. Loading via icon.src works on https://
+   but breaks under file:// (Chrome blocks mask-image: url(file://...)),
+   so we bake each icon into a data URI on the source .service-item and
+   the modal builder copies the computed value onto .svc-body. */
+.service-item:has(.service-icon-box img[src$="icon-ai.svg"]) { --svc-ghost: url("data:image/svg+xml;utf8,%3Csvg width=%2240%22 height=%2240%22 viewBox=%220 0 40 40%22 fill=%22none%22 xmlns=%22http://www.w3.org/2000/svg%22%3E %3Cdefs%3E %3ClinearGradient id=%22aiGrad%22 x1=%220%22 y1=%220%22 x2=%2240%22 y2=%2240%22 gradientUnits=%22userSpaceOnUse%22%3E %3Cstop offset=%220.259336%22 stop-color=%22%23FFDB6E%22/%3E %3Cstop offset=%221%22 stop-color=%22%23FFBC5E%22/%3E %3C/linearGradient%3E %3C/defs%3E %3Cg stroke=%22url(%23aiGrad)%22 stroke-width=%221.4%22 stroke-linecap=%22round%22 opacity=%220.55%22%3E %3Cline x1=%225%22 y1=%2211%22 x2=%2220%22 y2=%226%22/%3E %3Cline x1=%225%22 y1=%2211%22 x2=%2220%22 y2=%2220%22/%3E %3Cline x1=%225%22 y1=%2211%22 x2=%2220%22 y2=%2234%22/%3E %3Cline x1=%225%22 y1=%2229%22 x2=%2220%22 y2=%226%22/%3E %3Cline x1=%225%22 y1=%2229%22 x2=%2220%22 y2=%2220%22/%3E %3Cline x1=%225%22 y1=%2229%22 x2=%2220%22 y2=%2234%22/%3E %3Cline x1=%2220%22 y1=%226%22 x2=%2235%22 y2=%2211%22/%3E %3Cline x1=%2220%22 y1=%226%22 x2=%2235%22 y2=%2229%22/%3E %3Cline x1=%2220%22 y1=%2220%22 x2=%2235%22 y2=%2211%22/%3E %3Cline x1=%2220%22 y1=%2220%22 x2=%2235%22 y2=%2229%22/%3E %3Cline x1=%2220%22 y1=%2234%22 x2=%2235%22 y2=%2211%22/%3E %3Cline x1=%2220%22 y1=%2234%22 x2=%2235%22 y2=%2229%22/%3E %3C/g%3E %3Ccircle cx=%2220%22 cy=%2220%22 r=%227.5%22 fill=%22none%22 stroke=%22url(%23aiGrad)%22 stroke-width=%220.9%22 stroke-dasharray=%221.6 1.8%22 opacity=%220.55%22/%3E %3Cg fill=%22url(%23aiGrad)%22%3E %3Ccircle cx=%225%22 cy=%2211%22 r=%223.2%22/%3E %3Ccircle cx=%225%22 cy=%2229%22 r=%223.2%22/%3E %3Ccircle cx=%2220%22 cy=%226%22 r=%223.2%22/%3E %3Ccircle cx=%2220%22 cy=%2220%22 r=%225%22/%3E %3Ccircle cx=%2220%22 cy=%2234%22 r=%223.2%22/%3E %3Ccircle cx=%2235%22 cy=%2211%22 r=%223.2%22/%3E %3Ccircle cx=%2235%22 cy=%2229%22 r=%223.2%22/%3E %3C/g%3E %3C/svg%3E"); }
+.service-item:has(.service-icon-box img[src$="icon-app.svg"]) { --svc-ghost: url("data:image/svg+xml;utf8,%3Csvg width=%2240%22 height=%2240%22 viewBox=%220 0 22 40%22 fill=%22none%22 xmlns=%22http://www.w3.org/2000/svg%22%3E %3Cpath opacity=%220.15%22 fill-rule=%22evenodd%22 clip-rule=%22evenodd%22 d=%22M3 1C1.89543 1 1 1.89543 1 3V37C1 38.1046 1.89543 39 3 39H18.9C20.0046 39 20.9 38.1046 20.9 37V3C20.9 1.89543 20.0046 1 18.9 1H15.6631V2H6.23676V1H3Z%22 fill=%22url(%23paint0_linear)%22/%3E %3Cpath d=%22M8.50854 35.6745C8.13501 35.6745 7.83221 35.9773 7.83221 36.3508C7.83221 36.7243 8.13501 37.0271 8.50854 37.0271V35.6745ZM13.4633 37.0271C13.8368 37.0271 14.1396 36.7243 14.1396 36.3508C14.1396 35.9773 13.8368 35.6745 13.4633 35.6745V37.0271ZM0.400024 29.4141C0.400024 29.7876 0.702827 30.0904 1.07635 30.0904C1.44988 30.0904 1.75268 29.7876 1.75268 29.4141H0.400024ZM1.75268 32.387C1.75268 32.0134 1.44988 31.7106 1.07635 31.7106C0.702827 31.7106 0.400024 32.0134 0.400024 32.387H1.75268ZM20.2192 7.61303C20.2192 7.98656 20.522 8.28936 20.8955 8.28936C21.269 8.28936 21.5718 7.98656 21.5718 7.61303H20.2192ZM21.5718 10.5859C21.5718 10.2124 21.269 9.90956 20.8955 9.90956C20.522 9.90956 20.2192 10.2124 20.2192 10.5859H21.5718ZM18.48 38.6473H3.49181V40H18.48V38.6473ZM3.49181 1.35266H6.52662V0H3.49181V1.35266ZM5.8503 1.69206H7.20295V0.676328H5.8503V1.69206ZM7.49281 3.33457H14.4791V1.98191H7.49281V3.33457ZM6.52662 1.35266H15.4452V0H6.52662V1.35266ZM15.4452 1.35266H18.48V0H15.4452V1.35266ZM16.1216 1.69206V0.676328H14.7689V1.69206H16.1216ZM8.50854 37.0271H13.4633V35.6745H8.50854V37.0271ZM1.75268 29.4141V3.09179H0.400024V29.4141H1.75268ZM1.75268 36.9082V32.387H0.400024V36.9082H1.75268ZM20.2192 3.09179V7.61303H21.5718V3.09179H20.2192ZM20.2192 10.5859V36.9082H21.5718V10.5859H20.2192ZM14.4791 3.33457C15.3862 3.33457 16.1216 2.5992 16.1216 1.69206H14.7689C14.7689 1.85214 14.6392 1.98191 14.4791 1.98191V3.33457ZM3.49181 38.6473C2.53132 38.6473 1.75268 37.8687 1.75268 36.9082H0.400024C0.400024 38.6157 1.78427 40 3.49181 40V38.6473ZM18.48 40C20.1876 40 21.5718 38.6157 21.5718 36.9082H20.2192C20.2192 37.8687 19.4405 38.6473 18.48 38.6473V40ZM18.48 1.35266C19.4405 1.35266 20.2192 2.13129 20.2192 3.09179H21.5718C21.5718 1.38424 20.1876 0 18.48 0V1.35266ZM5.8503 1.69206C5.8503 2.5992 6.58567 3.33457 7.49281 3.33457V1.98191C7.33272 1.98191 7.20295 1.85214 7.20295 1.69206H5.8503ZM3.49181 0C1.78427 0 0.400024 1.38424 0.400024 3.09179H1.75268C1.75268 2.13129 2.53132 1.35266 3.49181 1.35266V0Z%22 fill=%22url(%23paint1_linear)%22/%3E %3Cdefs%3E %3ClinearGradient id=%22paint0_linear%22 x1=%222.12767%22 y1=%221%22 x2=%2230.7018%22 y2=%2217.5237%22 gradientUnits=%22userSpaceOnUse%22%3E %3Cstop offset=%220.259336%22 stop-color=%22%23FFDB6E%22/%3E %3Cstop offset=%221%22 stop-color=%22%23FFBC5E%22/%3E %3C/linearGradient%3E %3ClinearGradient id=%22paint1_linear%22 x1=%221.59976%22 y1=%228.08974e-07%22 x2=%2231.8368%22 y2=%2217.6727%22 gradientUnits=%22userSpaceOnUse%22%3E %3Cstop offset=%220.259336%22 stop-color=%22%23FFDB6E%22/%3E %3Cstop offset=%221%22 stop-color=%22%23FFBC5E%22/%3E %3C/linearGradient%3E %3C/defs%3E %3C/svg%3E"); }
+.service-item:has(.service-icon-box img[src$="icon-cube.svg"]) { --svc-ghost: url("data:image/svg+xml;utf8,%3C!DOCTYPE svg PUBLIC %22-//W3C//DTD SVG 1.1//EN%22 %22http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd%22%3E %3C!-- Uploaded to: SVG Repo, www.svgrepo.com, Transformed by: SVG Repo Mixer Tools --%3E %3Csvg fill=%22url(%23gradYellow)%22 height=%22800px%22 width=%22800px%22 version=%221.1%22 id=%22Layer_1%22 xmlns=%22http://www.w3.org/2000/svg%22 xmlns:xlink=%22http://www.w3.org/1999/xlink%22 viewBox=%220 0 512.001 512.001%22 xml:space=%22preserve%22 transform=%22rotate(0)%22%3E %3Cg id=%22SVGRepo_bgCarrier%22 stroke-width=%220%22/%3E %3Cg id=%22SVGRepo_tracerCarrier%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22/%3E %3Cg id=%22SVGRepo_iconCarrier%22%3E %3Cg%3E %3Cg%3E %3Cpath d=%22M485.77,120.839c-0.3-2.268-1.523-4.378-3.35-5.775c-0.382-0.293-0.79-0.552-1.216-0.776 c-0.017-0.009-0.032-0.021-0.049-0.03L259.927,0.947c-2.465-1.263-5.388-1.263-7.853,0L30.849,114.258 c-0.017,0.009-0.032,0.021-0.049,0.03c-2.781,1.447-4.638,4.476-4.638,7.636v268.168c0,0.025,0.003,0.049,0.003,0.075 c0.015,1.549,0.473,3.097,1.271,4.421c0.792,1.313,1.989,2.423,3.348,3.134c0.022,0.011,0.041,0.025,0.063,0.037l221.225,113.31 c0.046,0.024,0.094,0.039,0.141,0.062c2.37,1.156,5.202,1.163,7.571,0c0.047-0.023,0.095-0.038,0.141-0.062l72.547-37.158 c0.823-0.276,1.591-0.672,2.282-1.169l146.397-74.984c0.022-0.011,0.041-0.025,0.063-0.037c2.072-1.076,3.645-3.03,4.286-5.27 c0.211-0.738,0.333-1.515,0.333-2.284c0-0.025,0.003-0.049,0.003-0.075c0,0,0-268.164,0-268.168 C485.841,121.56,485.817,121.197,485.77,120.839z M384.702,84.211l-54.858,28.098l-54.949-28.144l54.858-28.098L384.702,84.211z M310.949,121.986l-54.949,28.145l-54.949-28.144l54.949-28.145L310.949,121.986z M256.001,18.291l54.858,28.098l-54.858,28.098 l-54.858-28.098L256.001,18.291z M182.249,56.067l54.858,28.098l-54.949,28.145L127.3,84.211L182.249,56.067z M99.895,413.768 l-56.506-28.942v-73.292l56.506,28.942V413.768z M99.895,321.12l-56.506-28.942v-62.955l56.506,28.942V321.12z M99.895,238.811 l-56.506-28.942v-73.855l56.506,28.942V238.811z M53.671,121.924l54.735-28.035l54.858,28.098l-54.735,28.035L53.671,121.924z M173.646,451.542l-56.523-28.951v-73.292l56.523,28.951V451.542z M173.646,358.895l-56.523-28.951v-62.955l56.523,28.951V358.895 z M173.646,276.585l-56.523-28.951v-73.855l56.523,28.951V276.585z M127.422,159.699l54.735-28.035l54.949,28.145l-54.735,28.035 L127.422,159.699z M247.387,489.313l-56.514-28.947v-73.292l56.514,28.947V489.313z M247.387,396.665l-56.514-28.947v-62.954 l56.514,28.947V396.665z M247.387,314.354l-56.514-28.947v-73.855l56.514,28.947V314.354z M256.001,225.556l-54.735-28.035 l54.735-28.035l54.735,28.035L256.001,225.556z M321.13,460.366l-56.515,28.947V416.02l56.515-28.947V460.366z M321.13,367.718 l-56.515,28.947V333.71l56.515-28.947V367.718z M321.13,285.409l-56.515,28.945v-73.855l56.515-28.947V285.409z M329.632,187.843 l-54.735-28.035l54.949-28.144l54.735,28.035L329.632,187.843z M394.879,422.592l-56.522,28.95V378.25l56.522-28.95V422.592z M394.879,329.944l-56.522,28.95v-62.954l56.522-28.95V329.944z M394.879,247.635l-56.522,28.95V202.73l56.522-28.95V247.635z M348.739,121.987l54.858-28.098l54.735,28.035l-54.858,28.098L348.739,121.987z M468.614,384.826l-56.507,28.942v-73.292 l56.507-28.942V384.826z M468.614,292.178l-56.507,28.942v-62.955l56.507-28.942V292.178z M468.614,209.869l-56.507,28.942 v-73.855l56.507-28.942V209.869z%22/%3E %3C/g%3E %3C/g%3E %3C/g%3E %3Cdefs%3E %3ClinearGradient id=%22gradYellow%22 x1=%220%22 y1=%220%22 x2=%22512%22 y2=%22512%22 gradientUnits=%22userSpaceOnUse%22%3E %3Cstop offset=%220.259336%22 stop-color=%22%23FFDB6E%22/%3E %3Cstop offset=%221%22 stop-color=%22%23FFBC5E%22/%3E %3C/linearGradient%3E %3C/defs%3E %3C/svg%3E"); }
+.service-item:has(.service-icon-box img[src$="icon-dev.svg"]) { --svc-ghost: url("data:image/svg+xml;utf8,%3Csvg width=%2240%22 height=%2232%22 viewBox=%220 0 40 32%22 fill=%22none%22 xmlns=%22http://www.w3.org/2000/svg%22%3E %3Cpath opacity=%220.15%22 fill-rule=%22evenodd%22 clip-rule=%22evenodd%22 d=%22M3 1C1.89543 1 1 1.89543 1 3V28C1 29.1046 1.89543 30 3 30H37C38.1046 30 39 29.1046 39 28V3C39 1.89543 38.1046 1 37 1H3ZM36 9H4V28H36V9Z%22 fill=%22url(%23paint0_linear)%22/%3E %3Cpath d=%22M37.6172 0.375H2.38281C1.06903 0.375 0 1.44403 0 2.75781V29.2422C0 30.556 1.06903 31.625 2.38281 31.625H37.6172C38.931 31.625 40 30.556 40 29.2422V2.75781C40 1.44403 38.931 0.375 37.6172 0.375ZM38.4375 29.2422C38.4375 29.6945 38.0695 30.0625 37.6172 30.0625H2.38281C1.93054 30.0625 1.5625 29.6945 1.5625 29.2422V2.75781C1.5625 2.30554 1.93054 1.9375 2.38281 1.9375H37.6172C38.0695 1.9375 38.4375 2.30554 38.4375 2.75781V29.2422Z%22 fill=%22url(%23paint1_linear)%22/%3E %3Cpath d=%22M14.9219 5.79156H35.0781C35.5096 5.79156 35.8594 5.44183 35.8594 5.01031C35.8594 4.5791 35.5096 4.22906 35.0781 4.22906H14.9219C14.4904 4.22906 14.1406 4.5791 14.1406 5.01031C14.1406 5.44183 14.4904 5.79156 14.9219 5.79156Z%22 fill=%22url(%23paint2_linear)%22/%3E %3Cpath d=%22M3.99231 5.3094C4.01184 5.3564 4.03595 5.40157 4.06403 5.44368C4.0921 5.48671 4.12506 5.52669 4.16107 5.56239C4.30634 5.70857 4.50775 5.79158 4.71313 5.79158C4.76471 5.79158 4.81567 5.7867 4.86633 5.77663C4.91638 5.76656 4.96552 5.7516 5.01251 5.73207C5.05951 5.71254 5.10468 5.68843 5.14679 5.66035C5.18982 5.63136 5.2298 5.5984 5.2655 5.5627C5.30243 5.52669 5.33447 5.48671 5.36316 5.44398C5.39154 5.40157 5.41565 5.3564 5.43518 5.3094C5.45471 5.2618 5.46967 5.21266 5.47974 5.16322C5.48981 5.11256 5.49438 5.06099 5.49438 5.01033C5.49438 4.95937 5.48981 4.90779 5.47974 4.85805C5.46967 4.808 5.45471 4.75856 5.43518 4.71187C5.41565 4.66426 5.39154 4.61879 5.36316 4.57668C5.33447 4.53365 5.30243 4.49397 5.2655 4.45796C5.2298 4.42195 5.18982 4.3893 5.14679 4.36092C5.10468 4.33284 5.05951 4.30873 5.01251 4.2892C4.96552 4.26967 4.91638 4.25471 4.86633 4.24464C4.76563 4.2242 4.66187 4.2242 4.56085 4.24464C4.5108 4.25471 4.46167 4.26967 4.41498 4.2892C4.36707 4.30873 4.3219 4.33284 4.27979 4.36092C4.23676 4.3893 4.19678 4.42195 4.16107 4.45796C4.12506 4.49397 4.0921 4.53365 4.06403 4.57668C4.03595 4.61879 4.01184 4.66426 3.99231 4.71187C3.97278 4.75856 3.95782 4.808 3.94775 4.85805C3.93738 4.90779 3.93188 4.95937 3.93188 5.01033C3.93188 5.06099 3.93738 5.11256 3.94775 5.16322C3.95782 5.21266 3.97278 5.2618 3.99231 5.3094Z%22 fill=%22url(%23paint3_linear)%22/%3E %3Cpath d=%22M7.11731 5.3094C7.13684 5.3564 7.16095 5.40157 7.18903 5.44368C7.2171 5.48671 7.25006 5.52669 7.28607 5.56239C7.43134 5.70857 7.63275 5.79158 7.83813 5.79158C7.88971 5.79158 7.94067 5.7867 7.99133 5.77663C8.04138 5.76656 8.09052 5.7516 8.13751 5.73207C8.18451 5.71254 8.22968 5.68843 8.27179 5.66035C8.31482 5.63136 8.3548 5.5984 8.39142 5.5627C8.42743 5.52669 8.45947 5.48671 8.48816 5.44398C8.51654 5.40157 8.54065 5.3564 8.56018 5.3094C8.57971 5.2618 8.59467 5.21266 8.60474 5.16322C8.61481 5.11256 8.61938 5.06099 8.61938 5.01033C8.61938 4.95937 8.61481 4.90779 8.60474 4.85805C8.59467 4.808 8.57971 4.75856 8.56018 4.71187C8.54065 4.66426 8.51654 4.61879 8.48816 4.57668C8.45947 4.53365 8.42743 4.49397 8.39142 4.45796C8.3548 4.42195 8.31482 4.3893 8.27179 4.36092C8.22968 4.33284 8.18451 4.30873 8.13751 4.2892C8.09052 4.26967 8.04138 4.25471 7.99133 4.24464C7.89063 4.2242 7.78687 4.2242 7.68585 4.24464C7.6358 4.25471 7.58667 4.26967 7.53998 4.2892C7.49207 4.30873 7.4469 4.33284 7.40479 4.36092C7.36176 4.3893 7.32178 4.42195 7.28607 4.45796C7.25006 4.49397 7.2171 4.53365 7.18903 4.57668C7.16095 4.61879 7.13684 4.66426 7.11731 4.71187C7.09778 4.75856 7.08282 4.808 7.07275 4.85805C7.06238 4.90779 7.05688 4.95937 7.05688 5.01033C7.05688 5.06099 7.06238 5.11256 7.07275 5.16322C7.08282 5.21266 7.09778 5.2618 7.11731 5.3094Z%22 fill=%22url(%23paint4_linear)%22/%3E %3Cpath d=%22M10.2423 5.3094C10.2618 5.3564 10.2859 5.40157 10.314 5.44368C10.3421 5.48671 10.3751 5.52669 10.4111 5.56239C10.4468 5.5984 10.4868 5.63136 10.5298 5.66005C10.5719 5.68843 10.6171 5.71254 10.665 5.73207C10.7117 5.7516 10.7608 5.76656 10.8109 5.77663C10.8609 5.7867 10.9125 5.79128 10.9631 5.79128C11.0147 5.79128 11.0657 5.7867 11.1163 5.77663C11.1664 5.76656 11.2155 5.7516 11.2625 5.73207C11.3095 5.71254 11.3547 5.68843 11.3977 5.66005C11.4398 5.63136 11.4798 5.5984 11.5164 5.56239C11.5524 5.52669 11.5845 5.48671 11.6132 5.44368C11.6415 5.40157 11.6656 5.3564 11.6852 5.3094C11.7047 5.2618 11.7197 5.21266 11.7297 5.16322C11.7398 5.11256 11.7444 5.06099 11.7444 5.01003C11.7444 4.95937 11.7398 4.90779 11.7297 4.85774C11.7197 4.80769 11.7047 4.75856 11.6852 4.71187C11.6656 4.66396 11.6415 4.61879 11.6132 4.57668C11.5845 4.53365 11.5524 4.49367 11.5164 4.45796C11.4798 4.42195 11.4398 4.38899 11.3977 4.36092C11.3547 4.33284 11.3095 4.30873 11.2625 4.2892C11.2155 4.26967 11.1664 4.25471 11.1163 4.24464C11.0156 4.2242 10.9119 4.2242 10.8109 4.24464C10.7608 4.25471 10.7117 4.26967 10.665 4.2892C10.6171 4.30873 10.5719 4.33284 10.5298 4.36092C10.4868 4.38899 10.4468 4.42195 10.4111 4.45796C10.3751 4.49367 10.3421 4.53365 10.314 4.57668C10.2859 4.61879 10.2618 4.66396 10.2423 4.71187C10.2228 4.75856 10.2078 4.80769 10.1978 4.85774C10.1874 4.90779 10.1819 4.95937 10.1819 5.01003C10.1819 5.06099 10.1874 5.11256 10.1978 5.16322C10.2078 5.21266 10.2228 5.2618 10.2423 5.3094Z%22 fill=%22url(%23paint5_linear)%22/%3E %3Cpath d=%22M22.7154 13.739C22.344 13.5192 21.8649 13.6425 21.6452 14.0139L17.0099 21.8524C16.7901 22.2238 16.9131 22.7029 17.2845 22.9223C17.4093 22.9962 17.5464 23.0316 17.6816 23.0316C17.9486 23.0316 18.2089 22.8942 18.3548 22.6477L22.9901 14.8092C23.2098 14.4378 23.0868 13.9587 22.7154 13.739Z%22 fill=%22url(%23paint6_linear)%22/%3E %3Cpath d=%22M12.9769 16.0351V15.2462C12.9769 14.8095 13.3321 14.454 13.7688 14.454H13.7798C14.2113 14.454 14.561 14.1042 14.561 13.6727C14.561 13.2415 14.2113 12.8915 13.7798 12.8915H13.7688C12.4706 12.8915 11.4144 13.948 11.4144 15.2462V16.0351C11.4144 16.3192 11.2978 16.5963 11.0946 16.795L10.0823 17.7853C9.93305 17.9312 9.84852 18.1307 9.8473 18.3395C9.84638 18.5482 9.92878 18.7487 10.0765 18.8964L11.108 19.9276C11.307 20.1263 11.4174 20.3906 11.4196 20.6719L11.4251 21.4907C11.4342 22.7801 12.4904 23.8293 13.7798 23.8293C14.2113 23.8293 14.561 23.4792 14.561 23.048C14.561 22.6165 14.2113 22.2668 13.7798 22.2668C13.3458 22.2668 12.9906 21.9137 12.9876 21.48L12.9821 20.6613C12.9772 19.9664 12.7037 19.3133 12.2127 18.8226L11.7397 18.3499L12.1874 17.9119C12.6891 17.4209 12.9769 16.737 12.9769 16.0351Z%22 fill=%22url(%23paint7_linear)%22/%3E %3Cpath d=%22M27.023 20.6857V21.4745C27.023 21.9113 26.6678 22.2668 26.2311 22.2668H26.2201C25.7886 22.2668 25.4388 22.6165 25.4388 23.048C25.4388 23.4792 25.7886 23.8293 26.2201 23.8293H26.2311C27.5293 23.8293 28.5855 22.7728 28.5855 21.4745V20.6857C28.5855 20.4016 28.7021 20.1245 28.9053 19.9258L29.9176 18.9355C30.0668 18.7896 30.1514 18.59 30.1523 18.3813C30.1535 18.1725 30.0711 17.972 29.9234 17.8243L28.8919 16.7932C28.6929 16.5945 28.5821 16.3299 28.5803 16.0488L28.5745 15.23C28.5657 13.9407 27.5095 12.8918 26.2201 12.8918C25.7886 12.8918 25.4388 13.2415 25.4388 13.673C25.4388 14.1042 25.7886 14.4543 26.2201 14.4543C26.6537 14.4543 27.0093 14.8071 27.012 15.2407L27.0178 16.0595C27.0227 16.7541 27.2958 17.4072 27.7872 17.8982L28.2602 18.3709L27.8125 18.8088C27.3108 19.2996 27.023 19.9838 27.023 20.6857Z%22 fill=%22url(%23paint8_linear)%22/%3E %3Cpath d=%22M36.0443 8.13531H3.95569C3.52417 8.13531 3.17444 8.48535 3.17444 8.91656V27.6666C3.17444 28.0981 3.52417 28.4478 3.95569 28.4478H13.2553C13.6868 28.4478 14.0366 28.0981 14.0366 27.6666C14.0366 27.2354 13.6868 26.8853 13.2553 26.8853H4.73694V9.69781H35.2631V26.8853H19.5312C19.0997 26.8853 18.75 27.2354 18.75 27.6666C18.75 28.0981 19.0997 28.4478 19.5312 28.4478H36.0443C36.4758 28.4478 36.8256 28.0981 36.8256 27.6666V8.91656C36.8256 8.48535 36.4758 8.13531 36.0443 8.13531Z%22 fill=%22url(%23paint9_linear)%22/%3E %3Cdefs%3E %3ClinearGradient id=%22paint0_linear%22 x1=%223.15333%22 y1=%221%22 x2=%2226.6886%22 y2=%2235.0542%22 gradientUnits=%22userSpaceOnUse%22%3E %3Cstop offset=%220.259336%22 stop-color=%22%23FFDB6E%22/%3E %3Cstop offset=%221%22 stop-color=%22%23FFBC5E%22/%3E %3C/linearGradient%3E %3ClinearGradient id=%22paint1_linear%22 x1=%222.26667%22 y1=%220.375001%22 x2=%2227.8327%22 y2=%2236.511%22 gradientUnits=%22userSpaceOnUse%22%3E %3Cstop offset=%220.259336%22 stop-color=%22%23FFDB6E%22/%3E %3Cstop offset=%221%22 stop-color=%22%23FFBC5E%22/%3E %3C/linearGradient%3E %3ClinearGradient id=%22paint2_linear%22 x1=%2215.3714%22 y1=%224.22906%22 x2=%2215.5472%22 y2=%226.9288%22 gradientUnits=%22userSpaceOnUse%22%3E %3Cstop offset=%220.259336%22 stop-color=%22%23FFDB6E%22/%3E %3Cstop offset=%221%22 stop-color=%22%23FFBC5E%22/%3E %3C/linearGradient%3E %3ClinearGradient id=%22paint3_linear%22 x1=%224.02043%22 y1=%224.22931%22 x2=%225.36917%22 y2=%225.71887%22 gradientUnits=%22userSpaceOnUse%22%3E %3Cstop offset=%220.259336%22 stop-color=%22%23FFDB6E%22/%3E %3Cstop offset=%221%22 stop-color=%22%23FFBC5E%22/%3E %3C/linearGradient%3E %3ClinearGradient id=%22paint4_linear%22 x1=%227.14543%22 y1=%224.22931%22 x2=%228.49417%22 y2=%225.71887%22 gradientUnits=%22userSpaceOnUse%22%3E %3Cstop offset=%220.259336%22 stop-color=%22%23FFDB6E%22/%3E %3Cstop offset=%221%22 stop-color=%22%23FFBC5E%22/%3E %3C/linearGradient%3E %3ClinearGradient id=%22paint5_linear%22 x1=%2210.2704%22 y1=%224.22931%22 x2=%2211.6189%22 y2=%225.71884%22 gradientUnits=%22userSpaceOnUse%22%3E %3Cstop offset=%220.259336%22 stop-color=%22%23FFDB6E%22/%3E %3Cstop offset=%221%22 stop-color=%22%23FFBC5E%22/%3E %3C/linearGradient%3E %3ClinearGradient id=%22paint6_linear%22 x1=%2217.2521%22 y1=%2213.6301%22 x2=%2225.0143%22 y2=%2219.281%22 gradientUnits=%22userSpaceOnUse%22%3E %3Cstop offset=%220.259336%22 stop-color=%22%23FFDB6E%22/%3E %3Cstop offset=%221%22 stop-color=%22%23FFBC5E%22/%3E %3C/linearGradient%3E %3ClinearGradient id=%22paint7_linear%22 x1=%2210.1144%22 y1=%2212.8915%22 x2=%2217.4785%22 y2=%2216.3959%22 gradientUnits=%22userSpaceOnUse%22%3E %3Cstop offset=%220.259336%22 stop-color=%22%23FFDB6E%22/%3E %3Cstop offset=%221%22 stop-color=%22%23FFBC5E%22/%3E %3C/linearGradient%3E %3ClinearGradient id=%22paint8_linear%22 x1=%2225.7059%22 y1=%2212.8918%22 x2=%2233.0696%22 y2=%2216.3959%22 gradientUnits=%22userSpaceOnUse%22%3E %3Cstop offset=%220.259336%22 stop-color=%22%23FFDB6E%22/%3E %3Cstop offset=%221%22 stop-color=%22%23FFBC5E%22/%3E %3C/linearGradient%3E %3ClinearGradient id=%22paint9_linear%22 x1=%225.08133%22 y1=%228.13532%22 x2=%2219.9152%22 y2=%2235.2721%22 gradientUnits=%22userSpaceOnUse%22%3E %3Cstop offset=%220.259336%22 stop-color=%22%23FFDB6E%22/%3E %3Cstop offset=%221%22 stop-color=%22%23FFBC5E%22/%3E %3C/linearGradient%3E %3C/defs%3E %3C/svg%3E"); }
+.service-item:has(.service-icon-box img[src$="icon-pipeline.svg"]) { --svc-ghost: url("data:image/svg+xml;utf8,%3Csvg width=%2240%22 height=%2240%22 viewBox=%220 0 40 40%22 fill=%22none%22 xmlns=%22http://www.w3.org/2000/svg%22%3E %3Cdefs%3E %3ClinearGradient id=%22pipeGrad%22 x1=%220%22 y1=%220%22 x2=%2240%22 y2=%2240%22 gradientUnits=%22userSpaceOnUse%22%3E %3Cstop offset=%220.259336%22 stop-color=%22%23FFDB6E%22/%3E %3Cstop offset=%221%22 stop-color=%22%23FFBC5E%22/%3E %3C/linearGradient%3E %3C/defs%3E %3C!-- Dashed rail underneath, evoking the CI environment the pipeline runs on --%3E %3Cline x1=%223%22 y1=%2233%22 x2=%2237%22 y2=%2233%22 stroke=%22url(%23pipeGrad)%22 stroke-width=%220.9%22 stroke-dasharray=%221.8 2%22 opacity=%220.35%22/%3E %3C!-- Stage 1: source (rect with content lines) --%3E %3Crect x=%222%22 y=%2214%22 width=%229%22 height=%2212%22 rx=%221.8%22 fill=%22url(%23pipeGrad)%22/%3E %3Cg stroke=%22%231a1a1a%22 stroke-width=%220.9%22 stroke-linecap=%22round%22 opacity=%220.5%22%3E %3Cline x1=%223.6%22 y1=%2218%22 x2=%229.4%22 y2=%2218%22/%3E %3Cline x1=%223.6%22 y1=%2220.5%22 x2=%227.4%22 y2=%2220.5%22/%3E %3Cline x1=%223.6%22 y1=%2223%22 x2=%228.4%22 y2=%2223%22/%3E %3C/g%3E %3C!-- Arrow 1 %E2%86%92 --%3E %3Cline x1=%2211.5%22 y1=%2220%22 x2=%2213.5%22 y2=%2220%22 stroke=%22url(%23pipeGrad)%22 stroke-width=%221.7%22 stroke-linecap=%22round%22/%3E %3Cpolygon points=%2213,17.5 13,22.5 15.8,20%22 fill=%22url(%23pipeGrad)%22/%3E %3C!-- Stage 2: processing / automation (hexagon with inner dot) --%3E %3Cpolygon points=%2220,13.5 24,15.75 24,24.25 20,26.5 16,24.25 16,15.75%22 fill=%22url(%23pipeGrad)%22/%3E %3Ccircle cx=%2220%22 cy=%2220%22 r=%221.6%22 fill=%22%231a1a1a%22 opacity=%220.55%22/%3E %3C!-- Arrow 2 %E2%86%92 --%3E %3Cline x1=%2224.5%22 y1=%2220%22 x2=%2226.5%22 y2=%2220%22 stroke=%22url(%23pipeGrad)%22 stroke-width=%221.7%22 stroke-linecap=%22round%22/%3E %3Cpolygon points=%2226,17.5 26,22.5 28.8,20%22 fill=%22url(%23pipeGrad)%22/%3E %3C!-- Stage 3: deployment target (rect with check) --%3E %3Crect x=%2229%22 y=%2214%22 width=%229%22 height=%2212%22 rx=%221.8%22 fill=%22url(%23pipeGrad)%22/%3E %3Cpath d=%22M 30.6 20.3 L 32.4 22.3 L 36.2 16.8%22 stroke=%22%231a1a1a%22 stroke-width=%221.4%22 stroke-linejoin=%22round%22 stroke-linecap=%22round%22 fill=%22none%22 opacity=%220.65%22/%3E %3C/svg%3E"); }
+.service-item:has(.service-icon-box img[src$="icon-report.svg"]) { --svc-ghost: url("data:image/svg+xml;utf8,%3Csvg width=%2240%22 height=%2240%22 viewBox=%220 0 40 40%22 fill=%22none%22 xmlns=%22http://www.w3.org/2000/svg%22%3E %3Cdefs%3E %3ClinearGradient id=%22reportGrad%22 x1=%220%22 y1=%220%22 x2=%2240%22 y2=%2240%22 gradientUnits=%22userSpaceOnUse%22%3E %3Cstop offset=%220.259336%22 stop-color=%22%23FFDB6E%22/%3E %3Cstop offset=%221%22 stop-color=%22%23FFBC5E%22/%3E %3C/linearGradient%3E %3C/defs%3E %3C!-- Top half: trend line sweeping up-right --%3E %3Cpolyline points=%226,14 14,11 22,13 32,5%22 stroke=%22url(%23reportGrad)%22 stroke-width=%222%22 stroke-linejoin=%22round%22 stroke-linecap=%22round%22 fill=%22none%22/%3E %3C!-- Arrow head at the peak, opening down-left --%3E %3Cpolyline points=%2228,6 32,5 30,9%22 stroke=%22url(%23reportGrad)%22 stroke-width=%222%22 stroke-linejoin=%22round%22 stroke-linecap=%22round%22 fill=%22none%22/%3E %3C!-- Data points under the trend, excluding the peak --%3E %3Cg fill=%22url(%23reportGrad)%22%3E %3Ccircle cx=%226%22 cy=%2214%22 r=%221.3%22/%3E %3Ccircle cx=%2214%22 cy=%2211%22 r=%221.3%22/%3E %3Ccircle cx=%2222%22 cy=%2213%22 r=%221.3%22/%3E %3C/g%3E %3C!-- Breathing room between arrow and bars: clear y=15-20 --%3E %3C!-- Bottom half: four ascending bars --%3E %3Cg fill=%22url(%23reportGrad)%22 opacity=%220.88%22%3E %3Crect x=%225%22 y=%2228%22 width=%225%22 height=%227%22 rx=%221.2%22/%3E %3Crect x=%2213%22 y=%2224%22 width=%225%22 height=%2211%22 rx=%221.2%22/%3E %3Crect x=%2221%22 y=%2226%22 width=%225%22 height=%229%22 rx=%221.2%22/%3E %3Crect x=%2229%22 y=%2221%22 width=%225%22 height=%2214%22 rx=%221.2%22/%3E %3C/g%3E %3C!-- Subtle baseline under the bars --%3E %3Cline x1=%224%22 y1=%2235.5%22 x2=%2236%22 y2=%2235.5%22 stroke=%22url(%23reportGrad)%22 stroke-width=%220.9%22 opacity=%220.45%22/%3E %3C/svg%3E"); }
+
+
 @media (max-width: 560px) {
-  /* Tighter bloom and bigger icon tiles on narrow viewports. */
+  /* Tighter bloom and a smaller signature on narrow viewports. */
   .svc-body::before { opacity: 0.10; }
   .svc-body::after {
-    -webkit-mask-size: 280px auto;
-            mask-size: 280px auto;
-    opacity: 0.038;
+    width: min(62%, 240px);
+    opacity: 0.06;
   }
 }
 
 @media (prefers-reduced-motion: no-preference) {
   .svc-body::before { animation: svc-flow-drift 240s ease-in-out infinite; }
-  .svc-body::after  { animation: svc-ghost-drift  64s linear infinite; }
 }
 
 /* Closed-loop drift on the flow layer (no-repeat, so we cannot tile-cycle
@@ -3298,10 +3314,6 @@ main {
   0%   { transform: translate3d(0, 0, 0)         scale(1)     rotate(0deg); }
   50%  { transform: translate3d(-2%, -1.5%, 0)   scale(1.015) rotate(0.4deg); }
   100% { transform: translate3d(0, 0, 0)         scale(1)     rotate(0deg); }
-}
-@keyframes svc-ghost-drift {
-  from { mask-position:         0 0; -webkit-mask-position:         0 0; }
-  to   { mask-position: 230px 230px; -webkit-mask-position: 230px 230px; }
 }
 
 /* Service media — JS marks .svc-media-strip as a product-shot montage */
@@ -5009,6 +5021,200 @@ main {
   color: var(--light-gray);
   line-height: 1.6;
   margin: 0;
+}
+
+/* ============================================================
+   Museum of the Bible deep-dive
+   The modal-header itself is the hero (Porter-style): museum
+   exterior bg with a warm sepia tint + gold-burn vignette, the
+   steampunk wordmark on the left, meta panel on the right.
+   ============================================================ */
+
+.project-modal.project-modal--motb.has-deep-dive .modal-header {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: start;
+  gap: 36px;
+  min-height: 380px;
+  margin: 0 0 1.65rem;
+  padding: 36px 48px;
+  overflow: hidden;
+  border: 1px solid hsla(38, 60%, 32%, 0.30);
+  border-radius: 14px;
+  background: hsl(28, 30%, 6%);
+}
+
+/* Museum exterior bg — anchored on the left, sepia-tinted, sharp fade at midline. */
+.project-modal.project-modal--motb.has-deep-dive .modal-header::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background:
+    url("../images/projects/motb-exterior.jpg") left 30% / auto 100% no-repeat;
+  filter: sepia(0.55) saturate(0.85) contrast(1.08) brightness(0.78) hue-rotate(-8deg);
+  -webkit-mask-image: linear-gradient(to right, black 0%, black 48%, transparent 54%);
+  mask-image: linear-gradient(to right, black 0%, black 48%, transparent 54%);
+}
+
+/* Warm tint that fades out by the midline so the handheld photo reads cleanly. */
+.project-modal.project-modal--motb.has-deep-dive .modal-header::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, hsla(28, 32%, 6%, 0.92) 0%, hsla(28, 30%, 8%, 0.55) 28%, transparent 50%),
+    linear-gradient(0deg, hsla(28, 50%, 12%, 0.28), transparent 60%),
+    radial-gradient(ellipse at 18% 30%, hsla(40, 70%, 38%, 0.18), transparent 60%);
+}
+
+.project-modal.project-modal--motb.has-deep-dive .modal-header-main,
+.project-modal.project-modal--motb.has-deep-dive .meta-panel {
+  position: relative;
+  z-index: 3;
+}
+
+.project-modal.project-modal--motb.has-deep-dive .modal-title--motb {
+  display: block;
+  margin: 0;
+}
+
+.project-modal.project-modal--motb.has-deep-dive .motb-title-logo {
+  display: block;
+  width: min(520px, 100%);
+  height: auto;
+  filter: drop-shadow(0 10px 24px hsla(0, 0%, 0%, 0.7));
+}
+
+/* Handheld photo: absolutely positioned to the right half, sharp fade at midline. */
+.project-modal.project-modal--motb.has-deep-dive .motb-handheld-photo {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 56%;
+  height: 100%;
+  z-index: 2;
+  object-fit: cover;
+  object-position: 60% center;
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 14%);
+  mask-image: linear-gradient(to right, transparent 0%, black 14%);
+  filter: sepia(0.30) saturate(0.95) contrast(1.04) brightness(0.95);
+}
+
+/* Body copy: same warm-tinted palette as everything else. */
+.project-modal.project-modal--motb.has-deep-dive .modal-blurb b {
+  color: hsl(38, 70%, 80%);
+}
+
+/* Inline press pair within the body copy — no boxes, no caption, just photos. */
+/* Press pair: floated to the left of the body copy, balancing the right-heavy
+   hero (handheld photo lives on the right of the modal-header). Two photos stacked. */
+.project-modal.project-modal--motb.has-deep-dive .modal-blurb .motb-press-pair {
+  float: left;
+  width: 38%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin: 4px 1.5rem 1rem 0;
+  padding: 0;
+}
+.project-modal.project-modal--motb.has-deep-dive .modal-blurb .motb-press-pair img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 4px;
+  filter: sepia(0.42) saturate(0.85) contrast(1.04) brightness(0.92);
+}
+
+/* Mobile: release the float so images sit above the text instead of squishing. */
+@media (max-width: 560px) {
+  .project-modal.project-modal--motb.has-deep-dive .modal-blurb .motb-press-pair {
+    float: none;
+    width: auto;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 1.25rem 0;
+  }
+  .project-modal.project-modal--motb.has-deep-dive .modal-blurb .motb-press-pair img {
+    width: auto;
+    max-width: 100%;
+  }
+}
+
+/* Clear the float so the proximity diagram below sits on its own line.
+   Drop the heavy top divider so the technical block reads as one with the body. */
+.project-modal.project-modal--motb.has-deep-dive .proj-deep-dive {
+  clear: both;
+  margin-top: 0;
+  padding-top: 0;
+  border-top: 0;
+  gap: 0.5rem;
+}
+
+/* Proximity diagram: full-width, centred, no surrounding box. Touches the
+   kicker above it so they read as one section. */
+.project-modal.project-modal--motb.has-deep-dive .motb-proximity-fig {
+  margin: 0;
+  max-width: 100%;
+  padding: 0;
+  background: none;
+  border: 0;
+}
+
+/* Closer: drop the heavy top-border divider so the CTA joins the technical
+   block rather than starting a new section. */
+.project-modal.project-modal--motb.has-deep-dive .dd-closer {
+  padding-top: 0.5rem;
+  border-top: 0;
+  margin-top: 1rem;
+}
+.project-modal.project-modal--motb.has-deep-dive .motb-proximity-fig svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* Section kicker above the proximity diagram — matches the typographic vocab of
+   the SVG annotations and frames the technical section. Tight spacing so the
+   kicker, diagram and closer read as one connected block. */
+.project-modal.project-modal--motb.has-deep-dive .motb-section-kicker {
+  font-family: var(--ff-display);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2.6px;
+  text-transform: uppercase;
+  color: hsl(38, 78%, 62%);
+  margin: 0.5rem 0 0.4rem;
+}
+
+@media (max-width: 720px) {
+  .project-modal.project-modal--motb.has-deep-dive .modal-header {
+    grid-template-columns: 1fr;
+    align-items: start;
+    min-height: 320px;
+    padding: 24px 24px 24px;
+    gap: 18px;
+  }
+  .project-modal.project-modal--motb.has-deep-dive .motb-handheld-photo {
+    width: 100%;
+    height: 60%;
+    top: auto;
+    bottom: 0;
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 22%);
+    mask-image: linear-gradient(to bottom, transparent 0%, black 22%);
+  }
+  .project-modal.project-modal--motb.has-deep-dive .modal-header::before {
+    -webkit-mask-image: linear-gradient(to bottom, black 0%, black 35%, transparent 55%);
+    mask-image: linear-gradient(to bottom, black 0%, black 35%, transparent 55%);
+  }
+  .project-modal.project-modal--motb.has-deep-dive .motb-title-logo {
+    width: min(320px, 90%);
+  }
 }
 
 /* ----- Shape interactive demo embed ----- */

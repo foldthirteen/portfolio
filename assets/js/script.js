@@ -834,15 +834,24 @@ document.body.style.overflowY = 'scroll';
     mTitle.replaceChildren();
     const isPorterProject = item.id === 'porter';
     const isShapeProject = item.id === 'shape';
+    const isMotbProject = item.id === 'museum-of-the-bible';
     projModalBox.classList.toggle('project-modal--porter', isPorterProject);
     projModalBox.classList.toggle('project-modal--shape', isShapeProject);
+    projModalBox.classList.toggle('project-modal--motb', isMotbProject);
     mTitle.classList.toggle('modal-title--porter', isPorterProject);
     mTitle.classList.toggle('modal-title--shape', isShapeProject);
+    mTitle.classList.toggle('modal-title--motb', isMotbProject);
     if (isPorterProject) {
       const logo = document.createElement('img');
       logo.className = 'porter-title-logo';
       logo.src = './assets/images/projects/project-porter-title-transparent.png';
       logo.alt = 'Porter';
+      mTitle.appendChild(logo);
+    } else if (isMotbProject) {
+      const logo = document.createElement('img');
+      logo.className = 'motb-title-logo';
+      logo.src = './assets/images/projects/motb-wordmark.png?v=5';
+      logo.alt = 'Museum of the Bible';
       mTitle.appendChild(logo);
     } else {
       const titleText = document.createElement('span');
@@ -873,6 +882,21 @@ document.body.style.overflowY = 'scroll';
       if (plats.length) rows.push(`<div class="mp-row"><span class="mp-label">Platform</span><span class="plat-icons">${platHtml}</span></div>`);
       mMeta.innerHTML = rows.join('');
       mMeta.style.display = rows.length ? '' : 'none';
+    }
+
+    // MOTB hero: inject the bare handheld photo as a right-side hero element so
+    // the modal header reads as title + location + product in one composition.
+    const modalHeader = projModalBox.querySelector('.modal-header');
+    if (modalHeader) {
+      const stale = modalHeader.querySelector('.motb-handheld-photo');
+      if (stale) stale.remove();
+      if (isMotbProject) {
+        const handheld = document.createElement('img');
+        handheld.className = 'motb-handheld-photo';
+        handheld.src = './assets/images/projects/project-motb-handheld.jpg';
+        handheld.alt = 'The Aetherlight Digital Guide on the museum’s purpose-built handheld';
+        modalHeader.appendChild(handheld);
+      }
     }
 
     const raw = item.dataset.text || '';
@@ -1862,11 +1886,12 @@ initCardShine();
 
     const icon = item.querySelector('.service-icon-box img');
     if (icon) {
-      if (icon.src) body.style.setProperty('--svc-ghost', `url("${icon.src}")`);
       const iconClone = icon.cloneNode(true);
       iconClone.removeAttribute('loading');
       head.appendChild(iconClone);
     }
+    const ghost = getComputedStyle(item).getPropertyValue('--svc-ghost').trim();
+    if (ghost) body.style.setProperty('--svc-ghost', ghost);
 
     const title = document.createElement('h3');
     title.id = 'svcModalTitle';

@@ -72,7 +72,7 @@
   <link rel="preload" as="image" href="./assets/images/projects/projectthumb-crossy-hires.webp">
   <link rel="preload" as="image" href="./assets/images/projects/projectthumb-sing.webp">
   <link rel="preload" as="image" href="./assets/images/projects/projectthumb-aetherhighres.webp">
-  <link rel="preload" as="image" href="./assets/images/projects/projectthumb-motb.webp">
+  <link rel="preload" as="image" href="./assets/images/projects/projectthumb-motb.webp?v=2">
 
   <!-- Worked With logos — preload so the ticker never shows blank pills -->
   <link rel="preload" as="image" href="./assets/images/logos/logo-skillsvr.svg">
@@ -270,7 +270,7 @@
         <section class="about-text">
           <div data-variant-hide="ai">
             <p>
-              I’m a Unity developer based in Auckland, New Zealand, working across games, VR simulation, and interactive training software. Over more than a decade of professional C# development, I’ve shipped projects across mobile, desktop, and head-mounted platforms, but the thread that runs through all of my work is a belief that interactive systems can make complex ideas feel intuitive.
+              I’m a Unity/C# developer based in Auckland, New Zealand, working across games, VR simulation, and interactive training software. Over more than a decade of professional development, I’ve shipped projects across mobile, desktop, and head-mounted platforms. The thread that runs through my work is a belief that interactive systems can make complex ideas feel intuitive.
             </p>
 
             <p>
@@ -278,25 +278,21 @@
             </p>
 
             <p>
-              I like getting ideas into a playable state early, because there is often a real gap between the idea of something and the reality of it. For me, iteration is where good work emerges: testing, refining, and pushing toward software that feels polished, considered, and worth people’s time.
+              I like getting ideas into a playable state early, because there is often a real gap between what sounds good in theory and what actually feels good in use. For me, iteration is where good work emerges: testing, refining, and pushing toward software that feels polished, considered, and worth people’s time.
             </p>
           </div>
 
           <div data-variant-only="ai">
             <p>
-              I’m a software engineer based in Auckland, New Zealand, working across agentic AI systems, interactive software, and real-world product engineering. Over more than a decade of shipping production software across C#, TypeScript, and Python, I’ve built everything from games and VR training systems to local-first LLM tools, retrieval pipelines, and agents that support real workflows end to end.
+              I’m a software engineer based in Auckland, New Zealand, working across agentic AI systems, interactive software, and real-world product engineering. Over more than a decade, I’ve shipped production software in C#, TypeScript, and Python across games, VR training, local-first AI tools, retrieval pipelines, and workflow agents.
             </p>
 
             <p>
-              The thread that runs through my work is a belief that good software should make complexity feel manageable. I’m especially drawn to systems that sit at the overlap of design, engineering, and behaviour: where the challenge is not just getting a model or feature to work, but shaping it into something clear, dependable, and genuinely useful.
+              The thread that runs through my work is a belief that good software should make complexity feel manageable. I’m drawn to systems that sit at the overlap of design, engineering, and behaviour, where the challenge is not just getting a model or feature to work, but shaping it into something clear, dependable, and genuinely useful.
             </p>
 
             <p>
-              In AI work, that means building more than a chat interface. I’m interested in the engineering around the model: tool design, retrieval, structured outputs, evals, orchestration, latency, and the practical realities of integrating AI into products that people actually use. A recent example is Porter, my local-first job application agent, which combines structured parsing, RAG over my own career corpus, and a Playwright sidecar that can carry tasks through in the browser.
-            </p>
-
-            <p>
-              I like getting systems into a working state early, because there’s usually a gap between what seems convincing in theory and what holds up in practice. For me, good work comes from iteration: testing, refining, and building toward software that feels considered, resilient, and worth relying on.
+              In AI work, I focus on the engineering around the model: tool design, retrieval, structured outputs, evals, orchestration, latency, and integration into real workflows. I like getting systems into a working state early, then refining them through testing, feedback, and use.
             </p>
           </div>
         </section>
@@ -1761,17 +1757,25 @@ Delivered the Tycoon Series — three RTS titles (Restaurant, Tech, Construction
     data-studio="Scarlet City Studios"
     data-platforms="android"
     data-year="2017"
-    data-text="<b>Gamified children's digital guide for the Museum of the Bible, adapting The Aetherlight's steampunk narrative into a custom museum experience.</b>
+    data-text="<figure class='motb-press-pair'>
+  <img src='./assets/images/projects/motb1.jpg' width='300' height='136' alt='Children using the Digital Guide handheld in a Museum of the Bible exhibit'>
+  <img src='./assets/images/projects/motb2.jpg' width='300' height='169' alt='Visitor using the Digital Guide handheld during opening-year coverage'>
+</figure><b>The Museum of the Bible's Digital Guide turned a tour into a quest.</b> Built on a custom adaptation of The Aetherlight's steampunk world, the experience paired kids 9–12 with MBOT — a robot companion — and sent them chasing story-driven missions that picked up the thread of each gallery the moment they walked into it.
+
+Under the hood, every exhibit had its own low-power Bluetooth beacon broadcasting an iBeacon ID — a UUID plus a major/minor pair that placed each beacon on a specific floor and room. The Digital Guide scanned continuously at ~1 Hz, smoothed RSSI readings across a rolling window to flatten the jitter a crowded gallery introduces, and bucketed each beacon it could hear into immediate, near, and far range bands.
+
+The elegant bit was the handoff. Once locked to a beacon, the device wouldn't release until a neighbour cleanly overtook it — light hysteresis that stopped the story from flickering when two beacons were briefly equal. As a kid stepped from one gallery to the next, the previous beat closed, the next one queued, and MBOT picked up the thread without the visitor ever feeling the seam.
+
+When ambiguity ran longer — a doorway, a wide passage, two galleries broadcasting at near-equal strength — the device dropped the story and surfaced the museum map instead, so the kid was looking at wayfinding rather than the wrong gallery's content. A second tier of fixed gateway beacons mounted at junctions and transitions gave the algorithm a third reference point to lean on, narrowing the visitor's position by triangulation; the map only appeared when uncertainty was real, not every time two readings flickered close.
 <ul class='proj-bullets'>
-  <li>Designed for ages 9–12: kids explored exhibits through story-driven missions led by MBOT, a robot companion, collecting helper bots and uncovering exhibit-linked clues.</li>
-  <li>Experience synced to an adult's itinerary — routing adapted dynamically by age, timing, interests, and family group.</li>
+  <li>Story content was cached on-device, so the experience never depended on museum WiFi reaching the gallery floor.</li>
   <li>Ran on purpose-built Digital Guide hardware designed for the museum's immersive visitor experience.</li>
 </ul>"
     data-gallery='["./assets/images/projects/project-motb-poster.png","./assets/images/projects/motb1.jpg","./assets/images/projects/motb2.jpg"]'
     data-link="https://gospelmusic.org/news/museum-of-the-bible-adapts-the-aetherlight-gaming-narrative-into-immersive-experience">
   <a href="#">
     <figure class="project-img">
-      <img width="800" height="533" src="./assets/images/projects/projectthumb-motb.webp"
+      <img width="800" height="533" src="./assets/images/projects/projectthumb-motb.webp?v=2"
            alt="Museum of the Bible Digital Guide thumbnail"
            fetchpriority="high">
     </figure>
@@ -3376,6 +3380,90 @@ A custom Code node rendered the final HTML email, with SMTP handling 6am NZT del
   <section class="dd-closer">
     <p class="dd-closer-line">Built in concert with Claude Code and Codex, human-directed throughout. Eval harness · cached runs · stability scoring · reproducible demo mode.</p>
     <a class="proj-link" href="https://porter-625c.vercel.app/applications/demo-ai-engineer/" target="_blank" rel="noopener">Try the live demo <em class="arrow">↗</em></a>
+  </section>
+
+</template>
+
+<template id="deepdive-museum-of-the-bible">
+
+  <p class="motb-section-kicker">How it worked</p>
+  <figure class="motb-proximity-fig" aria-label="Proximity-aware routing across exhibit zones">
+    <svg viewBox="0 0 800 280" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet" role="img">
+      <defs>
+        <pattern id="motb-grid" width="24" height="24" patternUnits="userSpaceOnUse">
+          <path d="M 24 0 L 0 0 0 24" fill="none" stroke="hsla(38, 40%, 25%, 0.16)" stroke-width="0.5"/>
+        </pattern>
+        <radialGradient id="motb-glow" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="hsla(45, 95%, 72%, 0.42)"/>
+          <stop offset="60%" stop-color="hsla(45, 95%, 72%, 0.10)"/>
+          <stop offset="100%" stop-color="hsla(45, 95%, 72%, 0)"/>
+        </radialGradient>
+        <!-- Bluetooth runic icon. currentColor + parent <use color> tints active vs dim. -->
+        <g id="motb-bt-icon" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="0" y1="-8" x2="0" y2="8"/>
+          <path d="M 0 -8 L 5 -3 L -4 4"/>
+          <path d="M 0 8 L 5 3 L -4 -4"/>
+        </g>
+      </defs>
+      <rect width="800" height="280" fill="url(#motb-grid)"/>
+
+      <!-- soft glow under the active exhibit -->
+      <circle cx="280" cy="140" r="120" fill="url(#motb-glow)"/>
+
+      <!-- exhibit zone rectangles - 5 across; active one (02) gets a brighter rim -->
+      <g fill="hsla(28, 30%, 14%, 0.4)" stroke-width="1.2">
+        <rect x="40"  y="110" width="120" height="60" rx="6" stroke="hsla(38, 55%, 38%, 0.5)"/>
+        <rect x="200" y="110" width="120" height="60" rx="6" stroke="hsla(45, 90%, 70%, 0.7)" fill="hsla(45, 70%, 32%, 0.18)"/>
+        <rect x="360" y="110" width="120" height="60" rx="6" stroke="hsla(38, 55%, 38%, 0.5)"/>
+        <rect x="520" y="110" width="120" height="60" rx="6" stroke="hsla(38, 55%, 38%, 0.5)"/>
+        <rect x="680" y="110" width="120" height="60" rx="6" stroke="hsla(38, 55%, 38%, 0.5)"/>
+      </g>
+
+      <!-- proximity rings around the active beacon -->
+      <g fill="none" stroke-width="1.2">
+        <circle cx="280" cy="132" r="40" stroke="hsla(45, 90%, 70%, 0.55)"/>
+        <circle cx="280" cy="132" r="64" stroke="hsla(45, 90%, 70%, 0.28)"/>
+        <circle cx="280" cy="132" r="88" stroke="hsla(45, 90%, 70%, 0.13)"/>
+      </g>
+
+      <!-- visitor path through exhibits (dotted) -->
+      <path d="M 100 152 Q 190 102 280 152 Q 360 200 440 152 Q 520 100 600 152 Q 680 200 760 152"
+            stroke="hsla(38, 55%, 42%, 0.4)" stroke-width="1.4" fill="none" stroke-dasharray="3 6"/>
+      <!-- travelled segment glows brighter -->
+      <path d="M 100 152 Q 190 102 280 152"
+            stroke="hsla(45, 90%, 70%, 0.85)" stroke-width="1.5" fill="none" stroke-dasharray="3 6"/>
+
+      <!-- BT beacon icons in each room (dim brass) + active one (bright gold) -->
+      <use href="#motb-bt-icon" transform="translate(100, 132)" color="hsl(38, 60%, 50%)"/>
+      <use href="#motb-bt-icon" transform="translate(440, 132)" color="hsl(38, 60%, 50%)"/>
+      <use href="#motb-bt-icon" transform="translate(600, 132)" color="hsl(38, 60%, 50%)"/>
+      <use href="#motb-bt-icon" transform="translate(760, 132)" color="hsl(38, 60%, 50%)"/>
+      <use href="#motb-bt-icon" transform="translate(280, 132)" color="hsl(45, 95%, 75%)"/>
+
+      <!-- visitor node: a single dot at the active room (just arrived from 01) -->
+      <g transform="translate(280, 152)">
+        <circle r="9" fill="hsla(45, 95%, 75%, 0.18)"/>
+        <circle r="5" fill="hsl(45, 95%, 78%)"/>
+      </g>
+
+      <!-- exhibit labels -->
+      <g font-family="ui-sans-serif, system-ui, sans-serif" font-size="10" font-weight="700" letter-spacing="2" text-anchor="middle">
+        <text x="100" y="92" fill="hsla(38, 50%, 65%, 0.75)">EXHIBIT 01</text>
+        <text x="280" y="92" fill="hsl(45, 80%, 78%)">EXHIBIT 02</text>
+        <text x="440" y="92" fill="hsla(38, 50%, 65%, 0.75)">EXHIBIT 03</text>
+        <text x="600" y="92" fill="hsla(38, 50%, 65%, 0.75)">EXHIBIT 04</text>
+        <text x="760" y="92" fill="hsla(38, 50%, 65%, 0.75)">EXHIBIT 05</text>
+      </g>
+
+      <!-- bottom annotation -->
+      <g font-family="ui-sans-serif, system-ui, sans-serif" font-size="10" letter-spacing="1.6" text-anchor="middle">
+        <text x="400" y="248" fill="hsla(38, 55%, 60%, 0.85)">BLE BEACON AT EACH EXHIBIT · DEVICE LOCKS TO THE STRONGEST SIGNAL</text>
+      </g>
+    </svg>
+  </figure>
+
+  <section class="dd-closer">
+    <a class="proj-link" href="https://gospelmusic.org/news/museum-of-the-bible-adapts-the-aetherlight-gaming-narrative-into-immersive-experience" target="_blank" rel="noopener">Read the launch announcement <em class="arrow">↗</em></a>
   </section>
 
 </template>
