@@ -44,7 +44,7 @@ const PROFILE = {
   name: "Ben Visser",
   title: "Engineering & Design",
   location: "Auckland, New Zealand",
-  phone: "0226810558",
+  phone: "022 --- -----",
   email: "foldthirteen@gmail.com",
   websiteLabel: "foldthirteen.github.io/portfolio",
   websiteUrl: "https://foldthirteen.github.io/portfolio/"
